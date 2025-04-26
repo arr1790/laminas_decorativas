@@ -67,11 +67,11 @@ export default function Home() {
               href="/laminas"
             />
             
-            {/* Outlet */}
+            {/* laminadecorativas */}
             <CategoryCard 
-              title="OUTLET REGALOS" 
-              image="/outlet.png" 
-              href="/outlet"
+              title="LÁMINAS DECORATIVAS" 
+              image="/laminadecorativa.png" 
+              href="/laminas decorativas"
             />
           </div>
         </div>

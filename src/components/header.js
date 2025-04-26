@@ -45,7 +45,12 @@ async function Header() {
                 </div>
             </div>
 
-       
+            {/* Barra inferior - Nombre de la tienda */}
+            <div className="bg-blue-700 py-3">
+                <div className="container mx-auto px-4 text-center">
+                    
+                </div>
+            </div>
         </header>
     )
 }
