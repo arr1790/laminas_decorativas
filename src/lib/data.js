@@ -2,30 +2,55 @@
 
 import prisma from "@/lib/prisma"
 
-// ----------------------------  USUARIOS ---------------------------
 
-export async function obtenerUsuarios() {
-    const usuarios = await prisma.user.findMany({
-        include: { orders: true }
+
+
+
+
+// ----------------------------  USERS ---------------------------
+
+
+export async function getUsers() {
+    const users = await prisma.user.findMany({
+        include: { pedidos: true }
     });
-    return usuarios;
+    return users
 }
 
-export async function obtenerUsuarioPorId(id) {
-    const usuario = await prisma.user.findUnique({
-        where: { id },
-        include: { orders: true }
+
+
+export async function getUserById(id) {
+
+    const user = await prisma.user.findUnique({
+        where: { id }
     });
-    return usuario;
+    return user
 }
 
-export async function obtenerUsuarioPorEmail(email) {
-    const usuario = await prisma.user.findUnique({
-        where: { email },
-        include: { orders: true }
+
+
+
+
+export async function getUserByEmail(email) {
+  if (!email) {
+    throw new Error("El email es obligatorio.");
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
     });
-    return usuario;
+
+    return user;
+  } catch (error) {
+    console.error("Error al obtener el usuario por email:", error);
+    throw error;
+  }
 }
+
+
+
+
 
 // ---------------------   CUENTAS -----------------------
 
