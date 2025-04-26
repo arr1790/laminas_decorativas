@@ -1,93 +1,64 @@
 import Link from "next/link";
 import Image from 'next/image';
-// import DropdownCategorias from "@/components/DropdownCategorias";
 
 export default function Home() {
   return (
     <div>
-
-      {/* Logo/Marca */}
-      <header className="text-center py-8 px-4 bg-gradient-to-r from-blue-50 to-pink-50">
-        <div className="container mx-auto">
-          <h1 className="text-4xl font-bold text-blue-600 mb-2">CAPTURAS DE ANA</h1>
-          <p className="text-lg text-gray-600 italic">Descubre algo diferente...</p>
+     
+      <header className="bg-white">
+        <div className="flex justify-center pt-2"> 
+          <Link href="/">
+            <Image 
+              src="/CapturadeAna.png" 
+              alt="Logo"
+              width={500}
+              height={75}
+              className="w-[280px] md:w-[300px] h-auto" 
+              priority
+            />
+          </Link>
         </div>
       </header>
 
-      {/* Navegación principal */}
-      <nav className="bg-white shadow-sm">
-        <div className="container mx-auto flex flex-wrap justify-center gap-4 md:gap-8 py-4 px-4">
-          <Link href="/boda" className="hover:text-rose-500 transition font-medium">BODA</Link>
-          <Link href="/comunion" className="hover:text-rose-500 transition font-medium">COMUNIÓN</Link>
-          <Link href="/bautizo" className="hover:text-rose-500 transition font-medium">BAUTIZO Y FIESTA BEBÉ</Link>
-          <Link href="/cumpleanos" className="hover:text-rose-500 transition font-medium">CUMPLEAÑOS</Link>
-          <Link href="/laminas" className="hover:text-rose-500 transition font-medium">LÁMINAS</Link>
-          <Link href="/outlet" className="hover:text-rose-500 transition font-medium">OUTLET</Link>
+      {/* Navegación principal - Compacta */}
+      <nav className="bg-white border-y border-gray-200">
+        <div className="flex flex-wrap justify-center gap-3 md:gap-4 py-2 px-2"> {/* Reducido espacio */}
+          <Link href="/boda" className="hover:text-pink-200 text-sm font-medium">BODA</Link>
+          <Link href="/comunion" className="hover:text-pink-200 text-sm font-medium">COMUNIÓN</Link>
+          <Link href="/bautizo" className="hover:text-pink-200 text-sm font-medium">BAUTIZO Y FIESTA BEBÉ</Link>
+          <Link href="/cumpleanos" className="hover:text-pink-200 text-sm font-medium">CUMPLEAÑOS</Link>
+          <Link href="/laminas" className="hover:text-pink-200 text-sm font-medium">PERSONALIZADAS</Link>
+          <Link href="/outlet" className="hover:text-pink-200 text-sm font-medium">DECORATIVAS</Link>
         </div>
       </nav>
 
-      {/* Categorías destacadas */}
-      <section className="py-12 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">NUESTRAS COLECCIONES</h2>
+      
+      <section className="py-6 px-2"> {/* Reducido padding */}
+        <div className="mx-auto max-w-6xl"> {/* Cambiado container por max-w-6xl */}
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">NUESTRAS COLECCIONES</h2> {/* Texto más pequeño */}
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Boda */}
-            <CategoryCard 
-              title="ESPECIAL BODA" 
-              image="/boda.png" 
-              href="/boda"
-            />
-            
-            {/* Comunión */}
-            <CategoryCard 
-              title="COMUNIÓN" 
-              image="/comunion.png" 
-              href="/comunion"
-            />
-            
-            {/* Fiesta Bebé */}
-            <CategoryCard 
-              title="FIESTA BEBÉ" 
-              image="/fiestabebe.png" 
-              href="/bautizo"
-            />
-            
-            {/* Cumpleaños */}
-            <CategoryCard 
-              title="CUMPLEAÑOS" 
-              image="/cumpleaños.png" 
-              href="/cumpleanos"
-            />
-            
-            {/* Láminas */}
-            <CategoryCard 
-              title="LÁMINAS PERSONALIZADAS" 
-              image="/laminapersonalizada.png" 
-              href="/laminas"
-            />
-            
-            {/* laminadecorativas */}
-            <CategoryCard 
-              title="LÁMINAS DECORATIVAS" 
-              image="/laminadecorativa.png" 
-              href="/laminas decorativas"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"> {/* Gap reducido */}
+            <CategoryCard title="ESPECIAL BODA" image="/boda.png" href="/boda"/>
+            <CategoryCard title="COMUNIÓN" image="/comunion.png" href="/comunion"/>
+            <CategoryCard title="FIESTA BEBÉ" image="/fiestabebe.png" href="/bautizo"/>
+            <CategoryCard title="CUMPLEAÑOS" image="/cumpleaños.png" href="/cumpleanos"/>
+            <CategoryCard title="LÁMINAS PERSONALIZADAS" image="/laminapersonalizada.png" href="/laminas"/>
+            <CategoryCard title="LÁMINAS DECORATIVAS" image="/laminadecorativa.png" href="/laminas-decorativas"/>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-100 py-8 border-t border-gray-200">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-6 text-sm">
-            <Link href="/cookies" className="hover:text-rose-500 transition">POLÍTICA DE COOKIES</Link>
-            <Link href="/privacidad" className="hover:text-rose-500 transition">POLÍTICA DE PRIVACIDAD</Link>
-            <Link href="/terminos" className="hover:text-rose-500 transition">TÉRMINOS Y CONDICIONES</Link>
+      {/* Footer compacto */}
+      <footer className="bg-gray-100 py-6 border-t border-gray-200"> {/* Reducido padding */}
+        <div className="mx-auto max-w-6xl px-2"> {/* Contenedor ajustado */}
+          <div className="flex flex-wrap justify-center gap-4 text-xs"> {/* Texto más pequeño */}
+            <Link href="/cookies" className="hover:pink-200-500">POLÍTICA DE COOKIES</Link>
+            <Link href="/privacidad" className="hover:pink-200-500">POLÍTICA DE PRIVACIDAD</Link>
+            <Link href="/terminos" className="hover:pink-200-500">TÉRMINOS Y CONDICIONES</Link>
           </div>
           
-          <div className="mt-6 text-center text-gray-500 text-xs">
-            © {new Date().getFullYear()} MIMARIETA. Todos los derechos reservados.
+          <div className="mt-4 text-center text-gray-500 text-xs"> {/* Más compacto */}
+            © {new Date().getFullYear()} Ana Ruano .Todos los derechos reservados.
           </div>
         </div>
       </footer>
@@ -95,25 +66,27 @@ export default function Home() {
   );
 }
 
-// Componente para tarjetas de categoría
+// Componente ajustado
 function CategoryCard({ title, image, href }) {
   return (
     <Link href={href} className="group block">
-      <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+      <div className="relative overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow"> {/* Sombra más sutil */}
         <div className="aspect-square bg-gray-100">
           <Image 
             src={image} 
             alt={title} 
             width={500} 
             height={500}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" /* Transición más rápida */
           />
         </div>
-        <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-          <h3 className="text-white text-xl font-bold text-center px-4">{title}</h3>
-        </div>
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+  <div className="bg-white bg-opacity-90 p-3 rounded-lg shadow-sm"> {/* Cuadro de fondo */}
+    <h3 className="text-gray-800 text-lg font-bold text-center">{title}</h3>
+  </div>
+</div>
       </div>
-      <h3 className="mt-3 text-lg font-medium text-center text-gray-800 group-hover:text-rose-500 transition">
+      <h3 className="mt-2 text-base font-medium text-center text-gray-800 group-hover:text-rose-500"> {/* Más compacto */}
         {title}
       </h3>
     </Link>
