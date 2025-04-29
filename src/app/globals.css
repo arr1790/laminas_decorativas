@@ -25,7 +25,3 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-span[data-nextjs-image-wrapper] {
-  display: block !important;
-  line-height: 0 !important;
-}
