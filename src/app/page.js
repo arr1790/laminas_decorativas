@@ -8,7 +8,7 @@ export default function Home() {
                 <div className="flex justify-center">
                     <Link href="/">
                         <Image
-                            src="/capturadeana.png"
+                            src="/CapturadeAna.png"
                             alt="Logo"
                             width={500}
                             height={75}
