@@ -11,11 +11,11 @@ const CalendarioEventos = () => {
                 <div className="flex justify-center">
                     <Link href="/">
                         <Image
-                            src="/capturadeana.png"
-                            alt="Logo"
-                            width={500}
+                            src="/CapturadeAna.png"
+                            alt="Logo de la tienda"
+                            width={300}
                             height={75}
-                            className="w-[250px] md:w-[280px] h-auto m-0 p-0 block"
+                            className="w-[280px] md:w-[300px] h-auto"
                             priority
                         />
                     </Link>
@@ -40,7 +40,7 @@ const CalendarioEventos = () => {
 
                 <div className="mb-8 bg-white p-6 rounded-lg shadow-sm">
                     <p className="mb-4 text-lg">
-                        Si tu evento es desde el <span className="font-medium">9 de mayo en adelante</span> realiza tu pedido y lo recibirás a tiempo. 
+                        Si tu evento es desde el <span className="font-medium">9 de mayo en adelante</span> realiza tu pedido y lo recibirás a tiempo.
                     </p>
                     <p className="mb-4">
                         Si lo necesitas antes escríbenos a <a href="mailto:capturadeana@gmail.com" className="text-blue-600 hover:underline">capturadeana@gmail.com</a> y vemos si es posible.

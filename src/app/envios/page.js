@@ -11,11 +11,11 @@ const enviosYDevoluciones = () => {
                 <div className="flex justify-center">
                     <Link href="/">
                         <Image
-                            src="/capturadeana.png"
-                            alt="Logo"
-                            width={500}
+                            src="/CapturadeAna.png"
+                            alt="Logo de la tienda"
+                            width={300}
                             height={75}
-                            className="w-[250px] md:w-[280px] h-auto m-0 p-0 block"
+                            className="w-[280px] md:w-[300px] h-auto"
                             priority
                         />
                     </Link>
