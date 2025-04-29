@@ -456,3 +456,46 @@ export async function eliminarDiseno(formData) {
 
   revalidatePath('/disenos')
 }
+
+
+
+// ------------------------ CONTACT FORM ------------------------ 
+export async function submitContactForm(prevState, formData) {
+  const name = formData.get('name')?.trim() || ''
+  const email = formData.get('email')?.trim() || ''
+  const phone = formData.get('phone')?.trim() || null
+  const message = formData.get('message')?.trim() || ''
+  const privacyAccepted = formData.get('privacy') === 'on'
+
+  // Validaciones básicas
+  if (name.length < 2) return { error: 'Por favor, escribe tu nombre completo.' }
+  if (!email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) return { error: 'Email inválido.' }
+  if (message.length < 10) return { error: 'El mensaje debe tener al menos 10 caracteres.' }
+  if (!privacyAccepted) return { error: 'Debes aceptar la política de privacidad.' }
+
+  try {
+    await prisma.contactMessage.create({
+      data: {
+        name,
+        email,
+        phone,
+        message,
+        privacy: privacyAccepted
+      }
+    })
+
+    return { success: 'Tu mensaje fue enviado con éxito.' }
+
+  } catch (err) {
+    console.error('Error al guardar mensaje:', err)
+
+    if (err.message.includes('Unique constraint')) {
+      return { error: 'Ya enviaste un mensaje con este email.' }
+    }
+
+    return { error: 'Ocurrió un error al enviar el mensaje. Intenta más tarde.' }
+
+  } finally {
+    await prisma.$disconnect()
+  }
+}
