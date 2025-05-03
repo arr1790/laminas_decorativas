@@ -2,13 +2,7 @@
 
 import prisma from "@/lib/prisma"
 
-
-
-
-
-
 // ----------------------------  USERS ---------------------------
-
 
 export async function getUsers() {
     const users = await prisma.user.findMany({
@@ -67,8 +61,8 @@ export async function obtenerCarritos(userId) {
     const carritos = await prisma.cart.findMany({
         where: { userId },
         include: {
-            product: true,  // Relación con 'product'
-            design: true    // Relación con 'customDesign'
+            product: true,  
+            design: true    
         }
     });
     return carritos;
@@ -78,8 +72,8 @@ export async function obtenerCarritoPorId(id) {
     const carrito = await prisma.cart.findUnique({
         where: { id },
         include: {
-            product: true,  // Relación con 'product'
-            design: true    // Relación con 'customDesign'
+            product: true,  
+            design: true    
         }
     });
     return carrito;
@@ -91,8 +85,8 @@ export async function obtenerPedidos(userId) {
     const pedidos = await prisma.order.findMany({
         where: { userId },
         include: {
-            product: true,  // Relación con 'product'
-            design: true    // Relación con 'customDesign'
+            product: true,  
+            design: true   
         }
     });
     return pedidos;
@@ -102,8 +96,8 @@ export async function obtenerPedidoPorId(id) {
     const pedido = await prisma.order.findUnique({
         where: { id },
         include: {
-            product: true,  // Relación con 'product'
-            design: true    // Relación con 'customDesign'
+            product: true,  
+            design: true   
         }
     });
     return pedido;
@@ -114,7 +108,7 @@ export async function obtenerPedidoPorId(id) {
 export async function obtenerProductos() {
     const productos = await prisma.product.findMany({
         include: {
-            category: true  // Relación con 'category'
+            category: true  
         }
     });
     return productos;
@@ -124,7 +118,7 @@ export async function obtenerProductoPorId(id) {
     const producto = await prisma.product.findUnique({
         where: { id },
         include: {
-            category: true  // Relación con 'category'
+            category: true  
         }
     });
     return producto;
@@ -150,7 +144,7 @@ export async function obtenerDiseñosPersonalizados(userId) {
     const diseñosPersonalizados = await prisma.customDesign.findMany({
         where: { userId },
         include: {
-            product: true  // Relación con 'product'
+            product: true  
         }
     });
     return diseñosPersonalizados;
@@ -160,7 +154,7 @@ export async function obtenerDiseñoPersonalizadoPorId(id) {
     const diseñoPersonalizado = await prisma.customDesign.findUnique({
         where: { id },
         include: {
-            product: true  // Relación con 'product'
+            product: true  
         }
     });
     return diseñoPersonalizado;

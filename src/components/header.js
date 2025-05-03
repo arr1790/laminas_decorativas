@@ -13,8 +13,8 @@ async function Header() {
                 <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
                     {/* Primera línea - Enlaces principales */}
                     <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm">
-                        <Link href={session ? "/mi-cuenta" : "/auth/login"} className="hover:text-pink-200 transition whitespace-nowrap">
-                            {session ? "MI CUENTA" : "INICIAR SESIÓN/CUENTA"}
+                        <Link href={session ? "/perfil" : "/auth/login"} className="hover:text-pink-200 transition whitespace-nowrap">
+                            {session ? "PERFIL" : "INICIAR SESIÓN/CUENTA"}
                         </Link>
                         <Link href="/envios" className="hover:text-pink-200 transition whitespace-nowrap">ENVÍOS Y DEVOLUCIONES</Link>
                         <Link href="/contacto" className="hover:text-pink-200 transition whitespace-nowrap">CONTACTO</Link>

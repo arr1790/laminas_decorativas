@@ -19,7 +19,7 @@ errors.set('Default', "No se puede iniciar sesión.");
 
 async function PaginaLogin({ searchParams }) {
   const { error, callbackUrl } = await searchParams
-  globalThis.callbackUrl = callbackUrl
+  globalThis.callbackUrl = callbackUrl || '/'
 
   const sesion = await auth()
   if (sesion) redirect('/')

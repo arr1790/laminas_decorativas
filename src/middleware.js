@@ -7,7 +7,7 @@ const { auth } = NextAuth(authConfig);
 export default auth((req) => {
     console.log(' MIDDLEWARE', req.nextUrl.pathname, req.auth);
 
-    if (!req.auth) {  // NO AUTENTICADO
+    if (!req.auth) {  
 
         let callbackUrl = req.nextUrl.pathname;
         if (req.nextUrl.search) {

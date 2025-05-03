@@ -57,7 +57,7 @@ export default function PaginaContacto() {
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Otras formas de contacto</h2>
           <p className="mb-2">- si prefieres por WhatsApp puedes hacerlo en el número <a href="https://wa.me/34686531854" className="text-blue-600 hover:underline">666 555 444</a></p>
-          <p>- y si quieres hablar con nosotras, lo puedes hacer en el teléfono <a href="tel:646363765" className="text-blue-600 hover:underline">646 363 765</a></p>
+          <p>- y si quieres comentarme algo, lo puedes hacer en el teléfono <a href="tel:646363765" className="text-blue-600 hover:underline">646 363 765</a></p>
         </div>
         
         <form action={formAction} className="mb-8">

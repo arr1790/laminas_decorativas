@@ -15,7 +15,7 @@ function RegisterForm({ className }) {
                     <input 
                         type='text'
                         name='name'
-                        defaultValue={state.fields?.name || ''}
+                        // defaultValue={state.fields?.name || ''}
                         placeholder="John Doe"
                         className='w-full mt-2 p-3 border border-gray-300 rounded-xl bg-gray-50 focus:ring-4 focus:ring-blue-400 focus:border-blue-500 transition-all outline-none'
                         required
@@ -27,7 +27,7 @@ function RegisterForm({ className }) {
                     <input 
                         type='email'
                         name='email'
-                        defaultValue={state.fields?.email || ''}
+                        // defaultValue={state.fields?.email || ''}
                         placeholder="john.doe@example.com"
                         className='peer w-full mt-2 p-3 border border-gray-300 rounded-xl bg-gray-50 focus:ring-4 focus:ring-blue-400 focus:border-blue-500 transition-all outline-none'
                     />
@@ -41,8 +41,8 @@ function RegisterForm({ className }) {
                     <input 
                         type="password"
                         name='password'
-                        defaultValue={state.fields?.password || ''}
-                        placeholder="******"
+                        // defaultValue={state.fields?.password || ''}
+                        // placeholder="******"
                         className='w-full mt-2 p-3 border border-gray-300 rounded-xl bg-gray-50 focus:ring-4 focus:ring-blue-400 focus:border-blue-500 transition-all outline-none'
                     />
                 </label>
