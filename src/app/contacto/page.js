@@ -1,12 +1,13 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';  // Keep useFormStatus from react-dom
 import { submitContactForm } from '@/lib/actions';
 import Link from "next/link";
 import Image from 'next/image';
 
 export default function PaginaContacto() {
-  const [state, formAction] = useFormState(submitContactForm, {
+  const [state, formAction] = useActionState(submitContactForm, {
     success: false,
     message: '',
   });

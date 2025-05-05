@@ -41,6 +41,7 @@ export const config = {
     */
         "/dashboard",
         "/pedidos(.*)",
-        "/repartidores(.*)"
+        "/repartidores(.*)",
+        "/direcciones(.*)"
     ],
 }

@@ -13,16 +13,38 @@ model User {
   email          String?        @unique
   password       String?
   image          String?
-  role           String          @default("USER") //ADMIN
+  role           String         @default("USER") // ADMIN
   emailVerified  DateTime?
   active         Boolean        @default(true)
   createdAt      DateTime       @default(now())
+
+
   carts          Cart[]
   orders         Order[]
   designs        CustomDesign[]
   accounts       Account[]
-
+  addresses      Address[]      
   @@map("user")
+}
+
+model Address {
+  id             Int      @id @default(autoincrement())
+  userId         String
+  nombre         String
+  apellido       String
+  compania       String?
+  direccion1     String
+  direccion2     String?
+  ciudad         String
+  pais           String
+  provincia      String
+  codigoPostal   String
+  telefono       String
+  porDefecto     Boolean  @default(false)
+
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("address")
 }
 
 model Account {
@@ -115,11 +137,12 @@ model CustomDesign {
 
   @@map("customDesign")
 }
+
 model ContactMessage {
-  id        Int      @id @default(autoincrement())  
+  id        Int      @id @default(autoincrement())
   name      String
   email     String
   phone     String?
   message   String
-  createdAt DateTime @default(now())            
+  createdAt DateTime @default(now())
 }
