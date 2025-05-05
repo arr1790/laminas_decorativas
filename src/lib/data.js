@@ -139,12 +139,13 @@ export async function obtenerCategorias() {
     return categorias;
 }
 
-export async function obtenerCategoriaPorId(id) {
-    const categoria = await prisma.category.findUnique({
-        where: { id }
-    });
-    return categoria;
-}
+
+export async function obtenerCategoria(id) {
+    return await prisma.category.findUnique({
+      where: { id: Number(id) }, // Using Number() instead of toNumber()
+      include: { products: true }
+    })
+  }
 
 // ---------------------   DISEÑOS PERSONALIZADOS -----------------------
 
