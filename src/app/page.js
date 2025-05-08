@@ -5,20 +5,20 @@ import DropdownCategorias from "@/components/DropdownCategorias";
 export default function Home() {
   return (
     <div className="min-h-screen bg-white m-0 p-0">
-      <header className="bg-white pt-0 pb-0">
-        <div className="flex justify-center">
-          <Link href="/">
-            <Image
-              src="/CapturadeAna.png"
-              alt="Logo"
-              width={500}
-              height={75}
-              className="w-[250px] md:w-[280px] h-auto m-0 p-0 block"
-              priority
-            />
-          </Link>
-        </div>
-      </header>
+     <header className="bg-white">
+  <div className="flex justify-center items-start">  {/* Cambiado a items-start */}
+    <Link href="/" className="block leading-none">  {/* Añadido leading-none y block */}
+      <Image
+        src="/CapturadeAna.png"
+        alt="Logo"
+        width={500}
+        height={75}
+        className="w-[250px] md:w-[280px] h-auto"
+        priority
+      />
+    </Link>
+  </div>
+</header>
 
       <nav className="bg-white border-y border-gray-200 mt-0">
         <div className="flex justify-center py-2 px-2">

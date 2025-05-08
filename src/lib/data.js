@@ -142,7 +142,7 @@ export async function obtenerCategorias() {
 
 export async function obtenerCategoria(id) {
     return await prisma.category.findUnique({
-      where: { id: Number(id) }, // Using Number() instead of toNumber()
+      where: { id: Number(id) }, 
       include: { products: true }
     })
   }
@@ -212,17 +212,25 @@ export async function eliminarDireccion(id) {
 }
 
 export async function establecerDireccionPorDefecto(userId, direccionId) {
-    // Quitar por defecto anterior
+
     await prisma.address.updateMany({
         where: { userId },
         data: { porDefecto: false }
     });
 
-    // Establecer nueva dirección por defecto
+  
     const direccionPorDefecto = await prisma.address.update({
         where: { id: Number(direccionId) },
         data: { porDefecto: true }
     });
 
     return direccionPorDefecto;
+}
+export async function getMessages() {
+    const contactMessages = await prisma.contactMessage.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 5
+       
+    });
+    return contactMessages;
 }

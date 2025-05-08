@@ -5,7 +5,7 @@ export default async function NavbarCategorias() {
   const categories = await obtenerCategorias();
 
   return (
-    <nav className="bg-white border-y border-gray-200 mt-0">
+    <nav className="bg-white border-y border-gray-200 mt-0 text-black">
       <div className="flex flex-wrap justify-center gap-3 md:gap-4 py-2 px-2">
         {categories.map((cat) => (
           <Link

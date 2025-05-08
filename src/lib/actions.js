@@ -3,41 +3,41 @@
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { signIn, signOut } from '@/auth';
-import {getUserByEmail } from '@/lib/data';
+import { getUserByEmail } from '@/lib/data';
 import { revalidatePath } from 'next/cache'
 
 
 
 // REGISTER
 export async function register(prevState, formData) {
-    const name = formData.get('name')
-    const email = formData.get('email')
-    const password = formData.get('password')
+  const name = formData.get('name')
+  const email = formData.get('email')
+  const password = formData.get('password')
 
-    // Asigna un rol predeterminado de 'user'
-    const role = "user";  // O ajusta esto según lo que necesites
+  // Asigna un rol predeterminado de 'user'
+  const role = "user";  // O ajusta esto según lo que necesites
 
-    // Comprobamos si el usuario ya está registrado
-    const user = await getUserByEmail(email);
+  // Comprobamos si el usuario ya está registrado
+  const user = await getUserByEmail(email);
 
-    if (user) {
-        return { error: 'El email ya está registrado' }
+  if (user) {
+    return { error: 'El email ya está registrado' }
+  }
+
+  // Encriptamos password 
+  const hashedPassword = await bcrypt.hash(password, 10)
+
+  // Guardamos credenciales en base datos
+  await prisma.user.create({
+    data: {
+      name,
+      email,
+      password: hashedPassword,
+      role // Incluye el rol
     }
+  })
 
-    // Encriptamos password 
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    // Guardamos credenciales en base datos
-    await prisma.user.create({
-        data: {
-            name,
-            email,
-            password: hashedPassword,
-            role // Incluye el rol
-        }
-    })
-
-    return { success: "Registro correcto" }
+  return { success: "Registro correcto" }
 }
 
 
@@ -48,41 +48,38 @@ export async function login(prevState, formData) {
   const user = await getUserByEmail(email)
 
   if (!user) {
-      return { error: 'Usuario no registrado.' }
+    return { error: 'Usuario no registrado.' }
   }
 
   if (!user.active) {
-      return { error: 'Usuario deshabilitado. Consulte al administrador de esta app.' }
+    return { error: 'Usuario deshabilitado. Consulte al administrador de esta app.' }
   }
 
   let matchPassword = false
 
   if (!user.password) {
-      matchPassword = true // Usuario sin contraseña (caso especial)
+    matchPassword = true // Usuario sin contraseña (caso especial)
   } else {
-      matchPassword = await bcrypt.compare(password, user.password)
+    matchPassword = await bcrypt.compare(password, user.password)
   }
 
-  if (matchPassword) {
-      try {
-          const result = await signIn('credentials', {
-              redirect: false,
-              email,
-              password,
-              callbackUrl: globalThis.callbackUrl || '/' // Usa '/' por defecto si no hay callbackUrl
-          })
+  if ( user && matchPassword) {
+    
+       await signIn('credentials', {
 
-          if (result?.error) {
-              return { error: 'Error en autenticación: ' + result.error }
-          }
+        email,
+        password,
+        redirectTo: globalThis.callbackUrl
+      })
 
-          return { success: 'Inicio de sesión correcto', redirectUrl: result.url }
+      // if (result?.error) {
+      //   return { error: 'Error en autenticación: ' + result.error }
+      // }
 
-      } catch (err) {
-          return { error: 'Ocurrió un error en el proceso de inicio de sesión.' }
-      }
+      // return { success: 'Inicio de sesión correcto' }
+
   } else {
-      return { error: 'Credenciales incorrectas.' }
+    return { error: 'Credenciales incorrectas.' }
   }
 }
 
@@ -91,72 +88,72 @@ export async function login(prevState, formData) {
 
 // LOGIN google
 export async function loginGoogle() {
-    try {
-        await signIn('google', { redirectTo: globalThis.callbackUrl })
-    } catch (error) {
-        console.log(error);
-        throw error
-    }
+  try {
+    await signIn('google', { redirectTo: globalThis.callbackUrl })
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
 }
 
 // LOGIN github
 export async function loginGithub() {
-    try {
-        await signIn('github', { redirectTo: globalThis.callbackUrl })
-    } catch (error) {
-        console.log(error);
-        throw error
-    }
+  try {
+    await signIn('github', { redirectTo: globalThis.callbackUrl })
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
 }
 
 
 // LOGIN discord
 export async function loginDiscord() {
-    try {
-        await signIn('discord', { redirectTo: globalThis.callbackUrl })
-    } catch (error) {
-        console.log(error);
-        throw error
-    }
+  try {
+    await signIn('discord', { redirectTo: globalThis.callbackUrl })
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
 }
 
 
 // LOGIN resend (Magic Link to email)
 export async function loginResend(formData) {
-    try {
-        await signIn("resend", formData)
-    } catch (error) {
-        console.log(error);
-        throw error
-    }
+  try {
+    await signIn("resend", formData)
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
 }
 
 
 
 // LOGOUT
 export async function logout() {
-    try {
-        await signOut({ redirectTo: '/' })
-    } catch (error) {
-        throw error
-    }
+  try {
+    await signOut({ redirectTo: '/' })
+  } catch (error) {
+    throw error
+  }
 }
 
 export async function activeUser(user, currentUser) {
-    if (currentUser.role === 'admin') {  // Solo el admin puede cambiar el estado
-        if (user) {
-            await prisma.user.update({
-                where: { id: user.id },
-                data: { active: !user.active },
-            });
-            revalidatePath("/dashboard");
-            return { success: `Usuario ${user.active ? 'activado' : 'desactivado'} correctamente.` };
-        } else {
-            return { error: 'Usuario no encontrado.' };
-        }
+  if (currentUser.role === 'admin') {  // Solo el admin puede cambiar el estado
+    if (user) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { active: !user.active },
+      });
+      revalidatePath("/dashboard");
+      return { success: `Usuario ${user.active ? 'activado' : 'desactivado'} correctamente.` };
     } else {
-        return { error: 'No tiene permisos para realizar esta acción.' };
+      return { error: 'Usuario no encontrado.' };
     }
+  } else {
+    return { error: 'No tiene permisos para realizar esta acción.' };
+  }
 }
 
 
@@ -168,16 +165,16 @@ export async function insertarUsuario(formData) {
   const role = formData.get('role')
   const active = Boolean(formData.get('active'))
 
-try{
-  await prisma.user.create({
-    data: { name, email, password, role, active }
-  })
+  try {
+    await prisma.user.create({
+      data: { name, email, password, role, active }
+    })
 
-  revalidatePath('/dashboard')
-  return { success: "Registro correcto" }
-}catch(error){
-    return { error: "Error al registrar el usuario" }   
-}
+    revalidatePath('/dashboard')
+    return { success: "Registro correcto" }
+  } catch (error) {
+    return { error: "Error al registrar el usuario" }
+  }
 }
 
 export async function modificarUsuario(formData) {
@@ -188,32 +185,32 @@ export async function modificarUsuario(formData) {
   const role = formData.get('role')
   const active = Boolean(formData.get('active'))
 
-  try{
-  await prisma.user.update({
-    where: { id },
-    data: { name, email, password, role, active }
-  })
+  try {
+    await prisma.user.update({
+      where: { id },
+      data: { name, email, password, role, active }
+    })
 
-  revalidatePath('/dashboard')
-  return { success: "Modificación correcta" }
-}catch(error){
+    revalidatePath('/dashboard')
+    return { success: "Modificación correcta" }
+  } catch (error) {
     return { error: "Error al modificar el usuario" }
-}
+  }
 }
 
 export async function eliminarUsuario(formData) {
   const id = Number(formData.get('id'))
 
-  try{
-  await prisma.user.delete({
-    where: { id }
-  })
+  try {
+    await prisma.user.delete({
+      where: { id }
+    })
 
-  revalidatePath('/dashboard')
-  return { success: "Eliminación correcta" }
-}catch(error){
+    revalidatePath('/dashboard')
+    return { success: "Eliminación correcta" }
+  } catch (error) {
     return { error: "Error al eliminar el usuario" }
-}
+  }
 }
 
 // ------------------------ PRODUCTS ------------------------
@@ -376,7 +373,7 @@ export async function eliminarCarrito(formData) {
 }
 
 // ------------------------ CATEGORIES ------------------------
-export async function insertarCategoria(formData) {
+export async function insertarCategoria(prevState,formData) {
   const name = formData.get('name')
 
   await prisma.category.create({
@@ -384,9 +381,10 @@ export async function insertarCategoria(formData) {
   })
 
   revalidatePath('/categorias')
+  return { success: "Categoria insertada" }
 }
 
-export async function modificarCategoria(formData) {
+export async function modificarCategoria(prevState,formData) {
   const id = Number(formData.get('id'))
   const name = formData.get('name')
 
@@ -396,9 +394,10 @@ export async function modificarCategoria(formData) {
   })
 
   revalidatePath('/categorias')
+  return { success: "Algo salio mal" }
 }
 
-export async function eliminarCategoria(formData) {
+export async function eliminarCategoria(prevState, formData) {
   const id = Number(formData.get('id'))
 
   await prisma.category.delete({
@@ -462,7 +461,7 @@ export async function eliminarDiseno(formData) {
 
 
 // ------------------------ CONTACT FORM ------------------------ 
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 
 export async function submitContactForm(prevState, formData) {
   const name = formData.get('name')?.trim() || '';
@@ -471,55 +470,32 @@ export async function submitContactForm(prevState, formData) {
   const message = formData.get('message')?.trim() || '';
   const privacyAccepted = formData.get('privacy') === 'on';
 
-  // Validaciones básicas
-  if (name.length < 2) return { error: 'Por favor, escribe tu nombre completo.' };
-  if (!email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) return { error: 'Email inválido.' };
-  if (message.length < 10) return { error: 'El mensaje debe tener al menos 10 caracteres.' };
-  if (!privacyAccepted) return { error: 'Debes aceptar la política de privacidad.' };
-
   try {
-    // Configurar Nodemailer
-    const transporter = nodemailer.createTransport({
-      service: 'gmail', // Puedes usar el servicio que prefieras (Ej. Gmail, SendGrid, etc.)
-      auth: {
-        user: 'anaruano1790@gmail.com',  // Tu correo electrónico
-        pass: 'tu_contraseña',        // Tu contraseña o un token de acceso si es necesario
-      },
-    });
-
-    // Crear el correo
-    const mailOptions = {
-      from: 'anaruano1790@gmail.com',
-      to: 'anaruano1790@gmail.com', // El correo donde quieres recibir los mensajes
-      subject: 'Nuevo mensaje de contacto',
-      text: `
-        Nombre: ${name}
-        Email: ${email}
-        Teléfono: ${phone || 'No proporcionado'}
-        Mensaje: ${message}
-      `,
-    };
-
-    // Enviar el correo
-    await transporter.sendMail(mailOptions);
-
-    // Si todo va bien, guardar el mensaje en la base de datos
+   
     await prisma.contactMessage.create({
       data: {
         name,
         email,
         phone,
         message,
-        privacy: privacyAccepted
+        // privacy: privacyAccepted
       }
     });
 
     return { success: 'Tu mensaje fue enviado con éxito.' };
 
   } catch (err) {
-    console.error('Error al enviar el mensaje:', err);
-    return { error: 'Ocurrió un error al enviar el mensaje. Intenta más tarde.' };
-  } finally {
-    await prisma.$disconnect();
-  }
+   
+    return { error: 'Ocurrió un error al registrar el mensaje. Intenta más tarde.' };
+  } 
 }
+
+  export async function  deleteMessage(formData) {
+    const id = Number(formData.get('id'))
+  
+    await prisma.contactMessage.delete({
+      where: { id }
+    })
+  
+    revalidatePath('/mensajes')
+  }

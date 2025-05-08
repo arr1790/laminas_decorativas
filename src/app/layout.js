@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,13 +21,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white` }>
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-grow"> {/* Contenedor clave */}
             {children}
           </main>
         </div>
+        <Toaster position="top-right" richColors  />
       </body>
     </html>
   )

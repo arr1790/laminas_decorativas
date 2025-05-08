@@ -32,7 +32,6 @@ model Address {
   userId         String
   nombre         String
   apellido       String
-  compania       String?
   direccion1     String
   direccion2     String?
   ciudad         String
@@ -40,7 +39,7 @@ model Address {
   provincia      String
   codigoPostal   String
   telefono       String
-  porDefecto     Boolean  @default(false)
+ 
 
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 

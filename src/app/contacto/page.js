@@ -1,16 +1,25 @@
-'use client';
+'use client'
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';  // Keep useFormStatus from react-dom
 import { submitContactForm } from '@/lib/actions';
 import Link from "next/link";
 import Image from 'next/image';
+import { toast } from 'sonner';
+
 
 export default function PaginaContacto() {
   const [state, formAction] = useActionState(submitContactForm, {
     success: false,
     message: '',
   });
+
+  useEffect(() => {
+    if (state.success) {
+        toast.success(state.success); 
+       
+    }
+}, [state]);
 
   return (
     <div>

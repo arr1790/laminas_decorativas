@@ -28,10 +28,10 @@ function CategoriaModificar({ categoria }) {
             <input type="hidden" name="id" defaultValue={categoria.id} />
 
             <div className="mb-4">
-                <label htmlFor="nombre" className="block text-gray-700 font-medium mb-2">Nombre de la Categoría</label>
+                <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Nombre de la Categoría</label>
                 <input
-                    name="nombre"
-                    id="nombre"
+                    name="name"
+                    id="name"
                     defaultValue={categoria.name}
                     placeholder="Nombre de la categoría"
                     className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-all"

@@ -2,13 +2,13 @@
 
 import { useEffect } from 'react';
 import { useId } from 'react';
-import { useFormState } from 'react-dom';  // Changed from useActionState
+import { useActionState } from 'react';  // Changed from useActionState
 import { eliminarCategoria } from "@/lib/actions";
 import { toast } from "sonner";
 
 function CategoriaEliminar({ categoria }) {
     const formId = useId();
-    const [state, action, pending] = useFormState(eliminarCategoria, {});  // Changed to useFormState
+    const [state, action, pending] = useActionState(eliminarCategoria, {});  // Changed to useFormState
 
     useEffect(() => {
         if (state.success) {

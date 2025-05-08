@@ -39,9 +39,11 @@ export const config = {
          
          '/((?!api|auth|images|pwa|home|pizzas|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|$).*)',
     */
-        "/dashboard",
+      
         "/pedidos(.*)",
-        "/repartidores(.*)",
-        "/direcciones(.*)"
+        "/perfil(.*)",
+        "/direcciones(.*)",
+        "/categorias(.*)"
+
     ],
 }
