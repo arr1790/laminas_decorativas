@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { auth } from "@/auth"
 import { logout } from '@/lib/actions'
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown } from "lucide-react"
 
 async function Header() {
     const session = await auth()
@@ -15,15 +15,16 @@ async function Header() {
                     {/* Primera línea - Enlaces principales */}
                     <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm">
                         <Link href={session ? "/perfil" : "/auth/login"} className="hover:text-pink-200 transition whitespace-nowrap">
-                            {session ? "PERFIL" : "INICIAR SESIÓN/CREAR CUENTA"}
+                            {session ? "PERFIL" : "INICIAR SESIÓN/CUENTA"}
                         </Link>
                         <Link href="/envios" className="hover:text-pink-200 transition whitespace-nowrap">ENVÍOS Y DEVOLUCIONES</Link>
                         <Link href="/contacto" className="hover:text-pink-200 transition whitespace-nowrap">CONTACTO</Link>
                         <Link href="/calendario" className="hover:text-pink-200 transition whitespace-nowrap">CALENDARIO EVENTOS 2025</Link>
                     </div>
 
-                    {/* Menú desplegable para ADMIN */}
-                    {session?.user?.role === 'ADMIN' && (
+                     {/* Botón de categorías solo para ADMIN */}
+                  {/* Menú desplegable para ADMIN */}
+                  {session?.user?.role === 'ADMIN' && (
                         <div className="relative group">
                             <button className="flex items-center gap-1 hover:text-pink-200 transition whitespace-nowrap text-sm">
                                 ADMINISTRACIÓN <ChevronDown className="w-4 h-4" />
@@ -53,19 +54,23 @@ async function Header() {
                         <Link href="/carrito" className="hover:text-blue-200 transition text-xs md:text-sm whitespace-nowrap">
                             CARRITO (0 PRODUCTOS - 0,00€)
                         </Link>
-
+                        
+                        {session?.user?.role === 'ADMIN' && (
+                            <Link href="/admin" className="hover:text-blue-200 text-sm whitespace-nowrap">Admin Panel</Link>
+                        )}
+                        
                         {session ? (
-                            <form action={logout}>
-                                <button
-                                    type="submit"
+                            <form>
+                                <button 
+                                    formAction={logout} 
                                     className="hover:text-pink-200 text-sm whitespace-nowrap"
                                 >
-                                    CERRAR SESIÓN
+                                    Cerrar sesión
                                 </button>
                             </form>
                         ) : (
                             <Link href="/auth/login" className="hover:text-pink-200 text-sm whitespace-nowrap">
-                                INICIAR SESIÓN
+                              
                             </Link>
                         )}
                     </div>

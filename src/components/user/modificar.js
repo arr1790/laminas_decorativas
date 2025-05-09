@@ -1,0 +1,137 @@
+'use client'
+import { modificarUsuario } from '@/lib/actions'
+import { useActionState, useEffect, useId } from 'react'
+import { PlusIcon, RefreshCwIcon, UserRoundIcon } from 'lucide-react';
+import { toast } from 'sonner';
+import CheckBox from '@/components/check-box';
+import CheckRadio from '@/components/check-radio';
+
+
+
+
+export default function UserModificar({ session, user }) {
+    const formId = useId()
+    const [state, action, pending] = useActionState(modificarUsuario, {})
+
+
+    useEffect(() => {
+        if (state?.success) {
+            toast.success(state.success)
+            document.getElementById(formId).closest('dialog')?.close() // Si el padre es un dialog, lo cerramos
+        }
+        if (state?.error) toast.error(state.error)
+
+    }, [formId, state])
+
+
+    return (
+        <form id={formId} action={action} className="w-full flex flex-col gap-4">
+            <input type="hidden" name="id" defaultValue={user.id} />
+
+            <button disabled={pending} title={'Actualizar información de usuario'}
+                className='my-4 px-4 py-2 w-fit rounded-full self-end outline-none border border-amber-500 text-amber-700 bg-amber-200 hover:bg-amber-500 hover:text-white hover:cursor-pointer disabled:bg-zinc-400 disabled:text-zinc-100 disabled:cursor-default'
+            >
+                {pending
+                    ? <div><RefreshCwIcon className='inline animate-spin' /> Actualizando...</div>
+                    : <div><PlusIcon className='inline' /> Actualizar </div>
+                }
+            </button>
+
+            <div className='grid place-items-center grid-cols-[repeat(auto-fill,minmax(40px,1fr))]'>
+                {/* Avatares 00 .. 79 */}
+                {[...Array(80)].map((_, index) => (
+                    <CheckRadio key={index}
+                        name='image'
+                        defaultValue={`/images/avatar-${String(index).padStart(2, '0')}.png`}
+                        className="size-14 has-checked:col-span-4 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
+                    >
+                        <img src={`/images/avatar-${String(index).padStart(2, '0')}.png`} alt="Imagen de usuario" />
+                    </CheckRadio>
+                ))}
+                {/* por defecto */}
+                <CheckRadio key={80}
+                    name='image'
+                    defaultValue={user.image || '/images/avatar-80.png'}
+                    defaultChecked={true}
+                    className="size-14 has-checked:col-span-4 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
+                >
+                    <img src={user.image || '/images/avatar-80.png'} alt="Imagen de usuario" />
+                </CheckRadio>
+            </div>
+
+            {session.user.role === 'ADMIN'
+                ?
+                <CheckBox
+                    name={'active'}
+                    defaultChecked={user.active == true}
+                    className={"text-xs w-fit after:content-['_Cuenta_no_activa'] has-checked:after:content-['_Cuenta_activa'] has-checked:bg-green-200 has-checked:text-green-800  px-2 py-1 text-gray-500 rounded-full"}
+                >
+                </CheckBox>
+                :
+                <input type="hidden" name="active" defaultValue={user.active} />
+            }
+
+            <div className='flex flex-col md:flex-row md:gap-10'>
+
+                <div className='w-full md:w-2/3 flex flex-col gap-2'>
+
+                    <div className="flex flex-col md:flex-row items-center md:space-x-4">
+                        <label htmlFor='name' className="font-bold w-full md:w-1/4">Nombre</label>
+                        <input type='text' id='name' name='name'
+                            defaultValue={user.name}
+                            className="w-full md:w-3/4 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-400 bg-gray-100"
+                        />
+                    </div>
+
+                    <div className="flex flex-col md:flex-row items-center md:space-x-4">
+                        <label htmlFor='email' className="font-bold w-full md:w-1/4">Email</label>
+                        <input type='text' id='email' name='email'
+                            defaultValue={user.email}
+                            className="w-full md:w-3/4 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-400 bg-gray-100"
+                        />
+                    </div>
+
+                    <div className="flex flex-col md:flex-row items-center md:space-x-4">
+                        <label htmlFor='password' className="font-bold w-full md:w-1/4">Contraseña</label>
+                        <input type='text' id='password' name='password'
+                            placeholder='no cambiar'
+                            className="w-full md:w-3/4 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-400 bg-gray-100"
+                        />
+                    </div>
+
+                    <div className="flex flex-col md:flex-row items-center md:space-x-4">
+                        <label htmlFor='address' className="font-bold w-full md:w-1/4">Domicilio</label>
+                        <input type='text' id='address' name='address'
+                            defaultValue={user.address}
+                            className="w-full md:w-3/4 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-400 bg-gray-100"
+                        />
+                    </div>
+
+                    <div className="flex flex-col md:flex-row items-center md:space-x-4">
+                        <label htmlFor='phone' className="font-bold w-full md:w-1/4">Teléfono</label>
+                        <input type='text' id='phone' name='phone'
+                            defaultValue={user.phone}
+                            className="w-full md:w-3/4 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-400 bg-gray-100"
+                        />
+                    </div>
+
+                    {session.user.role === 'ADMIN' &&
+                        <div className="flex flex-col md:flex-row items-center md:space-x-4">
+                            <label htmlFor='role' className="font-bold w-full md:w-1/4">Rol</label>
+                            <select
+                                key={user.role}
+                                id="role"
+                                name="role"
+                                defaultValue={user.role} >
+                                <option value='USER'> USER </option>
+                                <option value='ADMIN'> ADMIN </option>
+                            </select>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </form >
+    )
+}

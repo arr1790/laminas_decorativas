@@ -11,7 +11,7 @@ async function PaginaAdmin() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
+         
           <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
               <Shield className="w-8 h-8 text-blue-600" />
@@ -20,7 +20,7 @@ async function PaginaAdmin() {
             <p className="text-lg text-gray-600">Gestión de mensajes recibidos</p>
           </div>
 
-          {/* User Info Card */}
+
           <div className="bg-white rounded-xl shadow-md overflow-hidden mb-12">
             <div className="p-6 sm:p-8">
               <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -51,7 +51,7 @@ async function PaginaAdmin() {
             </div>
           </div>
 
-          {/* Mensajes Section */}
+      
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <Mailbox className="w-6 h-6 text-blue-500" />

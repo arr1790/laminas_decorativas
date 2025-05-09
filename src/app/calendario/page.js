@@ -25,12 +25,12 @@ const CalendarioEventos = () => {
             {/* Barra de navegación superior */}
             <nav className="bg-white border-y border-gray-200">
                 <div className="flex flex-wrap justify-center gap-4 py-3 px-2">
-                    <Link href="/boda" className="hover:text-pink-200 text-sm font-medium">BODA</Link>
-                    <Link href="/comunion" className="hover:text-pink-200 text-sm font-medium">COMUNIÓN</Link>
-                    <Link href="/bautizo" className="hover:text-pink-200 text-sm font-medium">BAUTIZO Y FIESTA BEBÉ</Link>
-                    <Link href="/cumpleanos" className="hover:text-pink-200 text-sm font-medium">CUMPLEAÑOS</Link>
-                    <Link href="/laminas" className="hover:text-pink-200 text-sm font-medium">PERSONALIZADAS</Link>
-                    <Link href="/outlet" className="hover:text-pink-200 text-sm font-medium">DECORATIVAS</Link>
+                    <Link href="/categorias/1" className="hover:text-pink-200 text-sm font-medium">BODA</Link>
+                    <Link href="/categorias/2" className="hover:text-pink-200 text-sm font-medium">COMUNIÓN</Link>
+                    <Link href="/categorias/3" className="hover:text-pink-200 text-sm font-medium">BAUTIZO Y FIESTA BEBÉ</Link>
+                    <Link href="/categorias/4" className="hover:text-pink-200 text-sm font-medium">CUMPLEAÑOS</Link>
+                    <Link href="/categorias/5" className="hover:text-pink-200 text-sm font-medium">PERSONALIZADAS</Link>
+                    <Link href="/categorias/7" className="hover:text-pink-200 text-sm font-medium">DECORATIVAS</Link>
                 </div>
             </nav>
 
