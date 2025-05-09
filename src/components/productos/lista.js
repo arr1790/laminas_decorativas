@@ -1,11 +1,12 @@
 import {  obtenerProductos, obtenerCategorias } from "@/lib/data";
 import Link from "next/link";
-import Modal from "@/components/modal";  
+
 import ProductoInsertar from "./insertar";
 import ProductoEliminar from "./eliminar";
 import { PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { auth } from "@/auth";
 import ProductoModificar from "./modificar";
+import Modal from "../modal";
 
 export default async function Productos() {
     const session = await auth();
@@ -22,7 +23,7 @@ export default async function Productos() {
                     </button>
                   }>
                     <ProductoInsertar categorias={categorias} />
-                </Modal>
+                </>
             )}
 
             <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
