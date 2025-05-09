@@ -1,6 +1,6 @@
 import { obtenerCategorias } from "@/lib/data";
 import Link from "next/link";
-import Modal from "@/components/modal";
+import Modal from "@/components/modal";  
 import CategoriaInsertar from "./insertar";
 import CategoriaModificar from "./modificar";
 import CategoriaEliminar from "./eliminar";
