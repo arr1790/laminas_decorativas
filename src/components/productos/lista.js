@@ -23,7 +23,7 @@ export default async function Productos() {
                     </button>
                   }>
                     <ProductoInsertar categorias={categorias} />
-                </>
+                </Modal>
             )}
 
             <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
