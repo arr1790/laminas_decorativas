@@ -7,7 +7,7 @@ export default function Home() {
     <div className="min-h-screen bg-white m-0 p-0">
      <header className="bg-white">
   <div className="flex justify-center items-start">  {/* Cambiado a items-start */}
-    <Link href="/" className="block leading-none">  {/* Añadido leading-none y block */}
+    <Link href="/" className="block leading-none"> 
       <Image
         src="/CapturadeAna.png"
         alt="Logo"
@@ -25,17 +25,17 @@ export default function Home() {
           <DropdownCategorias/>
         </div>
       </nav>
-      <section className="py-6 px-2"> {/* Reducido padding */}
-        <div className="mx-auto max-w-6xl"> {/* Cambiado container por max-w-6xl */}
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">NUESTRAS COLECCIONES</h2> {/* Texto más pequeño */}
+      <section className="py-6 px-2"> 
+        <div className="mx-auto max-w-6xl"> 
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">NUESTRAS COLECCIONES</h2> 
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"> {/* Gap reducido */}
-            <CategoryCard title="ESPECIAL BODA" image="/boda.png" href="/boda" />
-            <CategoryCard title="COMUNIÓN" image="/comunion.png" href="/comunion" />
-            <CategoryCard title="FIESTA BEBÉ" image="/fiestabebe.png" href="/bautizo" />
-            <CategoryCard title="CUMPLEAÑOS" image="/cumpleaños.png" href="/cumpleanos" />
-            <CategoryCard title="LÁMINAS PERSONALIZADAS" image="/laminapersonalizada.png" href="/laminas" />
-            <CategoryCard title="LÁMINAS DECORATIVAS" image="/laminadecorativa.png" href="/laminas-decorativas" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"> 
+            <CategoryCard title="BODA" image="/boda.png" href="/categorias/1" />
+            <CategoryCard title="COMUNIÓN" image="/comunion.png" href="/categorias/2" />
+            <CategoryCard title="FIESTA BEBÉ" image="/fiestabebe.png" href="/categorias/3" />
+            <CategoryCard title="CUMPLEAÑOS" image="/cumpleaños.png" href="/categorias/4" />
+            <CategoryCard title="LÁMINAS PERSONALIZADAS" image="/laminapersonalizada.png" href="/categorias/5" />
+            <CategoryCard title="LÁMINAS DECORATIVAS" image="/laminadecorativa.png" href="/categorias/7" />
           </div>
         </div>
       </section>

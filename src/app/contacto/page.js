@@ -53,7 +53,7 @@ export default function PaginaContacto() {
 
       {/* Contenido de la página de contacto */}
       <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6 text-pink-500 px-4 py-2 rounded-md">Contacto</h1>
+        <h1 className="text-3xl font-bold mb-6 text-pink-500  py-2 rounded-md">Contacto</h1>
         
         <p className="mb-6">¿Tienes alguna duda? ¡Estamos aquí para ayudarte! Puedes contactarnos fácilmente:</p>
         

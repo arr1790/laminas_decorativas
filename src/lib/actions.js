@@ -214,7 +214,7 @@ export async function eliminarUsuario(formData) {
 }
 
 // ------------------------ PRODUCTS ------------------------
-export async function insertarProducto(formData) {
+export async function insertarProducto(prevState , formData) {
   const name = formData.get('name')
   const description = formData.get('description')
   const basePrice = parseFloat(formData.get('basePrice'))
@@ -236,9 +236,10 @@ export async function insertarProducto(formData) {
   })
 
   revalidatePath('/productos')
+  return { success: "Producto insertado correcto" }
 }
 
-export async function modificarProducto(formData) {
+export async function modificarProducto(prevState , formData) {
   const id = Number(formData.get('id'))
   const name = formData.get('name')
   const description = formData.get('description')
@@ -262,9 +263,10 @@ export async function modificarProducto(formData) {
   })
 
   revalidatePath('/productos')
+  return { success: "Producto modificado correcto" }
 }
 
-export async function eliminarProducto(formData) {
+export async function eliminarProducto(prevState , formData) {
   const id = Number(formData.get('id'))
 
   await prisma.product.delete({
@@ -272,10 +274,11 @@ export async function eliminarProducto(formData) {
   })
 
   revalidatePath('/productos')
+  return { success: "Producto eliminado correctamente" }
 }
 
 // ------------------------ ORDERS ------------------------
-export async function insertarPedido(formData) {
+export async function insertarPedido(prevState , formData) {
   const userId = Number(formData.get('userId'))
   const productId = Number(formData.get('productId'))
   const designId = Number(formData.get('designId'))

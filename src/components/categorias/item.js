@@ -5,12 +5,12 @@ import Link from 'next/link';
 export default function Categoria({ categoria }) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Título general */}
+
       <div className="mb-4">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">{categoria.name}</h1>
       </div>
 
-      {/* Ruta de navegación */}
+
       <div className="text-sm text-gray-500 mb-6">
         <Link href="/" className="hover:text-gray-700 cursor-pointer">
           Inicio

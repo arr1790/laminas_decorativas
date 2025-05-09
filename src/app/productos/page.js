@@ -1,13 +1,13 @@
-import Categorias from "@/components/categorias/lista";
+import Productos from "@/components/productos/lista";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
-import { Home, ArrowLeft } from "lucide-react";
+import { Home } from "lucide-react";
 
-export default async function CategoriasPage() {
+export default async function ProductosPage() {
   const session = await auth();
-  if(session?.user.role !== 'ADMIN') return redirect('/');
+  if (session?.user.role !== 'ADMIN') return redirect('/');
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -19,18 +19,16 @@ export default async function CategoriasPage() {
           <Home className="w-5 h-5" />
           <span className="font-medium">Inicio</span>
         </Link>
-        
-      
       </div>
 
       <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
         <Suspense fallback={
           <div className="flex flex-col items-center justify-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mb-4"></div>
-            <p className="text-lg text-gray-600">Cargando categorías...</p>
+            <p className="text-lg text-gray-600">Cargando productos...</p>
           </div>
         }>
-          <Categorias />
+          <Productos />
         </Suspense>
       </div>
     </div>
