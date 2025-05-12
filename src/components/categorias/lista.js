@@ -56,12 +56,12 @@ async function Categorias() {
             )}
 
             {/* Contenido de la categoría */}
-            <Link href={`/categorias/${categoria.id}`} className="block space-y-2">
+            <Link href={`/categorias/${categoria.slug}`} className="block space-y-2">
               <h2 className="text-xl font-semibold text-indigo-800 hover:underline">
                 {categoria.name}
               </h2>
               <p className="text-gray-500 text-sm">
-                <span className="font-medium text-gray-700">ID:</span> {categoria.id}
+                <span className="font-medium text-gray-700">Slug:</span> {categoria.slug}
               </p>
             </Link>
           </div>

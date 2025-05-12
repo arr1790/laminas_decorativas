@@ -10,7 +10,7 @@ export default async function NavbarCategorias() {
         {categories.map((cat) => (
           <Link
             key={cat.id}
-            href={`/categorias/${cat.id}`}
+            href={`/categorias/${cat.slug}`}
             className="hover:text-pink-200 text-sm font-medium transition"
           >
             {cat.name.toUpperCase()}

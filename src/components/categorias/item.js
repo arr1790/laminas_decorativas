@@ -29,30 +29,34 @@ export default function Categoria({ categoria }) {
         </p>
       </div>
 
-      {/* Línea separadora */}
-      <div className="border-t border-gray-200 my-6"></div>
-
-      {/* Grid de productos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
         {categoria.products?.map((producto) => (
-          <div key={producto.id} className="group">
-            <div className="w-full mb-4 overflow-hidden rounded-lg bg-gray-100">
+          <div key={producto.id} className="group relative">
+            <div className="w-full mb-4 overflow-hidden rounded-lg bg-gray-100 relative">
+              {/* Imagen principal */}
               <img
                 src={producto.image || '/placeholder.png'}
                 alt={producto.name}
-                className="w-full h-64 sm:h-80 md:h-96 object-cover object-center transition duration-300 group-hover:opacity-90"
+                className="w-full h-64 sm:h-80 md:h-96 object-cover object-center transition-opacity duration-300"
               />
+              
+              {/* Imagen hover (solo si existe) */}
+              {producto.hoverImage && (
+                <img
+                  src={producto.hoverImage}
+                  alt={producto.name}
+                  className="absolute inset-0 w-full h-full object-cover object-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
+              )}
             </div>
 
             <div className="text-center">
               <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1">
                 {producto.name}
               </h3>
-              {producto.basePrice && (
-                <p className="text-gray-700 font-medium">
-                  Desde {producto.basePrice.toFixed(2)}€
-                </p>
-              )}
+              <p className="text-gray-700 font-medium">
+                Desde {producto.basePrice.toFixed(2)}€
+              </p>
             </div>
           </div>
         ))}

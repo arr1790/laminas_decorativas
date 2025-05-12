@@ -142,11 +142,18 @@ export async function obtenerCategorias() {
 
 export async function obtenerCategoria(id) {
     return await prisma.category.findUnique({
-      where: { id: Number(id) }, 
+      where: { id: Number(id) },
+
       include: { products: true }
     })
   }
 
+  export async function obtenerCategoriaPorSlug (slug) {
+    return await prisma.category.findUnique({
+      where: { slug },
+       include: { products: true }
+    })
+  }
 // ---------------------   DISEÑOS PERSONALIZADOS -----------------------
 
 export async function obtenerDiseñosPersonalizados(userId) {

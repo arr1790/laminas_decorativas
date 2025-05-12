@@ -30,12 +30,12 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">NUESTRAS COLECCIONES</h2> 
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"> 
-            <CategoryCard title="BODA" image="/boda.png" href="/categorias/1" />
-            <CategoryCard title="COMUNIÓN" image="/comunion.png" href="/categorias/2" />
-            <CategoryCard title="FIESTA BEBÉ" image="/fiestabebe.png" href="/categorias/3" />
-            <CategoryCard title="CUMPLEAÑOS" image="/cumpleaños.png" href="/categorias/4" />
-            <CategoryCard title="LÁMINAS PERSONALIZADAS" image="/laminapersonalizada.png" href="/categorias/5" />
-            <CategoryCard title="LÁMINAS DECORATIVAS" image="/laminadecorativa.png" href="/categorias/7" />
+            <CategoryCard title="BODA" image="/boda.png" href="/categorias/Boda" />
+            <CategoryCard title="COMUNIÓN" image="/comunion.png" href="/categorias/Comunion" />
+            <CategoryCard title="FIESTA BEBÉ" image="/fiestabebe.png" href="/categorias/Bautizo-y-Fiesta-bebe" />
+            <CategoryCard title="CUMPLEAÑOS" image="/cumpleaños.png" href="/categorias/Cumpleanos" />
+            <CategoryCard title="LÁMINAS PERSONALIZADAS" image="/laminapersonalizada.png" href="/categorias/Personalizadas" />
+            <CategoryCard title="LÁMINAS DECORATIVAS" image="/laminadecorativa.png" href="/categorias/Decorativas" />
           </div>
         </div>
       </section>

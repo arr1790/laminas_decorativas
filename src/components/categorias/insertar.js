@@ -30,6 +30,7 @@ function CategoriaInsertar() {
                 required 
                 className="border p-2 rounded w-full mb-4"
             />
+             
 
             <button 
                 type="submit" 

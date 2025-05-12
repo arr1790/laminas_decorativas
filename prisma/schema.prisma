@@ -103,7 +103,8 @@ model Product {
   dimensions  String
   withFrame   Boolean
   image       String
-  categoryId  Int
+hoverImage  String?          // Campo nuevo (opcional, puede ser null)
+categoryId  Int
 
   category    Category         @relation(fields: [categoryId], references: [id])
   designs     CustomDesign[]
@@ -117,7 +118,7 @@ model Category {
   id       Int       @id @default(autoincrement())
   name     String
   slug        String?   @unique
-  description String?   // Campo opcional
+  description String? 
   products Product[]
 
   @@map("category")

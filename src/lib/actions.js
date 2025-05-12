@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma'
 import { signIn, signOut } from '@/auth';
 import { getUserByEmail } from '@/lib/data';
 import { revalidatePath } from 'next/cache'
+import slugify from 'slugify';
 
 
 
@@ -378,9 +379,10 @@ export async function eliminarCarrito(formData) {
 // ------------------------ CATEGORIES ------------------------
 export async function insertarCategoria(prevState,formData) {
   const name = formData.get('name')
+  const slug = slugify(name)
 
   await prisma.category.create({
-    data: { name }
+    data: { name , slug }
   })
 
   revalidatePath('/categorias')
@@ -390,14 +392,15 @@ export async function insertarCategoria(prevState,formData) {
 export async function modificarCategoria(prevState,formData) {
   const id = Number(formData.get('id'))
   const name = formData.get('name')
+  const slug = slugify (name)
 
   await prisma.category.update({
     where: { id },
-    data: { name }
+    data: { name , slug }
   })
 
   revalidatePath('/categorias')
-  return { success: "Algo salio mal" }
+  return { success: "Categoria modificada" }
 }
 
 export async function eliminarCategoria(prevState, formData) {

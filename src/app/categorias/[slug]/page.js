@@ -1,4 +1,4 @@
-import { obtenerCategoria } from "@/lib/data";
+import { obtenerCategoriaPorSlug } from "@/lib/data";
 import Categoria from "@/components/categorias/item";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
@@ -12,14 +12,14 @@ export default async function Page({ params }) {
   //   return null; // Esto es importante para evitar renderizado adicional
   // }
 
-  const { id } = await params; // Acceder directamente a params
+  const { slug } = await params; // Acceder directamente a params
 
-  if (!id) {
+  if (!slug) {
     return <div>Error: Categoría no encontrada.</div>;
   }
 
   try {
-    const categoria = await obtenerCategoria(id);
+    const categoria = await obtenerCategoriaPorSlug(slug);
     
     if (!categoria) {
       return <div>Error: Categoría no existe.</div>;
