@@ -45,3 +45,6 @@ body {
   object-fit: contain;
   transition: opacity 300ms ease;
 }
+.link-underline:hover {
+  border-bottom: 2px solid #000;
+}

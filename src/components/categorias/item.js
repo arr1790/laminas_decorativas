@@ -58,7 +58,7 @@ function ProductCard({ producto }) {
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleTap}
     >
-      {/* Contenedor de imagen sin fondo gris */}
+    
       <div className="w-full mb-4 overflow-hidden rounded-lg">
         <div className="relative pb-[125%]"> {/* Ajustar según relación de aspecto */}
           {/* Imagen principal */}
@@ -72,7 +72,7 @@ function ProductCard({ producto }) {
             `}
           />
           
-          {/* Imagen hover (si existe) */}
+        
           {producto.hoverImage && (
             <img
               src={producto.hoverImage}
@@ -87,7 +87,7 @@ function ProductCard({ producto }) {
         </div>
       </div>
 
-      {/* Información del producto */}
+ 
       <div className="text-center">
         <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1">
           {producto.name}

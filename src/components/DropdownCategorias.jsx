@@ -5,18 +5,22 @@ export default async function NavbarCategorias() {
   const categories = await obtenerCategorias();
 
   return (
-    <nav className="bg-white border-y border-gray-200 mt-0 text-black">
-      <div className="flex flex-wrap justify-center gap-3 md:gap-4 py-2 px-2">
-        {categories.map((cat) => (
-          <Link
-            key={cat.id}
-            href={`/categorias/${cat.slug}`}
-            className="hover:text-pink-200 text-sm font-medium transition"
-          >
-            {cat.name.toUpperCase()}
-          </Link>
-        ))}
-      </div>
-    </nav>
+    <div className="[&_*]:border-none"> {/* Contenedor que fuerza la eliminación de bordes */}
+      <nav className="bg-white text-black border-none outline-none ring-0">
+        <div className="flex flex-wrap justify-center gap-3 md:gap-4 py-2 px-2 
+                       border-none outline-none ring-0 before:border-none after:border-none">
+          {categories.map((cat) => (
+            <Link
+              key={cat.id}
+              href={`/categorias/${cat.slug}`}
+              className="text-sm font-medium transition border-none outline-none ring-0
+             relative link-underline"
+            >
+              {cat.name.toUpperCase()}
+            </Link>
+          ))}
+        </div>
+      </nav>
+    </div>
   );
 }
