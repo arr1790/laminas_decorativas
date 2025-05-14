@@ -3,14 +3,16 @@ import React, { useState } from "react";
 import Link from 'next/link';
 
 export default function Categoria({ categoria }) {
+
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Encabezado principal */}
+    
       <div className="mb-4">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">{categoria.name}</h1>
       </div>
 
-      {/* Breadcrumb */}
+   
       <div className="text-sm text-gray-500 mb-6">
         <Link href="/" className="hover:text-gray-700 cursor-pointer">
           Inicio
@@ -41,9 +43,12 @@ export default function Categoria({ categoria }) {
   );
 }
 
+
+
 function ProductCard({ producto }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isTapped, setIsTapped] = useState(false);
+    const productUrl = `/productos/${producto.id}`;
 
   const handleTap = () => {
     if (window.innerWidth <= 768) {
@@ -89,9 +94,12 @@ function ProductCard({ producto }) {
 
  
       <div className="text-center">
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1">
-          {producto.name}
-        </h3>
+       <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1">
+  <Link href={productUrl} className="hover:underline">
+    {producto.name}
+  </Link>
+</h3>
+
         {producto.basePrice && (
           <p className="text-gray-700 font-medium">
             Desde {producto.basePrice.toFixed(2)}€

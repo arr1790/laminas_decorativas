@@ -124,13 +124,27 @@ export async function obtenerProductos() {
 
 export async function obtenerProductoPorId(id) {
     const producto = await prisma.product.findUnique({
-        where: { id },
+        where: { id: parseInt (id) },
         include: {
             category: true
         }
     });
     return producto;
 }
+
+
+
+export async function obtenerProductosRelacionados(categoriaId, productoId) {
+  return await prisma.product.findMany({
+    where: {
+      categoryId: categoriaId, // Filtramos por la categoría
+      NOT: { id: parseInt(productoId) },  // Excluimos el producto actual
+    },
+    take: 4, // Limitamos la cantidad de productos a 4
+  });
+}
+
+
 
 // ---------------------   CATEGORÍAS -----------------------
 

@@ -5,7 +5,7 @@ export default async function NavbarCategorias() {
   const categories = await obtenerCategorias();
 
   return (
-    <div className="[&_*]:border-none"> {/* Contenedor que fuerza la eliminación de bordes */}
+    <div className="[&_*]:border-none">
       <nav className="bg-white text-black border-none outline-none ring-0">
         <div className="flex flex-wrap justify-center gap-3 md:gap-4 py-2 px-2 
                        border-none outline-none ring-0 before:border-none after:border-none">

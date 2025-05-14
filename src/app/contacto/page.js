@@ -23,37 +23,9 @@ export default function PaginaContacto() {
 
   return (
     <div>
-      {/* Header con logo */}
-      <header className="bg-white pt-4 pb-2">
-        <div className="flex justify-center">
-          <Link href="/">
-            <Image 
-              src="/CapturadeAna.png" 
-              alt="Logo de la tienda"
-              width={300}
-              height={75}
-              className="w-[280px] md:w-[300px] h-auto"
-              priority
-            />
-          </Link>
-        </div>
-      </header>
-
-      {/* Barra de navegación superior */}
-      <nav className="bg-white border-y border-gray-200">
-        <div className="flex flex-wrap justify-center gap-4 py-3 px-2">
-          <Link href="/categorias/1" className="hover:text-pink-200 text-sm font-medium">BODA</Link>
-          <Link href="/categorias/2" className="hover:text-pink-200 text-sm font-medium">COMUNIÓN</Link>
-          <Link href="/categorias/3" className="hover:text-pink-200 text-sm font-medium">BAUTIZO Y FIESTA BEBÉ</Link>
-          <Link href="/categorias/4" className="hover:text-pink-200 text-sm font-medium">CUMPLEAÑOS</Link>
-          <Link href="/categorias/5" className="hover:text-pink-200 text-sm font-medium">PERSONALIZADAS</Link>
-          <Link href="/categorias/7" className="hover:text-pink-200 text-sm font-medium">DECORATIVAS</Link>
-        </div>
-      </nav>
-
-      {/* Contenido de la página de contacto */}
+    
       <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6 text-pink-500  py-2 rounded-md">Contacto</h1>
+        <h1 className="text-3xl font-bold mb-6 text-dark-500  py-2 rounded-md">Contacto</h1>
         
         <p className="mb-6">¿Tienes alguna duda? ¡Estamos aquí para ayudarte! Puedes contactarnos fácilmente:</p>
         

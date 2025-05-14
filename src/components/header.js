@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { auth } from "@/auth"
 import { logout } from '@/lib/actions'
-import { ChevronDown, User, ShoppingCart } from "lucide-react"
+import { ChevronDown, User, ShoppingCart , Mail} from "lucide-react"
 import DropdownCategorias from "./DropdownCategorias"
 
 async function Header() {
@@ -14,7 +14,8 @@ async function Header() {
             <nav className="container mx-auto px-4 py-3">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     {/* Logo */}
-                    <div className="text-2xl font-bold">AR DECOR</div>
+                    <div className="text-2xl font-bold">LAMINARA</div>
+
 
                     {/* Menú principal */}
                     <nav className="bg-white border-y border-gray-200 mt-0">
@@ -29,18 +30,24 @@ async function Header() {
                             <ShoppingCart className="w-5 h-5" />
                         </Link>
 
-                        <Link href={session ? "/perfil" : "/auth/login"} className="hover:text-pink-200">
-                            <User className="w-5 h-5" />
-                        </Link>
-                    </div>
-                </div>
-            </nav>
 
-            {/* Barra de información de envíos */}
-            <div className="bg-black text-white text-center py-2 text-xs">
-                <p>ENVÍOS A TODA ESPAÑA. ENTREGA ENTRE 4 Y 9 DÍAS LABORALES.</p>
+                        <Link href="/contacto" className="hover:text-pink-200">
+                            <Mail className="w-5 h-5" />
+                        </Link>
+
+                    
+                    <Link href={session ? "/perfil" : "/auth/login"} className="hover:text-pink-200">
+                        <User className="w-5 h-5" />
+                    </Link>
+                </div>
             </div>
-        </header>
+        </nav>
+
+            {/* Barra de información de envíos */ }
+    <div className="bg-black text-white text-center py-2 text-xs">
+        <p>ENVÍOS A TODA ESPAÑA. ENTREGA ENTRE 4 Y 9 DÍAS LABORALES.</p>
+    </div>
+        </header >
     )
 }
 
