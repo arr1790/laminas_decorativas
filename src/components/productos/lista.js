@@ -7,6 +7,7 @@ import { PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { auth } from "@/auth";
 import ProductoModificar from "./modificar";
 import Modal from "../modal";
+import Image from "next/image";
 
 export default async function Productos() {
     const session = await auth();
@@ -56,7 +57,7 @@ export default async function Productos() {
                                 {producto.name}
                             </Link>
                             
-                            <img 
+                            <Image 
                                 src={producto.image} 
                                 alt={producto.name} 
                                 className="w-full h-48 object-cover rounded-lg"

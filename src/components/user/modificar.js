@@ -5,6 +5,7 @@ import { PlusIcon, RefreshCwIcon, UserRoundIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import CheckBox from '@/components/check-box';
 import CheckRadio from '@/components/check-radio';
+import Image from 'next/image';
 
 
 
@@ -45,7 +46,7 @@ export default function UserModificar({ session, user }) {
                         defaultValue={`/images/avatar-${String(index).padStart(2, '0')}.png`}
                         className="size-14 has-checked:col-span-4 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
                     >
-                        <img src={`/images/avatar-${String(index).padStart(2, '0')}.png`} alt="Imagen de usuario" />
+                        <Image src={`/images/avatar-${String(index).padStart(2, '0')}.png`} alt="Imagen de usuario" />
                     </CheckRadio>
                 ))}
                 {/* por defecto */}
@@ -55,7 +56,7 @@ export default function UserModificar({ session, user }) {
                     defaultChecked={true}
                     className="size-14 has-checked:col-span-4 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
                 >
-                    <img src={user.image || '/images/avatar-80.png'} alt="Imagen de usuario" />
+                    <image src={user.image || '/images/avatar-80.png'} alt="Imagen de usuario" />
                 </CheckRadio>
             </div>
 

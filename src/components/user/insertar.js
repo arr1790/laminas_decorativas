@@ -5,6 +5,7 @@ import { PlusIcon, RefreshCwIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import CheckBox from '@/components/check-box';
 import CheckRadio from '@/components/check-radio';
+import Image from 'next/image';
 
 
 
@@ -44,7 +45,7 @@ export default function UserInsertar({ session }) {
                         defaultValue={`/images/avatar-${String(index).padStart(2, '0')}.png`}
                         className="size-14 has-checked:col-span-5 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
                     >
-                        <img src={`/images/avatar-${String(index).padStart(2, '0')}.png`} alt="Imagen de usuario" />
+                        <image src={`/images/avatar-${String(index).padStart(2, '0')}.png`} alt="Imagen de usuario" />
                     </CheckRadio>
                 ))}
                 {/* Avatar 80, por defecto */}
@@ -54,7 +55,7 @@ export default function UserInsertar({ session }) {
                     defaultChecked={true}
                     className="size-14 has-checked:col-span-5 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
                 >
-                    <img src={`/images/avatar-80.png`} alt="Imagen de usuario" />
+                    <Image src={`/images/avatar-80.png`} alt="Imagen de usuario" />
                 </CheckRadio>
             </div>
 
