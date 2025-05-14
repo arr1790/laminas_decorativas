@@ -19,32 +19,31 @@ export default function ProductoItem({ producto, relacionados = [] }) {
         / <span className="font-medium text-gray-900">{producto.name}</span>
       </div>
 
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-  {/* Galería de imágenes - Contenedor ajustado para imagen más grande */}
-  <div className="flex flex-col h-full">
-    <div className="flex-grow flex items-center justify-center overflow-hidden rounded-lg">
-      <img
-        src={imagenes[imagenActual]}
-        alt={producto.name}
-        className="w-full h-full max-h-[700px] object-contain object-center rounded-md shadow"
-      />
-    </div>
-    {imagenes.length > 1 && (
-      <div className="flex mt-4 space-x-2">
-        {imagenes.map((img, index) => (
-          <button
-            key={index}
-            onClick={() => setImagenActual(index)}
-            className={`w-16 h-16 rounded-md overflow-hidden border-2 ${
-              imagenActual === index ? 'border-indigo-600' : 'border-transparent'
-            }`}
-          >
-            <img src={img} alt={`Vista ${index + 1}`} className="w-full h-full object-cover" />
-          </button>
-        ))}
-      </div>
-    )}
-  </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+        {/* Galería de imágenes - Contenedor ajustado para imagen más grande */}
+        <div className="flex flex-col h-full">
+          <div className="flex-grow flex items-center justify-center overflow-hidden rounded-lg">
+            <img
+              src={imagenes[imagenActual]}
+              alt={producto.name}
+              className="w-full h-full max-h-[700px] object-contain object-center rounded-md shadow"
+            />
+          </div>
+          {imagenes.length > 1 && (
+            <div className="flex mt-4 space-x-2">
+              {imagenes.map((img, index) => (
+                <button
+                  key={index}
+                  onClick={() => setImagenActual(index)}
+                  className={`w-16 h-16 rounded-md overflow-hidden border-2 ${imagenActual === index ? 'border-indigo-600' : 'border-transparent'
+                    }`}
+                >
+                  <img src={img} alt={`Vista ${index + 1}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Información del producto */}
         <div className="flex flex-col">
@@ -108,12 +107,13 @@ export default function ProductoItem({ producto, relacionados = [] }) {
 
           <div className="mb-8">
             <p className="text-gray-600">
-              Lámina personalizada con la frase "{producto.name}". Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
+              Lámina personalizada con la frase &quot;{producto.name}&quot;. Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
             </p>
+
           </div>
 
-          
-        
+
+
         </div>
       </div>
 
