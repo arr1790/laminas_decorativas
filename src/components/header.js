@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { auth } from "@/auth"
 import { logout } from '@/lib/actions'
-import { ChevronDown, User, ShoppingCart , Mail} from "lucide-react"
+import { ChevronDown, User, ShoppingCart, Mail } from "lucide-react"
 import DropdownCategorias from "./DropdownCategorias"
 
 async function Header() {
@@ -35,18 +35,25 @@ async function Header() {
                             <Mail className="w-5 h-5" />
                         </Link>
 
-                    
-                    <Link href={session ? "/perfil" : "/auth/login"} className="hover:text-pink-200">
-                        <User className="w-5 h-5" />
-                    </Link>
-                </div>
-            </div>
-        </nav>
 
-            {/* Barra de información de envíos */ }
-    <div className="bg-black text-white text-center py-2 text-xs">
-        <p>ENVÍOS A TODA ESPAÑA. ENTREGA ENTRE 4 Y 9 DÍAS LABORALES.</p>
-    </div>
+
+                        {session && session.user.role === 'ADMIN' && (
+                            <Link href="/admin" className="hover:text-pink-200">
+                                <ChevronDown className="w-5 h-5" />
+                            </Link>
+                        )}
+
+                        <Link href={session ? "/perfil" : "/auth/login"} className="hover:text-pink-200">
+                            <User className="w-5 h-5" />
+                        </Link>
+                    </div>
+                </div>
+            </nav>
+
+            {/* Barra de información de envíos */}
+            <div className="bg-black text-white text-center py-2 text-xs">
+                <p>ENVÍOS A TODA ESPAÑA. ENTREGA ENTRE 4 Y 9 DÍAS LABORALES.</p>
+            </div>
         </header >
     )
 }
