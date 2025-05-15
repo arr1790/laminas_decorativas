@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from "react";
 import Link from 'next/link';
+import PaginatedList from "@/lib/paginated-list";
 
 export default function Categoria({ categoria }) {
 
@@ -34,11 +35,11 @@ export default function Categoria({ categoria }) {
       <div className="border-t border-gray-200 my-6"></div>
 
       {/* Grid de productos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-        {categoria.products?.map((producto) => (
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8"> */}
+        <PaginatedList items={categoria.products?.map((producto) => (
           <ProductCard key={producto.id} producto={producto} />
-        ))}
-      </div>
+        ))}></PaginatedList>
+      {/* </div> */}
     </div>
   );
 }

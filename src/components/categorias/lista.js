@@ -61,7 +61,7 @@ async function Categorias() {
                 {categoria.name}
               </h2>
               <p className="text-gray-500 text-sm">
-                <span className="font-medium text-gray-700">Slug:</span> {categoria.slug}
+                <span className="font-medium text-gray-700">s:</span> {categoria.slug}
               </p>
             </Link>
           </div>
