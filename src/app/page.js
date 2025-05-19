@@ -8,25 +8,28 @@ export default function Home() {
     <div className="min-h-screen bg-white m-0 p-0 ">
 
       <HeroSlider />
-
-      
-
-      <section className="py-6 px-2">
+      <section className="py-2 px-2">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+          <h2 className="text-2xl font-bold text-center mb-2 text-gray-800">
             NUESTRAS COLECCIONES
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <CategoryCard title="BODA" image="/boda.png" href="/categorias/Boda" />
-            <CategoryCard title="COMUNIÓN" image="/comunion.png" href="/categorias/Comunion" />
-            <CategoryCard title="FIESTA BEBÉ" image="/fiestabebe.png" href="/categorias/Bautizo-y-Fiesta-bebe" />
-            <CategoryCard title="CUMPLEAÑOS" image="/cumpleaños.png" href="/categorias/Cumpleanos" />
-            <CategoryCard title="LÁMINAS PERSONALIZADAS" image="/laminapersonalizada.png" href="/categorias/Personalizadas" />
-            <CategoryCard title="LÁMINAS DECORATIVAS" image="/laminadecorativa.png" href="/categorias/Decorativas" />
-          </div>
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-2">
+            <CategoryCard title="LO MÁS VENDIDO" image="/vendidos.jpeg" href="/categorias/Decorativas" />
+            <CategoryCard title="NOVEDADES" image="/novedosos.png" href="/categorias/Bautizo-y-Fiesta-bebe" />
+            </div>
+                {/* Segundo grid con una tarjeta más estrecha centrada */}
+          <div className="flex justify-center">
+            <div className="w-full md:w-4/6 lg:w-4/6">
+              <CategoryCard 
+                title="PIEZAS UNICAS" 
+                image="/piezas.png" 
+                href="/categorias/Personalizadas" 
+              />
+            </div>
+          </div>                                                                                                                                                                                                         
         </div>
-      </section>
+      </section>                                      
 
       <footer className="bg-gray-100 py-6 border-t border-gray-200">
         <div className="mx-auto max-w-6xl px-2">
@@ -36,7 +39,7 @@ export default function Home() {
             <Link href="/terminos">TÉRMINOS Y CONDICIONES</Link>
           </div>
           <div className="mt-4 text-center text-gray-500 text-xs">
-            © {new Date().getFullYear()} Ana Ruano. Todos los derechos reservados.
+            ©️ {new Date().getFullYear()} Ana Ruano. Todos los derechos reservados.
           </div>
         </div>
       </footer>
@@ -48,13 +51,14 @@ function CategoryCard({ title, image, href }) {
   return (
     <Link href={href} className="group block">
       <div className="relative overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow">
-        <div className="aspect-square bg-gray-100">
+        {/* Modificado para imágenes más anchas */}
+        <div className="w-full h-auto bg-gray-100">
           <Image
             src={image}
             alt={title}
-            width={500}
-            height={500}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            width={1200}  
+            height={800}  
+            className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </div>
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { auth } from "@/auth"
 import { logout } from '@/lib/actions'
-import { ChevronDown, User, ShoppingCart, Mail } from "lucide-react"
+import { ChevronDown, User, ShoppingCart , Mail} from "lucide-react"
 import DropdownCategorias from "./DropdownCategorias"
 
 async function Header() {
@@ -13,8 +13,14 @@ async function Header() {
             {/* Barra única negra con todos los elementos */}
             <nav className="container mx-auto px-4 py-3">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                    {/* Logo */}
-                    <div className="text-2xl font-bold">LAMINARA</div>
+                   <div className="text-2xl font-bold">
+                <Link 
+                  href="/" 
+                     className="hover:text-gray-600 transition-colors cursor-pointer inline-block"
+                         >
+                        LAMINARA
+                    </Link>
+                </div>
 
 
                     {/* Menú principal */}
@@ -35,25 +41,18 @@ async function Header() {
                             <Mail className="w-5 h-5" />
                         </Link>
 
-
-
-                        {session && session.user.role === 'ADMIN' && (
-                            <Link href="/admin" className="hover:text-pink-200">
-                                <ChevronDown className="w-5 h-5" />
-                            </Link>
-                        )}
-
-                        <Link href={session ? "/perfil" : "/auth/login"} className="hover:text-pink-200">
-                            <User className="w-5 h-5" />
-                        </Link>
-                    </div>
+                    
+                    <Link href={session ? "/perfil" : "/auth/login"} className="hover:text-pink-200">
+                        <User className="w-5 h-5" />
+                    </Link>
                 </div>
-            </nav>
-
-            {/* Barra de información de envíos */}
-            <div className="bg-black text-white text-center py-2 text-xs">
-                <p>ENVÍOS A TODA ESPAÑA. ENTREGA ENTRE 4 Y 9 DÍAS LABORALES.</p>
             </div>
+        </nav>
+
+            {/* Barra de información de envíos */ }
+    <div className="bg-black text-white text-center py-2 text-xs">
+        <p>ENVÍOS A TODA ESPAÑA. ENTREGA ENTRE 4 Y 9 DÍAS LABORALES.</p>
+    </div>
         </header >
     )
 }

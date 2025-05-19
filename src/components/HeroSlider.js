@@ -28,10 +28,10 @@ export default function HeroSlider() {
     };
 
     return (
-        <div className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden">
+        <div className="relative w-full h-[70vh] md:h-[85vh] overflow-hidden">
             <Slider {...settings}>
                 {images.map((image, index) => (
-                    <div key={index} className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden">
+                    <div key={index} className="relative w-full h-[50vh] md:h-[80vh] overflow-hidden">
                         <Image
                             src={image.src}
                             alt={image.alt}
@@ -39,7 +39,7 @@ export default function HeroSlider() {
                             height={1080}
                             priority={index === 0}
                             quality={100}
-                           className="object-cover absolute top-5 left-0 w-full h-full" // Agregamos un margen superior de 16px
+                           className="object-cover absolute top-2 left-0 w-full h-full" // Agregamos un margen superior de 16px
                         />
 
                         {index === activeSlide && (
