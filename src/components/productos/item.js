@@ -1,12 +1,14 @@
 'use client';
 import React, { useState } from "react";
 import Link from 'next/link';
+import CamposPersonalizados from "../campospersonalizados";
+
 
 export default function ProductoItem({ producto, relacionados = [] }) {
   const [nombre, setNombre] = useState("");
   const [textoPersonalizado, setTextoPersonalizado] = useState("");
   const [imagenActual, setImagenActual] = useState(0);
-
+    console.log("Categoria slug:", producto.category?.slug);
   const imagenes = producto.images || [producto.image || '/placeholder.png'];
 
   return (
@@ -20,7 +22,7 @@ export default function ProductoItem({ producto, relacionados = [] }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-        {/* Galería de imágenes - Contenedor ajustado para imagen más grande */}
+        {/* Galería de imágenes */}
         <div className="flex flex-col h-full">
           <div className="flex-grow flex items-center justify-center overflow-hidden rounded-lg">
             <img
@@ -35,8 +37,7 @@ export default function ProductoItem({ producto, relacionados = [] }) {
                 <button
                   key={index}
                   onClick={() => setImagenActual(index)}
-                  className={`w-16 h-16 rounded-md overflow-hidden border-2 ${imagenActual === index ? 'border-indigo-600' : 'border-transparent'
-                    }`}
+                  className={`w-16 h-16 rounded-md overflow-hidden border-2 ${imagenActual === index ? 'border-indigo-600' : 'border-transparent'}`}
                 >
                   <img src={img} alt={`Vista ${index + 1}`} className="w-full h-full object-cover" />
                 </button>
@@ -79,27 +80,16 @@ export default function ProductoItem({ producto, relacionados = [] }) {
             <p className="text-gray-600">{producto.dimensions || "21X30"} ✔</p>
           </div>
 
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-900 mb-2">NOMBRE: *</label>
-            <input
-              type="text"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Escribe los nombres"
-            />
-          </div>
 
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-900 mb-2">TEXTO (OPCIONAL)</label>
-            <input
-              type="text"
-              value={textoPersonalizado}
-              onChange={(e) => setTextoPersonalizado(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Añade un texto especial"
-            />
-          </div>
+          {/* Campos personalizados dinámicos */}
+          <CamposPersonalizados
+            categoria={producto.category?.slug || "default"}
+            nombre={nombre}
+            setNombre={setNombre}
+            textoPersonalizado={textoPersonalizado}
+            setTextoPersonalizado={setTextoPersonalizado}
+          />
+
 
           <button className="w-full bg-black hover:bg-gray-800 text-white py-3 px-4 rounded-none font-medium transition duration-150 mb-8 uppercase">
             AÑADIR AL CARRITO
@@ -109,11 +99,7 @@ export default function ProductoItem({ producto, relacionados = [] }) {
             <p className="text-gray-600">
               Lámina personalizada con la frase &quot;{producto.name}&quot;. Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
             </p>
-
           </div>
-
-
-
         </div>
       </div>
 
@@ -136,8 +122,6 @@ export default function ProductoItem({ producto, relacionados = [] }) {
           ))}
         </div>
       </div>
-
     </div>
   );
 }
-
