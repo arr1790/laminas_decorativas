@@ -1,5 +1,5 @@
 'use client'
-import { insertarPedido } from "@/lib/actions";
+import { insertarOrden } from "@/lib/actions";
 import { PlusIcon, RefreshCwIcon } from "lucide-react";
 import { useActionState, useEffect, useId } from "react";
 import { toast } from "sonner";
@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 function PedidoInsertar({ user, products }) {
     const formId = useId()
-    const [state, action, pending] = useActionState(insertarPedido, {})
+    const [state, action, pending] = useActionState(insertarOrden, {})
 
     useEffect(() => {
         if (state.success) {
