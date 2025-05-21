@@ -8,9 +8,9 @@ function ModalCarrito( {carrito }) {
 
   console.log(carrito, "- carrito desde modal carrito")
 
-  const precioTotal = carrito.orderItems.reduce((total, item) => {
-  return total + item.product[0].basePrice * item.cantidad;
-}, 0);
+//   const precioTotal = carrito.orderItems.reduce((total, item) => {
+//   return total + item.product[0].basePrice * item.cantidad;
+// }, 0);
 
 const totalItems = carrito.orderItems.reduce(
     (total, item) => total + item.cantidad,
@@ -115,7 +115,7 @@ const totalItems = carrito.orderItems.reduce(
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Subtotal</p>
-                    <p>{precioTotal}€</p>
+                    {/* <p>{precioTotal}€</p> */}
                   </div>
                   <div className="mt-6">
                     <Link onClick={() => setAbierto(false)} href="/carrito" className="flex items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-white hover:bg-indigo-700">Checkout</Link>
