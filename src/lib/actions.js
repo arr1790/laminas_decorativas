@@ -282,15 +282,15 @@ export async function eliminarProducto(prevState, formData) {
 
 // ------------------------ ORDERS ------------------------
 
-
 export async function insertarOrder(formData) {
   const userId = formData.get('userId');
 
   const carrito = await obtenerCarrito(userId);
 
-  console.log("Carrito desde la acción:", carrito);
+  if (!carrito) {
+    throw new Error('Carrito no encontrado para el usuario ' + userId);
+  }
 
-  // Calcula el total del pedido
   const total = carrito.orderItems.reduce(
     (sum, item) => sum + Number(item.product[0].basePrice) * item.cantidad,
     0
@@ -315,15 +315,14 @@ export async function insertarOrder(formData) {
     },
   });
 
-  // Limpiar el carrito
+  // Aquí usas carrito, asegúrate que está definido
   await prisma.orderItem.updateMany({
-  where: { cartId: carrito.id },
-  data: { cartId: null },
-});
+    where: { cartId: carrito.id },
+    data: { cartId: null },
+  });
 
   redirect('/perfil');
 }
-
 
 
 export async function getAllOrdersByUser(userId) {

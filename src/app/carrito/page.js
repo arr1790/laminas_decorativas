@@ -4,10 +4,10 @@ import { obtenerCarrito } from "@/lib/data";
 
 async function page() {
 
-    const session = await auth()
-    const carrito = session ? await obtenerCarrito(session.user.id) : []
+  const session = await auth()
+const carrito = session ? await obtenerCarrito(session.user.id) : []
 
-      const precioTotal = carrito.orderItems.reduce((total, item) => {
+const precioTotal = carrito.orderItems.reduce((total, item) => {
   return total + item.product[0].basePrice * item.cantidad;
 }, 0);
 

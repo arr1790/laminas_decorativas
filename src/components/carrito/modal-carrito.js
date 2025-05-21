@@ -8,14 +8,14 @@ function ModalCarrito( {carrito }) {
 
   console.log(carrito, "- carrito desde modal carrito")
 
-  const precioTotal = carrito.orderItems.reduce((total, item) => {
+const precioTotal = carrito?.orderItems?.reduce((total, item) => {
   return total + item.product[0].basePrice * item.cantidad;
-}, 0);
+}, 0) || 0;
 
-const totalItems = carrito.orderItems.reduce(
-    (total, item) => total + item.cantidad,
-    0
-  );
+const totalItems = carrito?.orderItems?.reduce(
+  (total, item) => total + item.cantidad,
+  0
+) || 0;
   const [abierto, setAbierto] = useState(false);
   const modalRef = useRef(null);
 
