@@ -283,7 +283,7 @@ export async function eliminarProducto(prevState, formData) {
 // ------------------------ ORDERS ------------------------
 
 
-export async function insertarOrden(formData) {
+export async function insertarOrder(formData) {
   const userId = formData.get('userId');
 
   const carrito = await obtenerCarrito(userId);
