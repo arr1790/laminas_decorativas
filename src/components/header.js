@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { auth } from "@/auth"
 import { ChevronDown, User, ShoppingCart, Mail } from "lucide-react"
-import DropdownCategorias from "./dropdownCategorias"
+import DropdownCategorias from './dropdownCategorias'
 import MobileMenu from './dropdownMobileButon'
 import { obtenerCategorias } from '@/lib/data'
 import { obtenerCarrito } from '@/lib/data'

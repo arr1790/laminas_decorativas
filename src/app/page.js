@@ -1,5 +1,4 @@
 import Link from "next/link";
-import DropdownCategorias from "@/components/dropdownCategorias";
 import HeroSlider from "@/components/HeroSlider";
 import Image from 'next/image';
 
