@@ -12,10 +12,10 @@ function ModalCarrito( {carrito }) {
 //   return total + item.product[0].basePrice * item.cantidad;
 // }, 0);
 
-const totalItems = carrito.orderItems.reduce(
-    (total, item) => total + item.cantidad,
-    0
-  );
+// const totalItems = carrito.orderItems.reduce(
+//     (total, item) => total + item.cantidad,
+//     0
+//   );
   const [abierto, setAbierto] = useState(false);
   const modalRef = useRef(null);
 
@@ -44,7 +44,7 @@ const totalItems = carrito.orderItems.reduce(
         className=" relative rounded-md cursor-pointer  p-2"
       >
         <ShoppingCart className="w-6 h-6" />
-        <p className=' bg-red-500 rounded-full h-4 w-4 absolute top-0 right-1 text-xs'>{totalItems}</p>
+        {/* <p className=' bg-red-500 rounded-full h-4 w-4 absolute top-0 right-1 text-xs'>{totalItems}</p> */}
       </button>
 
       {abierto && (
