@@ -16,7 +16,7 @@ function PedidoInsertar({ user, products }) {
             toast.success(state.success)
             document.getElementById(formId)?.closest('dialog')?.close()
         }
-    }, [state])
+    }, [state, formId])
 
     return (
         <form id={formId} action={action} className="flex flex-col gap-4">
