@@ -7,9 +7,9 @@ async function page() {
     const session = await auth()
     const carrito = session ? await obtenerCarrito(session.user.id) : []
 
-      const precioTotal = carrito.orderItems.reduce((total, item) => {
-  return total + item.product[0].basePrice * item.cantidad;
-}, 0);
+//       const precioTotal = carrito.orderItems.reduce((total, item) => {
+//   return total + item.product[0].basePrice * item.cantidad;
+// }, 0);
 
     return (<div className="bg-gray-100 h-screen py-8">
         <div className="container mx-auto px-4">
@@ -72,7 +72,7 @@ async function page() {
                         <hr className="my-2" />
                         <div className="flex justify-between mb-2">
                             <span className="font-semibold">Total</span>
-                            <span className="font-semibold">{(precioTotal*1.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
+                            {/* <span className="font-semibold">{(precioTotal*1.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span> */}
                         </div>
                         <form action={insertarOrder}> 
                             <input type="hidden" name="userId" value={session.user.id} />

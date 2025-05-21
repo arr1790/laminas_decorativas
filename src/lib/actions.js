@@ -291,10 +291,10 @@ export async function insertarOrder(formData) {
     throw new Error('Carrito no encontrado para el usuario ' + userId);
   }
 
-  const total = carrito.orderItems.reduce(
-    (sum, item) => sum + Number(item.product[0].basePrice) * item.cantidad,
-    0
-  );
+  // const total = carrito.orderItems.reduce(
+  //   (sum, item) => sum + Number(item.product[0].basePrice) * item.cantidad,
+  //   0
+  // );
 
   const nuevoPedido = await prisma.order.create({
     data: {
