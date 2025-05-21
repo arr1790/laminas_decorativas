@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { insertarOrden, restarAlCarrito, sumarAlCarrito } from "@/lib/actions";
+import {  insertarOrder, restarAlCarrito, sumarAlCarrito } from "@/lib/actions";
 import { obtenerCarrito } from "@/lib/data";
 
 async function page() {
@@ -74,7 +74,7 @@ async function page() {
                             <span className="font-semibold">Total</span>
                             <span className="font-semibold">{(precioTotal*1.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
                         </div>
-                        <form action={insertarOrden}> 
+                        <form action={insertarOrder}> 
                             <input type="hidden" name="userId" value={session.user.id} />
                         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Checkout</button>
                    </form>
