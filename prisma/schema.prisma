@@ -8,136 +8,126 @@ datasource db {
 }
 
 model User {
-  id             String         @id @default(cuid())
-  name           String
-  email          String?        @unique
-  password       String?
-  image          String?
-  role           String         @default("USER") // ADMIN
-  emailVerified  DateTime?
-  active         Boolean        @default(true)
-  createdAt      DateTime       @default(now())
+  id            String    @id @default(cuid())
+  name          String
+  email         String?   @unique
+  password      String?
+  image         String?
+  role          String    @default("USER") // ADMIN
+  emailVerified DateTime?
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
 
+  carts     Cart[]
+  orders    Order[]
+  accounts  Account[]
+  addresses Address[]
 
-  carts          Cart[]
-  orders         Order[]
-  designs        CustomDesign[]
-  accounts       Account[]
-  addresses      Address[]      
   @@map("user")
 }
 
 model Address {
-  id             Int      @id @default(autoincrement())
-  userId         String
-  nombre         String
-  apellido       String
-  direccion1     String
-  direccion2     String?
-  ciudad         String
-  pais           String
-  provincia      String
-  codigoPostal   String
-  telefono       String
- 
+  id           Int     @id @default(autoincrement())
+  userId       String
+  nombre       String
+  apellido     String
+  direccion1   String
+  direccion2   String?
+  ciudad       String
+  pais         String
+  provincia    String
+  codigoPostal String
+  telefono     String
 
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("address")
 }
 
 model Account {
-  id                  Int     @id @default(autoincrement())
-  userId              String
-  type                String
-  provider            String
-  providerAccountId   String
-  refresh_token       String?
-  access_token        String?
-  expires_at          Int?
-  token_type          String?
-  scope               String?
-  id_token            String?
-  session_state       String?
+  id                Int     @id @default(autoincrement())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
-  user                User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model Cart {
-  id          Int           @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   userId      String
-  createdAt   DateTime      @default(now())
-  productId   Int?
-  designId    Int?
+  createdAt   DateTime    @default(now())
 
-  product     Product?      @relation(fields: [productId], references: [id])
-  design      CustomDesign? @relation(fields: [designId], references: [id])
-  user        User          @relation(fields: [userId], references: [id])
-
-  @@map("cart")
+  user        User        @relation(fields: [userId], references: [id])
+  orderItems  OrderItem[] // Uno a muchos
 }
 
 model Order {
-  id          Int           @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   userId      String
-  orderDate   DateTime      @default(now())
+  orderDate   DateTime    @default(now())
   status      String
   total       Decimal
-  productId   Int?
-  designId    Int?
 
-  product     Product?      @relation(fields: [productId], references: [id])
-  design      CustomDesign? @relation(fields: [designId], references: [id])
-  user        User          @relation(fields: [userId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+  orderItems  OrderItem[] // Uno a muchos
 
   @@map("order")
 }
 
 model Product {
-  id          Int              @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
   description String
   basePrice   Float
   dimensions  String
   withFrame   Boolean
   image       String
-hoverImage  String?          // Campo nuevo (opcional, puede ser null)
-categoryId  Int
+  hoverImage  String?   // Campo nuevo (opcional)
+  categoryId  Int
 
-  category    Category         @relation(fields: [categoryId], references: [id])
-  designs     CustomDesign[]
-  carts       Cart[]
-  orders      Order[]
-
+  category    Category  @relation(fields: [categoryId], references: [id])
+  orderItem   OrderItem[]
+  
   @@map("product")
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String
+  id          Int       @id @default(autoincrement())
+  name        String
   slug        String?   @unique
-  description String? 
-  products Product[]
+  description String?
+  products    Product[]
 
   @@map("category")
 }
 
-model CustomDesign {
-  id           Int       @id @default(autoincrement())
-  userId       String
-  productId    Int
-  designName   String
-  designImage  String
-  createdAt    DateTime  @default(now())
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  productId Int      // Un producto por OrderItem (1:1)
+  texto1    String?
+  texto2    String?
+  cantidad  Int 
+  createdAt DateTime @default(now())
 
-  user         User      @relation(fields: [userId], references: [id])
-  product      Product   @relation(fields: [productId], references: [id])
-  carts        Cart[]
-  orders       Order[]
+  product   Product[] 
+  cartId    Int?
+  cart      Cart?    @relation(fields: [cartId], references: [id])
+  
+  orderId   Int?
+  order     Order?   @relation(fields: [orderId], references: [id])
 
-  @@map("customDesign")
+  @@map("orderItem")
 }
 
 model ContactMessage {

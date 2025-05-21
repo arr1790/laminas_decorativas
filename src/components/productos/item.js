@@ -2,13 +2,16 @@
 import React, { useState } from "react";
 import Link from 'next/link';
 import CamposPersonalizados from "../campospersonalizados";
+import { insertarCarrito } from "@/lib/actions";
 
 
-export default function ProductoItem({ producto, relacionados = [] }) {
+export default function ProductoItem({ user, producto, relacionados = [] }) {
   const [nombre, setNombre] = useState("");
   const [textoPersonalizado, setTextoPersonalizado] = useState("");
   const [imagenActual, setImagenActual] = useState(0);
-    console.log("Categoria slug:", producto.category?.slug);
+  console.log("Categoria slug:", producto.category?.slug);
+
+
   const imagenes = producto.images || [producto.image || '/placeholder.png'];
 
   return (
@@ -56,16 +59,7 @@ export default function ProductoItem({ producto, relacionados = [] }) {
 
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">{producto.name}</h1>
 
-          <div className="flex items-center mb-4">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <svg key={i} className="w-4 h-4 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-              <span className="text-gray-600 ml-1">| reseña</span>
-            </div>
-          </div>
+
 
           <div className="flex items-center mb-6">
             <span className="text-2xl font-bold text-gray-900 mr-4">
@@ -80,24 +74,28 @@ export default function ProductoItem({ producto, relacionados = [] }) {
             <p className="text-gray-600">{producto.dimensions || "21X30"} ✔</p>
           </div>
 
+<form action={insertarCarrito}>
+  <input type="hidden" name="userId" value={user?.id} />
+          <input type="hidden" name="productId" value={producto.id} />
+          {producto.category?.slug !== 'Decorativas' && (
+            <CamposPersonalizados
+              categoria={producto.category}
+              nombre={nombre}
+              setNombre={setNombre}
+              textoPersonalizado={textoPersonalizado}
+              setTextoPersonalizado={setTextoPersonalizado}
+            />
+          )}
 
-          {/* Campos personalizados dinámicos */}
-          <CamposPersonalizados
-            categoria={producto.category?.slug || "default"}
-            nombre={nombre}
-            setNombre={setNombre}
-            textoPersonalizado={textoPersonalizado}
-            setTextoPersonalizado={setTextoPersonalizado}
-          />
-
-
+          
           <button className="w-full bg-black hover:bg-gray-800 text-white py-3 px-4 rounded-none font-medium transition duration-150 mb-8 uppercase">
             AÑADIR AL CARRITO
           </button>
+          </form>
 
           <div className="mb-8">
             <p className="text-gray-600">
-              Lámina personalizada con la frase &quot;{producto.name}&quot;. Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
+              Lámina personalizada  &quot;{producto.name}&quot;. Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
             </p>
           </div>
         </div>

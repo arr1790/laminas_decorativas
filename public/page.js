@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import Image from 'next/image'; // Importa Image desde next/image
-import DropdownCategorias from "@/components/DropdownCategorias";
+import DropdownCategorias from "@/components/dropdownCategorias";
 
 export default function Home() {
   return (

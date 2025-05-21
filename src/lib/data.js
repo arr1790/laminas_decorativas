@@ -65,28 +65,48 @@ export async function obtenerCuentas(userId) {
 
 // ---------------------   CARRITOS -----------------------
 
-export async function obtenerCarritos(userId) {
-    const carritos = await prisma.cart.findMany({
-        where: { userId },
-        include: {
-            product: true,
-            design: true
+// lib/data.js
+export async function obtenerCarrito(userId) {
+  try {
+    const carrito = await prisma.cart.findFirst({
+      where: { userId },
+      include: {
+        orderItems: {
+          include: {
+            product: true
+          }
         }
-    });
-    return carritos;
-}
-
-export async function obtenerCarritoPorId(id) {
-    const carrito = await prisma.cart.findUnique({
-        where: { id },
-        include: {
-            product: true,
-            design: true
-        }
+      }
     });
     return carrito;
+  } catch (error) {
+    console.error('Error al obtener carritos:', error);
+    return null;
+  }
 }
 
+
+
+
+export async function agregarAlCarrito(userId, productId, text1, text2, quantity = 1) {
+
+    const carrito = await obtenerCarrito(userId)
+
+    console.log('Carrito:', carrito)
+    const nuevoProducto = await prisma.orderItem.create({
+        data: {
+            product :{connect: { id: productId }},
+            productId: productId,
+            texto1: text1,
+            texto2: text2,
+            cantidad:quantity,
+            cartId: carrito.id
+        }
+    })
+
+
+
+}
 // ---------------------   PEDIDOS -----------------------
 
 export async function obtenerPedidos(userId) {
@@ -232,21 +252,7 @@ export async function eliminarDireccion(id) {
     return direccionEliminada;
 }
 
-export async function establecerDireccionPorDefecto(userId, direccionId) {
-
-    await prisma.address.updateMany({
-        where: { userId },
-        data: { porDefecto: false }
-    });
-
-  
-    const direccionPorDefecto = await prisma.address.update({
-        where: { id: Number(direccionId) },
-        data: { porDefecto: true }
-    });
-
-    return direccionPorDefecto;
-}
+// ---------------------   MENSAJES DE CONTACTO -----------------------
 export async function getMessages() {
     const contactMessages = await prisma.contactMessage.findMany({
         orderBy: { createdAt: 'desc' },
@@ -255,3 +261,6 @@ export async function getMessages() {
     });
     return contactMessages;
 }
+
+
+

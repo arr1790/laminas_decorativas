@@ -3,9 +3,11 @@
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { signIn, signOut } from '@/auth';
-import { getUserByEmail } from '@/lib/data';
+import { agregarAlCarrito, getUserByEmail, obtenerCarrito } from '@/lib/data';
 import { revalidatePath } from 'next/cache'
 import slugify from 'slugify';
+import { redirect } from 'next/navigation';
+import { use } from 'react';
 
 
 
@@ -64,20 +66,20 @@ export async function login(prevState, formData) {
     matchPassword = await bcrypt.compare(password, user.password)
   }
 
-  if ( user && matchPassword) {
-    
-       await signIn('credentials', {
+  if (user && matchPassword) {
 
-        email,
-        password,
-        redirectTo: globalThis.callbackUrl
-      })
+    await signIn('credentials', {
 
-      // if (result?.error) {
-      //   return { error: 'Error en autenticación: ' + result.error }
-      // }
+      email,
+      password,
+      redirectTo: globalThis.callbackUrl
+    })
 
-      // return { success: 'Inicio de sesión correcto' }
+    // if (result?.error) {
+    //   return { error: 'Error en autenticación: ' + result.error }
+    // }
+
+    // return { success: 'Inicio de sesión correcto' }
 
   } else {
     return { error: 'Credenciales incorrectas.' }
@@ -215,7 +217,7 @@ export async function eliminarUsuario(formData) {
 }
 
 // ------------------------ PRODUCTS ------------------------
-export async function insertarProducto(prevState , formData) {
+export async function insertarProducto(prevState, formData) {
   const name = formData.get('name')
   const description = formData.get('description')
   const basePrice = parseFloat(formData.get('basePrice'))
@@ -240,7 +242,7 @@ export async function insertarProducto(prevState , formData) {
   return { success: "Producto insertado correcto" }
 }
 
-export async function modificarProducto(prevState , formData) {
+export async function modificarProducto(prevState, formData) {
   const id = Number(formData.get('id'))
   const name = formData.get('name')
   const description = formData.get('description')
@@ -267,7 +269,7 @@ export async function modificarProducto(prevState , formData) {
   return { success: "Producto modificado correcto" }
 }
 
-export async function eliminarProducto(prevState , formData) {
+export async function eliminarProducto(prevState, formData) {
   const id = Number(formData.get('id'))
 
   await prisma.product.delete({
@@ -279,92 +281,157 @@ export async function eliminarProducto(prevState , formData) {
 }
 
 // ------------------------ ORDERS ------------------------
-export async function insertarPedido(prevState , formData) {
-  const userId = Number(formData.get('userId'))
-  const productId = Number(formData.get('productId'))
-  const designId = Number(formData.get('designId'))
-  const total = parseFloat(formData.get('total'))
-  const status = formData.get('status')
 
-  await prisma.order.create({
+
+export async function insertarOrden(formData) {
+  const userId = formData.get('userId');
+
+  const carrito = await obtenerCarrito(userId);
+
+  console.log("Carrito desde la acción:", carrito);
+
+  // Calcula el total del pedido
+  const total = carrito.orderItems.reduce(
+    (sum, item) => sum + Number(item.product[0].basePrice) * item.cantidad,
+    0
+  );
+
+  const nuevoPedido = await prisma.order.create({
     data: {
-      userId,
-      productId,
-      designId,
-      total,
-      status
-    }
-  })
+      status: 'pendiente',
+      total: total,
+      user: {
+        connect: { id: userId },
+      },
+      orderItems: {
+        create: carrito.orderItems.map(item => ({
+          cantidad: item.cantidad,
+          product: {
+            connect: { id: item.productId },
+          },
+          productId: item.productId,
+        })),
+      },
+    },
+  });
 
-  revalidatePath('/pedidos')
+  // Limpiar el carrito
+  await prisma.orderItem.updateMany({
+  where: { cartId: carrito.id },
+  data: { cartId: null },
+});
+
+  redirect('/perfil');
 }
 
-export async function modificarPedido(formData) {
-  const id = Number(formData.get('id'))
-  const userId = Number(formData.get('userId'))
-  const productId = Number(formData.get('productId'))
-  const designId = Number(formData.get('designId'))
-  const total = parseFloat(formData.get('total'))
-  const status = formData.get('status')
 
-  await prisma.order.update({
-    where: { id },
-    data: {
-      userId,
-      productId,
-      designId,
-      total,
-      status
-    }
-  })
 
-  revalidatePath('/pedidos')
+export async function getAllOrdersByUser(userId) {
+  const orders = await prisma.order.findMany({
+    where: { userId },
+    include: {
+      user: true,
+      orderItems: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
+  return orders;
 }
 
-export async function eliminarPedido(formData) {
-  const id = Number(formData.get('id'))
+export async function getAllOrders() {
+  const orders = await prisma.order.findMany({
+    include: {
+      user: true,
+      orderItems: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
+  return orders;
+}
 
-  await prisma.order.delete({
+
+export async function deleteOrder(formData) {
+  const id = Number(formData.get('id'))
+  const order = await prisma.order.delete({
     where: { id }
   })
 
-  revalidatePath('/pedidos')
+  revalidatePath('/perfil')
+  return { success: "Pedido eliminado correctamente" }
 }
 
 // ------------------------ CARTS ------------------------
 export async function insertarCarrito(formData) {
-  const userId = Number(formData.get('userId'))
+  const userId = formData.get('userId')
   const productId = Number(formData.get('productId'))
-  const designId = Number(formData.get('designId'))
+  const text1 = formData.get('text1')
+  const text2 = formData.get('text2')
 
-  await prisma.cart.create({
-    data: {
-      userId,
-      productId,
-      designId
-    }
-  })
+  console.log(userId, productId, text1, text2)
+  console.log("insertarCarrito", formData);
 
-  revalidatePath('/carritos')
+  await agregarAlCarrito(userId, productId, text1, text2)
+  revalidatePath('/');
 }
 
-export async function modificarCarrito(formData) {
-  const id = Number(formData.get('id'))
-  const userId = Number(formData.get('userId'))
-  const productId = Number(formData.get('productId'))
-  const designId = Number(formData.get('designId'))
+export async function sumarAlCarrito(formData) {
+  const OrderItemId = Number(formData.get('orderItemId'))
 
-  await prisma.cart.update({
-    where: { id },
-    data: {
-      userId,
-      productId,
-      designId
-    }
+  await prisma.orderItem.update({
+    where: { id: OrderItemId },
+    data: { cantidad: { increment: 1 } }
   })
 
-  revalidatePath('/carritos')
+  revalidatePath('/')
+
 }
+export async function restarAlCarrito(formData) {
+  const orderItemId = Number(formData.get('orderItemId'))
+
+  // Obtener el item actual para saber su cantidad
+  const item = await prisma.orderItem.findUnique({
+    where: { id: orderItemId },
+    select: { cantidad: true }
+  })
+
+  if (!item) return
+
+  if (item.cantidad <= 1) {
+    // Si la cantidad es 1 o menos, eliminar el item
+    await prisma.orderItem.delete({
+      where: { id: orderItemId }
+    })
+  } else {
+    // Si hay más de 1, simplemente restar 1
+    await prisma.orderItem.update({
+      where: { id: orderItemId },
+      data: { cantidad: { decrement: 1 } }
+    })
+  }
+
+  revalidatePath('/')
+}
+
+
+export async function eliminarDelCarrito(formData) {
+
+  console.log("eliminarDelCarrito", formData);
+
+  const orderItemId = Number(formData.get('orderItemId'));
+
+  await prisma.orderItem.delete({
+    where: { id: orderItemId }
+  })
+
+  revalidatePath('/');
+}
+
 
 export async function eliminarCarrito(formData) {
   const id = Number(formData.get('id'))
@@ -377,26 +444,26 @@ export async function eliminarCarrito(formData) {
 }
 
 // ------------------------ CATEGORIES ------------------------
-export async function insertarCategoria(prevState,formData) {
+export async function insertarCategoria(prevState, formData) {
   const name = formData.get('name')
   const slug = slugify(name)
 
   await prisma.category.create({
-    data: { name , slug }
+    data: { name, slug }
   })
 
   revalidatePath('/categorias')
   return { success: "Categoria insertada" }
 }
 
-export async function modificarCategoria(prevState,formData) {
+export async function modificarCategoria(prevState, formData) {
   const id = Number(formData.get('id'))
   const name = formData.get('name')
-  const slug = slugify (name)
+  const slug = slugify(name)
 
   await prisma.category.update({
     where: { id },
-    data: { name , slug }
+    data: { name, slug }
   })
 
   revalidatePath('/categorias')
@@ -477,7 +544,7 @@ export async function submitContactForm(prevState, formData) {
   const privacyAccepted = formData.get('privacy') === 'on';
 
   try {
-   
+
     await prisma.contactMessage.create({
       data: {
         name,
@@ -491,17 +558,62 @@ export async function submitContactForm(prevState, formData) {
     return { success: 'Tu mensaje fue enviado con éxito.' };
 
   } catch (err) {
-   
+
     return { error: 'Ocurrió un error al registrar el mensaje. Intenta más tarde.' };
-  } 
+  }
 }
 
-  export async function  deleteMessage(formData) {
-    const id = Number(formData.get('id'))
-  
-    await prisma.contactMessage.delete({
-      where: { id }
-    })
-  
-    revalidatePath('/mensajes')
+export async function deleteMessage(formData) {
+  const id = Number(formData.get('id'))
+
+  await prisma.contactMessage.delete({
+    where: { id }
+  })
+
+  revalidatePath('/mensajes')
+}
+
+export async function actualizarImagenUsuario(userId, imageUrl) {
+  await prisma.user.update({
+    where: { id: userId },
+    data: { image: imageUrl }
+  });
+}
+export async function guardarDireccion(data) {
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+
+  if (!user || !user.id) {
+    throw new Error('No se ha iniciado sesión');
   }
+
+  try {
+    const nuevaDireccion = await prisma.address.create({
+      data: {
+        userId: user.id,
+        nombre: data.nombre,
+        apellido: data.apellido,
+        direccion1: data.direccion1,
+        direccion2: data.direccion2 || '',
+        ciudad: data.ciudad,
+        pais: data.pais,
+        provincia: data.provincia,
+        codigoPostal: data.codigoPostal,
+        telefono: data.telefono,
+      },
+    });
+
+    return { ok: true, direccion: nuevaDireccion };
+  } catch (error) {
+    console.error('Error al guardar dirección:', error);
+    return { ok: false, error: 'No se pudo guardar la dirección' };
+  }
+}
+
+
+
+
+
+
+
+

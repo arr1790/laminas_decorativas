@@ -1,11 +1,11 @@
 import Link from "next/link";
-import DropdownCategorias from "@/components/DropdownCategorias";
+import DropdownCategorias from "@/components/dropdownCategorias";
 import HeroSlider from "@/components/HeroSlider";
 import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white m-0 p-0">
+    <div className="min-h-screen bg-stone-200 m-0 p-0">
 
       <HeroSlider />
 
@@ -34,7 +34,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-gray-100 py-6 border-t border-gray-200 mt-6">
+      <footer className="bg-stone-100 py-6 border-t border-gray-200 mt-6">
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex flex-col md:flex-row flex-wrap justify-center gap-2 text-xs text-center">
             <Link href="/cookies" className="hover:underline">POLÍTICA DE COOKIES</Link>
@@ -63,7 +63,7 @@ function CategoryCard({ title, image, href }) {
           />
         </div>
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-white bg-opacity-90 p-2 rounded-md shadow-sm">
+          <div className="bg-stone-200 bg-opacity-90 p-2 rounded-md shadow-sm">
             <h3 className="text-gray-800 text-sm sm:text-base font-bold text-center">{title}</h3>
           </div>
         </div>

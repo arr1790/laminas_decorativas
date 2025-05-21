@@ -1,111 +1,86 @@
 'use client'
-import { useEffect } from "react";
-import { useId } from "react";
-import { useActionState } from "react";
-import { insertarProducto } from "@/lib/actions";
+import { insertarPedido } from "@/lib/actions";
+import { PlusIcon, RefreshCwIcon } from "lucide-react";
+import { useActionState, useEffect, useId } from "react";
 import { toast } from "sonner";
+import CheckBox from "../check-box";
 
-function ProductoInsertar() {
-    const formId = useId();
-    const [state, action, pending] = useActionState(insertarProducto, {});
+function PedidoInsertar({ user, products }) {
+    const formId = useId()
+    const [state, action, pending] = useActionState(insertarPedido, {})
 
     useEffect(() => {
         if (state.success) {
-            toast.success(state.success);
-            document.getElementById(formId)?.closest("dialog")?.close();
+            toast.success(state.success)
+            document.getElementById(formId)?.closest('dialog')?.close()
         }
-    }, [state, formId]);
+    }, [state])
 
     return (
-        <form
-            action={action}
-            id={formId}
-            className="bg-white p-6 rounded shadow-md space-y-4"
-        >
-            <div>
-                <label className="block mb-2">Nombre del Producto:</label>
-                <input 
-                    name="name"
-                    placeholder="Nombre del producto" 
-                    required 
-                    className="border p-2 rounded w-full"
-                />
-            </div>
-
-            <div>
-                <label className="block mb-2">Descripción:</label>
-                <textarea 
-                    name="description"
-                    placeholder="Descripción del producto" 
-                    required 
-                    className="border p-2 rounded w-full"
-                    rows={3}
-                />
-            </div>
-
-            <div>
-                <label className="block mb-2">Precio Base:</label>
-                <input 
-                    name="basePrice"
-                    type="number"
-                    step="0.01"
-                    placeholder="0.00" 
-                    required 
-                    className="border p-2 rounded w-full"
-                />
-            </div>
-
-            <div>
-                <label className="block mb-2">Dimensiones:</label>
-                <input 
-                    name="dimensions"
-                    placeholder="Ej: 30x40cm" 
-                    required 
-                    className="border p-2 rounded w-full"
-                />
-            </div>
-
-            <div className="flex items-center gap-2">
-                <input 
-                    name="withFrame"
-                    type="checkbox"
-                    id="withFrame"
-                    className="h-4 w-4"
-                />
-                <label htmlFor="withFrame">Incluye marco</label>
-            </div>
-
-            <div>
-                <label className="block mb-2">URL de la Imagen:</label>
-                <input 
-                    name="image"
-                    type="url"
-                    placeholder="https://ejemplo.com/imagen.jpg" 
-                    required 
-                    className="border p-2 rounded w-full"
-                />
-            </div>
-
-            <div>
-                <label className="block mb-2">ID de Categoría:</label>
-                <input 
-                    name="categoryId"
-                    type="number"
-                    placeholder="1" 
-                    required 
-                    className="border p-2 rounded w-full"
-                />
-            </div>
-
+        <form id={formId} action={action} className="flex flex-col gap-4">
             <button 
                 type="submit" 
                 disabled={pending}
-                className="border-2 border-black bg-green-500 text-white p-2 rounded w-full hover:bg-green-600 transition"
+                className='my-4 px-4 py-2 w-fit rounded-full self-end outline-none border border-green-500 text-green-700 bg-green-200 hover:bg-green-500 hover:text-white hover:cursor-pointer disabled:bg-zinc-400 disabled:text-zinc-100 disabled:cursor-default'
             >
-                {pending ? "Insertando producto..." : "Insertar Producto"}
+                {pending
+                    ? <div><RefreshCwIcon className='inline animate-spin' /> Guardando...</div>
+                    : <div><PlusIcon className='inline' /> Guardar </div>
+                }
             </button>
+
+            <label> Fecha y hora:
+                <input
+                    name="fecha_hora"
+                    type="datetime-local"
+                    defaultValue={new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('.')[0]} 
+                />
+            </label>
+
+            <input type='hidden' name="userId" defaultValue={user.id} />
+
+            <p className="font-bold">Productos</p>
+            <div className="grid gap-4 place-items-center grid-cols-[repeat(auto-fill,minmax(140px,1fr))]">
+                {products.map(product => (
+                    <CheckBox
+                        key={product.id}
+                        name={`product${product.id}`}
+                        className="place-items-center has-checked:bg-lime-100 has-checked:border has-checked:border-green-500 p-4 rounded-md"
+                    >
+                        <img 
+                            src={product.image || '/images/default-product.avif'} 
+                            alt={product.name} 
+                            className="w-full h-auto"
+                        />
+                        <span>{product.name}</span>
+                        <span>${product.basePrice}</span>
+                    </CheckBox>
+                ))}
+            </div>
+
+            <label>
+                Dirección de envío:
+                <select name="addressId" required>
+                    {user.addresses?.map(address => (
+                        <option key={address.id} value={address.id}>
+                            {address.direccion1}, {address.ciudad}
+                        </option>
+                    ))}
+                </select>
+            </label>
+
+            <label>
+                Estado del pedido:
+                <select name="status" defaultValue="PENDIENTE">
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="EN_PROCESO">En proceso</option>
+                    <option value="ENVIADO">Enviado</option>
+                    <option value="ENTREGADO">Entregado</option>
+                    <option value="CANCELADO">Cancelado</option>
+                </select>
+            </label>
         </form>
     );
 }
 
-export default ProductoInsertar;
+export default PedidoInsertar;

@@ -33,7 +33,7 @@ async function Categorias() {
       {/* Grid de Categorías */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {categorias.map((categoria) => (
-          <div key={categoria.id} className="bg-white shadow-md rounded-xl p-5 relative hover:shadow-lg transition-shadow">
+          <div key={categoria.id} className="bg-stone-200 shadow-md rounded-xl p-5 relative hover:shadow-lg transition-shadow">
             {/* Botones (solo admin) */}
             {session?.user.role === 'ADMIN' && (
               <div className="absolute top-3 right-3 flex gap-2">

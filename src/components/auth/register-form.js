@@ -1,65 +1,60 @@
-'use client'
-import { useActionState } from 'react'
-import { register } from '@/lib/actions'
+'use client';
+
+import { useActionState } from 'react';
+import { register } from '@/lib/actions';
 
 function RegisterForm({ className }) {
-    const [state, action, pending] = useActionState(register, {})
+  const [state, action, pending] = useActionState(register, {});
 
-    return (
-        <form action={action} className={`bg-white p-8 rounded-2xl shadow-lg border border-gray-200 ${className}`}>
-            <h1 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">Crear una cuenta</h1>
+  return (
+    <div className={`flex items-center justify-center bg-black ${className}`}>
+      <form
+        action={action}
+        className="relative bg-white p-8 md:p-16 rounded-lg shadow-2xl w-80 z-10 transform transition duration-500 ease-in-out"
+      >
+        <h1 className="text-3xl font-bold mb-8 text-gray-800 text-center">Crear cuenta</h1>
 
-            <div className='flex flex-col gap-5'>
-                <label className="text-gray-700 font-semibold">
-                    Nombre
-                    <input 
-                        type='text'
-                        name='name'
-                        // defaultValue={state.fields?.name || ''}
-                        placeholder="John Doe"
-                        className='w-full mt-2 p-3 border border-gray-300 rounded-xl bg-gray-50 focus:ring-4 focus:ring-blue-400 focus:border-blue-500 transition-all outline-none'
-                        required
-                    />
-                </label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Nombre completo"
+          className="mb-4 w-full h-12 border border-gray-800 px-3 rounded-lg"
+          required
+        />
 
-                <label className="text-gray-700 font-semibold">
-                    Email
-                    <input 
-                        type='email'
-                        name='email'
-                        // defaultValue={state.fields?.email || ''}
-                        placeholder="john.doe@example.com"
-                        className='peer w-full mt-2 p-3 border border-gray-300 rounded-xl bg-gray-50 focus:ring-4 focus:ring-blue-400 focus:border-blue-500 transition-all outline-none'
-                    />
-                    <p className="text-red-500 text-sm mt-1 hidden peer-invalid:block">
-                        ⚠️ Por favor, introduce un email válido.
-                    </p>
-                </label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          className="mb-4 w-full h-12 border border-gray-800 px-3 rounded-lg"
+          required
+        />
 
-                <label className="text-gray-700 font-semibold">
-                    Contraseña
-                    <input 
-                        type="password"
-                        name='password'
-                        // defaultValue={state.fields?.password || ''}
-                        // placeholder="******"
-                        className='w-full mt-2 p-3 border border-gray-300 rounded-xl bg-gray-50 focus:ring-4 focus:ring-blue-400 focus:border-blue-500 transition-all outline-none'
-                    />
-                </label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          className="mb-4 w-full h-12 border border-gray-800 px-3 rounded-lg"
+          required
+        />
 
-                <button 
-                    type="submit" 
-                    disabled={pending} 
-                    className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-3 rounded-xl shadow-md hover:opacity-90 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed"
-                >
-                    {pending ? 'Creando cuenta...' : 'Registrarse'}
-                </button>
+        <button
+          type="submit"
+          disabled={pending}
+          className="w-full h-12 bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          {pending ? 'Registrando...' : 'Registrarse'}
+        </button>
 
-                {state?.success && <p className="text-green-500 text-center font-medium mt-3">{state.success}</p>}
-                {state?.error && <p className="text-red-500 text-center font-medium mt-3">{state.error}</p>}
-            </div>
-        </form>
-    )
+        {state?.success && (
+          <p className="text-green-500 text-center font-medium mt-4">{state.success}</p>
+        )}
+        {state?.error && (
+          <p className="text-red-500 text-center font-medium mt-4">{state.error}</p>
+        )}
+      </form>
+    </div>
+  );
 }
 
 export default RegisterForm;

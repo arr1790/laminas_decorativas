@@ -4,8 +4,9 @@ import { useId } from "react";
 import { useActionState } from "react";
 import { modificarProducto } from "@/lib/actions";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
-function ProductoModificar({ producto }) {
+function ProductoModificar({ producto, categories }) {
     const formId = useId();
     const [state, action, pending] = useActionState(modificarProducto, {});
 
@@ -13,6 +14,9 @@ function ProductoModificar({ producto }) {
         if (state.success) {
             toast.success(state.success);
             document.getElementById(formId)?.closest("dialog")?.close();
+        }
+        if (state.error) {
+            toast.error(state.error);
         }
     }, [state, formId]);
 
@@ -26,95 +30,148 @@ function ProductoModificar({ producto }) {
 
             <input type="hidden" name="id" defaultValue={producto.id} />
 
-            <div>
-                <label className="block text-gray-700 font-medium mb-2">Nombre del Producto</label>
-                <input
-                    name="name"
-                    defaultValue={producto.name}
-                    placeholder="Nombre del producto"
-                    required
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                />
-            </div>
+            <div className="grid grid-cols-1 gap-4">
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Nombre del Producto *</label>
+                    <input
+                        name="name"
+                        defaultValue={producto.name}
+                        placeholder="Nombre del producto"
+                        required
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                    />
+                </div>
 
-            <div>
-                <label className="block text-gray-700 font-medium mb-2">Descripción</label>
-                <textarea
-                    name="description"
-                    defaultValue={producto.description}
-                    placeholder="Descripción del producto"
-                    required
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                    rows={3}
-                />
-            </div>
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Descripción *</label>
+                    <textarea
+                        name="description"
+                        defaultValue={producto.description}
+                        placeholder="Descripción del producto"
+                        required
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 min-h-[100px]"
+                    />
+                </div>
 
-            <div>
-                <label className="block text-gray-700 font-medium mb-2">Precio Base</label>
-                <input
-                    name="basePrice"
-                    type="number"
-                    step="0.01"
-                    defaultValue={producto.basePrice}
-                    placeholder="0.00"
-                    required
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                />
-            </div>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-gray-700 font-medium mb-2">Precio Base *</label>
+                        <div className="relative">
+                            <span className="absolute left-3 top-3">$</span>
+                            <input
+                                name="basePrice"
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                defaultValue={producto.basePrice}
+                                placeholder="0.00"
+                                required
+                                className="w-full p-3 pl-8 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                            />
+                        </div>
+                    </div>
 
-            <div>
-                <label className="block text-gray-700 font-medium mb-2">Dimensiones</label>
-                <input
-                    name="dimensions"
-                    defaultValue={producto.dimensions}
-                    placeholder="Ej: 30x40cm"
-                    required
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                />
-            </div>
+                    <div>
+                        <label className="block text-gray-700 font-medium mb-2">Dimensiones *</label>
+                        <input
+                            name="dimensions"
+                            defaultValue={producto.dimensions}
+                            placeholder="30x40cm"
+                            required
+                            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                        />
+                    </div>
+                </div>
 
-            <div className="flex items-center gap-2">
-                <input
-                    name="withFrame"
-                    type="checkbox"
-                    id="withFrame"
-                    defaultChecked={producto.withFrame}
-                    className="h-4 w-4"
-                />
-                <label htmlFor="withFrame">Incluye marco</label>
-            </div>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <input
+                            name="withFrame"
+                            type="checkbox"
+                            id="withFrame"
+                            defaultChecked={producto.withFrame}
+                            className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <label htmlFor="withFrame" className="text-gray-700">Incluye marco</label>
+                    </div>
+                </div>
 
-            <div>
-                <label className="block text-gray-700 font-medium mb-2">URL de la Imagen</label>
-                <input
-                    name="image"
-                    type="url"
-                    defaultValue={producto.image}
-                    placeholder="https://ejemplo.com/imagen.jpg"
-                    required
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                />
-            </div>
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Imagen Principal *</label>
+                    <input
+                        name="image"
+                        type="url"
+                        defaultValue={producto.image}
+                        placeholder="https://ejemplo.com/imagen.jpg"
+                        required
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                    />
+                    {producto.image && (
+                        <div className="mt-2">
+                            <img 
+                                src={producto.image} 
+                                alt="Preview" 
+                                className="h-32 w-32 object-cover rounded border"
+                            />
+                        </div>
+                    )}
+                </div>
 
-            <div>
-                <label className="block text-gray-700 font-medium mb-2">ID de Categoría</label>
-                <input
-                    name="categoryId"
-                    type="number"
-                    defaultValue={producto.categoryId}
-                    placeholder="1"
-                    required
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                />
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Imagen Hover (Opcional)</label>
+                    <input
+                        name="hoverImage"
+                        type="url"
+                        defaultValue={producto.hoverImage || ''}
+                        placeholder="https://ejemplo.com/hover-image.jpg"
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                    />
+                    {producto.hoverImage && (
+                        <div className="mt-2">
+                            <img 
+                                src={producto.hoverImage} 
+                                alt="Hover Preview" 
+                                className="h-32 w-32 object-cover rounded border"
+                            />
+                        </div>
+                    )}
+                </div>
+
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Categoría *</label>
+                    <select
+                        name="categoryId"
+                        defaultValue={producto.categoryId}
+                        required
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                    >
+                        {categories.map(category => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             <button
                 type="submit"
                 disabled={pending}
-                className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-200"
+                className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-400 flex items-center justify-center gap-2"
             >
-                {pending ? "Modificando producto..." : "Modificar Producto"}
+                {pending ? (
+                    <>
+                        <Loader2 className="animate-spin h-5 w-5" />
+                        <span>Guardando cambios...</span>
+                    </>
+                ) : (
+                    "Actualizar Producto"
+                )}
             </button>
+
+            {state.error && (
+                <p className="text-red-500 text-sm mt-2">{state.error}</p>
+            )}
         </form>
     );
 }

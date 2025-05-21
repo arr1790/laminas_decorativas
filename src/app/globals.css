@@ -48,3 +48,11 @@ body {
 .link-underline:hover {
   border-bottom: 2px solid #000;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

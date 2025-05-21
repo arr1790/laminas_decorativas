@@ -28,7 +28,7 @@ export default function HeroSlider() {
     };
 
     return (
-        <div className="relative w-full h-[70vh] md:h-[85vh] overflow-hidden">
+        <div className="relative w-full  md:h-[85vh] overflow-hidden">
             <Slider {...settings}>
                 {images.map((image, index) => (
                     <div key={index} className="relative w-full h-[50vh] md:h-[80vh] overflow-hidden">
