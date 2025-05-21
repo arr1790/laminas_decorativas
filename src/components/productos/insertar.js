@@ -4,7 +4,7 @@ import { insertarOrder } from "@/lib/actions";
 import { PlusIcon, RefreshCwIcon } from "lucide-react";
 import { useActionState, useEffect, useId } from "react";
 import { toast } from "sonner";
-
+import CheckBox from "../check-box";
 
 function PedidoInsertar({ user, products }) {
     const formId = useId()
