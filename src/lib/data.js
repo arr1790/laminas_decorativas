@@ -68,22 +68,45 @@ export async function obtenerCuentas(userId) {
 // lib/data.js
 export async function obtenerCarrito(userId) {
   try {
-    const carrito = await prisma.cart.findFirst({
+    let carrito = await prisma.cart.findFirst({
       where: { userId },
       include: {
         orderItems: {
           include: {
-            product: true
-          }
-        }
-      }
+            product: true,
+          },
+        },
+      },
     });
+
+    // Si no existe, lo creamos
+    if (!carrito) {
+      await prisma.cart.create({
+        data: { userId },
+      });
+
+      // Volvemos a buscarlo con los includes
+      carrito = await prisma.cart.findFirst({
+        where: { userId },
+        include: {
+          orderItems: {
+            include: {
+              product: true,
+            },
+          },
+        },
+      });
+
+      console.log('Nuevo carrito creado:', carrito);
+    }
+
     return carrito;
   } catch (error) {
-    console.error('Error al obtener carritos:', error);
+    console.error('Error al obtener o crear carrito:', error);
     return null;
   }
 }
+
 
 
 
