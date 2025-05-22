@@ -39,7 +39,7 @@ async function Header() {
 
                     {/* Iconos */}
                     <div className="flex items-center gap-4">
-                        <ModalCarrito carrito={carrito}/>
+                        <ModalCarrito carrito={carrito} session={session}/>
                             
                       
 
