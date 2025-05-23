@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from 'next/link';
 import CamposPersonalizados from "../campospersonalizados";
 import { insertarCarrito } from "@/lib/actions";
+import { useTransition } from 'react';
 
 
 export default function ProductoItem({ user, producto, relacionados = [] }) {
@@ -11,6 +12,20 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
   const [imagenActual, setImagenActual] = useState(0);
   console.log("Categoria slug:", producto.category?.slug);
 
+  const [isPending, startTransition] = useTransition();
+
+  async function handleSubmit(event) {
+    event.preventDefault(); // Evita el submit nativo
+
+    const formData = new FormData(event.target);
+
+    startTransition(() => {
+      insertarCarrito(formData).then(() => {
+        setNombre("");
+        setTextoPersonalizado("");
+      });
+    });
+  }
 
   const imagenes = producto.images || [producto.image || '/placeholder.png'];
 
@@ -74,23 +89,26 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
             <p className="text-gray-600">{producto.dimensions || "21X30"} ✔</p>
           </div>
 
-<form action={insertarCarrito}>
-  <input type="hidden" name="userId" value={user?.id} />
-          <input type="hidden" name="productId" value={producto.id} />
-          {producto.category?.slug !== 'Decorativas' && (
-            <CamposPersonalizados
-              categoria={producto.category}
-              nombre={nombre}
-              setNombre={setNombre}
-              textoPersonalizado={textoPersonalizado}
-              setTextoPersonalizado={setTextoPersonalizado}
-            />
-          )}
+          <form onSubmit={handleSubmit}>
+            <input type="hidden" name="userId" value={user?.id} />
+            <input type="hidden" name="productId" value={producto.id} />
+            {producto.category?.slug !== 'Decorativas' && (
+              <CamposPersonalizados
+                categoria={producto.category}
+                nombre={nombre}
+                setNombre={setNombre}
+                textoPersonalizado={textoPersonalizado}
+                setTextoPersonalizado={setTextoPersonalizado}
+              />
+            )}
 
-          
-          <button className="w-full bg-black hover:bg-gray-800 text-white py-3 px-4 rounded-none font-medium transition duration-150 mb-8 uppercase">
-            AÑADIR AL CARRITO
-          </button>
+            <button
+              type="submit"
+              className="w-full bg-black hover:bg-gray-800 text-white py-3 px-4 rounded-none font-medium transition duration-150 mb-8 uppercase"
+              disabled={isPending}
+            >
+              {isPending ? "Añadiendo..." : "AÑADIR AL CARRITO"}
+            </button>
           </form>
 
           <div className="mb-8">

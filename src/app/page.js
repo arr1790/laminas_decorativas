@@ -1,14 +1,14 @@
 import Link from "next/link";
 import HeroSlider from "@/components/HeroSlider";
 import Image from 'next/image';
+import Footer from "@/components/footer"; // ✅ nuevo import
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-stone-200 m-0 p-0">
-
       <HeroSlider />
 
-      <section >
+      <section>
         <div className="mx-auto max-w-6xl">
           <h2 className="text-xl md:text-2xl font-bold text-center mb-4 text-gray-800">
             NUESTRAS COLECCIONES
@@ -33,26 +33,16 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-stone-100 py-6 border-t border-gray-200 mt-6">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="flex flex-col md:flex-row flex-wrap justify-center gap-2 text-xs text-center">
-            <Link href="/cookies" className="hover:underline">POLÍTICA DE COOKIES</Link>
-            <Link href="/privacidad" className="hover:underline">POLÍTICA DE PRIVACIDAD</Link>
-            <Link href="/terminos" className="hover:underline">TÉRMINOS Y CONDICIONES</Link>
-          </div>
-          <div className="mt-4 text-center text-gray-500 text-xs">
-            ©️ {new Date().getFullYear()} Ana Ruano. Todos los derechos reservados.
-          </div>
-        </div>
-      </footer>
+      {/* ✅ Footer modular insertado */}
+      <Footer />
     </div>
   );
 }
+
 function CategoryCard({ title, image, href }) {
   return (
     <Link href={href} className="group block">
       <div className="relative overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow">
-        {/* Contenedor de imagen con altura adaptativa */}
         <div className="w-full bg-gray-100 aspect-[4/3] relative">
           <Image
             src={image}
@@ -67,7 +57,7 @@ function CategoryCard({ title, image, href }) {
           </div>
         </div>
       </div>
-      <h3 className="mt-2 text-sm sm:text-base font-medium text-center text-gray-800 group-hover:text-rose-500">
+      <h3 className="mt-2 text-sm sm:text-base font-medium text-center text-gray-800 group-hover:text-gray-900 transition-colors duration-300">
         {title}
       </h3>
     </Link>

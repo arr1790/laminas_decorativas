@@ -31,7 +31,7 @@ body {
   position: relative;
   width: 100%;
   padding-bottom: 125%; /* Ajusta según necesidad */
-  background-color: #f3f4f6; /* Mismo que bg-gray-100 */
+  background-color: #dac8b4; /* Mismo que bg-gray-100 */
   overflow: hidden;
   border-radius: 0.5rem; /* rounded-lg */
 }

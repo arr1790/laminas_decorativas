@@ -363,6 +363,21 @@ export async function deleteOrder(formData) {
 
   revalidatePath('/perfil')
   return { success: "Pedido eliminado correctamente" }
+
+  
+}
+
+export async function modificarOrder(formData) {
+  const id = Number(formData.get('id'))
+  const status = formData.get('status')
+
+  await prisma.order.update({
+    where: { id },
+    data: { status }
+  })
+
+  revalidatePath('/todospedidos')
+  return { success: "Pedido modificado correctamente" }
 }
 
 // ------------------------ CARTS ------------------------

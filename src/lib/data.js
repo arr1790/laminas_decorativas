@@ -65,7 +65,7 @@ export async function obtenerCuentas(userId) {
 
 // ---------------------   CARRITOS -----------------------
 
-// lib/data.js
+
 export async function obtenerCarrito(userId) {
   try {
     let carrito = await prisma.cart.findFirst({
