@@ -165,7 +165,7 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
 
           <div className="mb-8">
             <p className="text-gray-600">
-              Lámina personalizada "{producto.name}". Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
+              Lámina personalizada {producto.name}. Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
             </p>
           </div>
         </div>
