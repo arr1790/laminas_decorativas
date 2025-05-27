@@ -50,7 +50,7 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-gray-700 cursor-pointer">Inicio</Link> /{" "}
+        <Link href="/" className="hover:text-gray-700 cursor-pointer">Inicio</Link> /
         <Link href={`/categorias/${producto.category?.slug}`} className="hover:text-gray-700 cursor-pointer">
           {producto.category?.name || "Piorigo"}
         </Link>{" "}
