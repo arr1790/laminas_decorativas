@@ -7,6 +7,8 @@ import MobileMenu from './dropdownMobileButon'
 import { obtenerCategorias } from '@/lib/data'
 import { obtenerCarrito } from '@/lib/data'
 import ModalCarrito from './carrito/modal-carrito'
+import Search from './search'
+
 
 async function Header() {
     const session = await auth()
@@ -36,10 +38,13 @@ async function Header() {
                             <DropdownCategorias />
                         </div>
                     </nav>
+                      <Search />
 
                     {/* Iconos */}
                     <div className="flex items-center gap-4">
                         <ModalCarrito carrito={carrito} session={session}/>
+
+                  
                             
                       
 

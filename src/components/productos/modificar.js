@@ -146,7 +146,7 @@ function ProductoModificar({ producto, categories }) {
                         className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                     >
                         {categories.map(category => (
-                            <option key={category.id} value={category.id}>
+                            <option key={category.slug} value={category.id}>
                                 {category.name}
                             </option>
                         ))}

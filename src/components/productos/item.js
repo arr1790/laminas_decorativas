@@ -6,6 +6,7 @@ import CamposPersonalizados from "../campospersonalizados";
 import { insertarCarrito } from "@/lib/actions";
 import { useTransition } from 'react';
 import { toast } from "sonner";
+import Footer from "../footer";
 
 export default function ProductoItem({ user, producto, relacionados = [] }) {
   const [nombre, setNombre] = useState("");
@@ -48,6 +49,7 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
   const imagenes = producto.images || [producto.image || '/placeholder.png'];
 
   return (
+    <>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-sm text-gray-500 mb-6">
         <Link href="/" className="hover:text-gray-700 cursor-pointer">Inicio</Link> /
@@ -177,11 +179,11 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {relacionados.map((rel) => (
             <Link key={rel.id} href={`/productos/${rel.id}`} className="block group">
-              <div className="relative bg-gray-100 rounded-lg overflow-hidden aspect-square">
+              <div className="relative bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center max-h-96">
                 <img
                   src={rel.image || "/placeholder.png"}
                   alt={rel.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full object-contain group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <h3 className="mt-2 font-medium text-gray-900 group-hover:underline">{rel.name}</h3>
@@ -191,5 +193,8 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
         </div>
       </div>
     </div>
+     <Footer />
+     </>
   );
+
 }

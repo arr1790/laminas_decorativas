@@ -2,6 +2,7 @@
 import { auth } from "@/auth";
 import { getAllOrdersByUser } from "@/lib/actions";
 import PerfilUsuario from "@/components/perfilUsuario";
+import Footer from "@/components/footer";
 
 export default async function Page() {
   const sesion = await auth();
@@ -12,10 +13,14 @@ export default async function Page() {
     "https://res.cloudinary.com/arr17/image/upload/v1741363264/1200px-User_icon_2.svg_dyrkao.png";
 
   return (
+    <>
     <PerfilUsuario
       sesion={sesion}
       pedidos={pedidos}
       userImage={userImage}
     />
+    <Footer />
+    
+    </>
   );
 }

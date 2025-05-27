@@ -17,10 +17,10 @@ export async function register(prevState, formData) {
   const email = formData.get('email')
   const password = formData.get('password')
 
-  // Asigna un rol predeterminado de 'user'
-  const role = "user";  // O ajusta esto según lo que necesites
+ 
+  const role = "user"; 
 
-  // Comprobamos si el usuario ya está registrado
+  
   const user = await getUserByEmail(email);
 
   if (user) {
@@ -537,55 +537,6 @@ export async function eliminarCategoria(prevState, formData) {
 
 
 
-// ------------------------ CUSTOM DESIGNS ------------------------
-export async function insertarDiseno(formData) {
-  const userId = Number(formData.get('userId'))
-  const productId = Number(formData.get('productId'))
-  const designName = formData.get('designName')
-  const designImage = formData.get('designImage')
-
-  await prisma.customDesign.create({
-    data: {
-      userId,
-      productId,
-      designName,
-      designImage
-    }
-  })
-
-  revalidatePath('/disenos')
-}
-
-export async function modificarDiseno(formData) {
-  const id = Number(formData.get('id'))
-  const userId = Number(formData.get('userId'))
-  const productId = Number(formData.get('productId'))
-  const designName = formData.get('designName')
-  const designImage = formData.get('designImage')
-
-  await prisma.customDesign.update({
-    where: { id },
-    data: {
-      userId,
-      productId,
-      designName,
-      designImage
-    }
-  })
-
-  revalidatePath('/disenos')
-}
-
-export async function eliminarDiseno(formData) {
-  const id = Number(formData.get('id'))
-
-  await prisma.customDesign.delete({
-    where: { id }
-  })
-
-  revalidatePath('/disenos')
-}
-
 
 
 // ------------------------ CONTACT FORM ------------------------ 
@@ -665,7 +616,20 @@ export async function guardarDireccion(data) {
   }
 }
 
+export async function busqueda(query) {
+ const productos = await prisma.product.findMany({
+ 
 
+    where: {
+      OR: [
+        { name: { contains: query, mode: 'insensitive' } },
+        { description: { contains: query, mode: 'insensitive' } },
+      ],
+    },
+  })
+  
+  return productos 
+}
 
 
 

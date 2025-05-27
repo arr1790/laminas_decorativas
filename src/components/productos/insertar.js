@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import CheckBox from "../check-box";
 
 
-function PedidoInsertar({ user, products }) {
+function ProductoInsertar({ user, products }) {
     const formId = useId()
     const [state, action, pending] = useActionState(insertarOrder, {})
 
@@ -20,8 +20,8 @@ function PedidoInsertar({ user, products }) {
 
     return (
         <form id={formId} action={action} className="flex flex-col gap-4">
-            <button 
-                type="submit" 
+            <button
+                type="submit"
                 disabled={pending}
                 className='my-4 px-4 py-2 w-fit rounded-full self-end outline-none border border-green-500 text-green-700 bg-green-200 hover:bg-green-500 hover:text-white hover:cursor-pointer disabled:bg-zinc-400 disabled:text-zinc-100 disabled:cursor-default'
             >
@@ -35,12 +35,13 @@ function PedidoInsertar({ user, products }) {
                 <input
                     name="fecha_hora"
                     type="datetime-local"
-                    defaultValue={new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('.')[0]} 
+                    defaultValue={new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('.')[0]}
                 />
             </label>
 
-            <input type='hidden' name="userId" defaultValue={user.id} />
-
+            {user?.id && (
+                <input type='hidden' name="userId" defaultValue={user.id} />
+            )}
             <p className="font-bold">Productos</p>
             <div className="grid gap-4 place-items-center grid-cols-[repeat(auto-fill,minmax(140px,1fr))]">
                 {products.map(product => (
@@ -49,9 +50,9 @@ function PedidoInsertar({ user, products }) {
                         name={`product${product.id}`}
                         className="place-items-center has-checked:bg-lime-100 has-checked:border has-checked:border-green-500 p-4 rounded-md"
                     >
-                        <img 
-                            src={product.image || '/images/default-product.avif'} 
-                            alt={product.name} 
+                        <img
+                            src={product.image || '/images/default-product.avif'}
+                            alt={product.name}
                             className="w-full h-auto"
                         />
                         <span>{product.name}</span>
@@ -85,4 +86,4 @@ function PedidoInsertar({ user, products }) {
     );
 }
 
-export default PedidoInsertar;
+export default ProductoInsertar;

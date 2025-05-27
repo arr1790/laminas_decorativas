@@ -86,34 +86,101 @@ export default function PerfilUsuario({ sesion, pedidos, userImage }) {
 
       {/* Modal de pedido */}
       {pedidoActivo && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-[90%] max-w-lg">
-            <h2 className="text-xl font-bold mb-4">Factura del pedido</h2>
-            <div>
-              <p><strong>Nombre:</strong> {pedidoActivo?.user.name}</p>
-              <p><strong>Email:</strong> {pedidoActivo?.user.email}</p>
-              <p><strong>Fecha:</strong> {new Date(pedidoActivo?.orderDate).toLocaleDateString()}</p>
-              <p><strong>Estado:</strong> {pedidoActivo?.status}</p>
-            </div>
-            {pedidoActivo?.orderItems.map((item) => (
-              <div key={item.id}>
-                <img className="w-32 h-32" src={ item.product[0].image} alt="" />
-                <p><strong>cantidad:</strong> {item.cantidad}</p>
-                  <p><strong>nombre:</strong> {item.product[0].name}</p>
-                  <p><strong>precio:</strong> {item.product[0].basePrice} €</p>
-                  <p><strong>Estado:</strong> {item.product[0].dimensions}</p>
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-6">
+          <div className="bg-white rounded-lg shadow-xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <h2 className="text-3xl font-extrabold mb-6 text-center">
+              Factura - Laminara Montilla Córdoba 14550 CFI 1454581164894651
+            </h2>
+
+            <div className="flex justify-between mb-8 flex-wrap gap-6">
+              {/* Datos del usuario */}
+              <div className="flex-1 min-w-[280px]">
+                <h3 className="text-xl font-semibold mb-4">Datos del Cliente</h3>
+                <p><strong>Nombre:</strong> {pedidoActivo?.user.name}</p>
+                <p><strong>Email:</strong> {pedidoActivo?.user.email}</p>
+                <p><strong>Fecha:</strong> {new Date(pedidoActivo?.orderDate).toLocaleDateString()}</p>
+                <p><strong>Estado:</strong> {pedidoActivo?.status}</p>
               </div>
-            ))}
 
+              {/* Dirección de envío */}
+              <div className="flex-1 min-w-[280px] text-right">
+                <h3 className="text-xl font-semibold mb-4">Dirección de Envío</h3>
+                <p>{pedidoActivo.address?.direccion1}</p>
+                <p>{pedidoActivo.address?.direccion2}</p>
+                <p>{pedidoActivo.address?.ciudad}, {pedidoActivo.address?.codigoPostal}</p>
+                <p>{pedidoActivo.address?.pais}</p>
+              </div>
+            </div>
 
-            {/* Puedes mostrar más detalles aquí como productos, precio, etc. */}
+            <hr className="border-gray-300 mb-8" />
 
-            <button
-              className="mt-6 bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800"
-              onClick={() => setPedidoActivo(null)}
-            >
-              Cerrar
-            </button>
+            <h3 className="text-2xl font-semibold mb-6">Detalles del Pedido</h3>
+            <div className="space-y-6">
+              {pedidoActivo?.orderItems.map((item) => (
+                <div key={item.id} className="flex gap-6 items-center border-b border-gray-200 pb-4">
+                  <img
+                    className="w-28 h-28 object-cover rounded-lg"
+                    src={item.product[0].image}
+                    alt={item.product[0].name}
+                  />
+                  <div className="flex-grow">
+                    <p className="text-lg font-semibold">{item.product[0].name}</p>
+                    <p><strong>Cantidad:</strong> {item.cantidad}</p>
+                    <p><strong>Precio:</strong> {item.product[0].basePrice.toFixed(2)} €</p>
+                    <p><strong>Dimensiones:</strong> {item.product[0].dimensions}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 border-t border-gray-300 pt-6">
+              <div className="flex justify-between mb-2">
+                <span>Subtotal</span>
+                <span>
+                  {pedidoActivo.orderItems
+                    .reduce((total, item) => total + item.cantidad * (item.product[0].basePrice ?? 0), 0)
+                    .toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€
+                </span>
+              </div>
+
+              <div className="flex justify-between mb-2">
+                <span>Impuestos</span>
+                <span>
+                  {(
+                    pedidoActivo.orderItems.reduce(
+                      (total, item) => total + item.cantidad * (item.product[0].basePrice ?? 0),
+                      0
+                    ) * 0.21
+                  ).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€
+                </span>
+              </div>
+
+              <div className="flex justify-between mb-2">
+                <span>Gastos de envío</span>
+                <span>Gratis</span>
+              </div>
+
+              <hr className="my-4" />
+
+              <div className="flex justify-between font-semibold text-lg mb-4">
+                <span>Total</span>
+                <span>
+                  {(
+                    pedidoActivo.orderItems.reduce(
+                      (total, item) => total + item.cantidad * (item.product[0].basePrice ?? 0),
+                      0
+                    ) * 1.21
+                  ).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€
+                </span>
+              </div>
+            </div>
+            <div className="text-center mt-10">
+              <button
+                className="bg-gray-800 text-white px-8 py-3 rounded-lg hover:bg-gray-900 transition"
+                onClick={() => setPedidoActivo(null)}
+              >
+                Cerrar
+              </button>
+            </div>
           </div>
         </div>
       )}

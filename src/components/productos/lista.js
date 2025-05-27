@@ -11,7 +11,9 @@ import Modal from "../modal";
 export default async function Productos() {
     const session = await auth();
     const productos = await obtenerProductos();
+    console.log("Número de productos:", productos.length);
     const categorias = await obtenerCategorias();
+    const user = session?.user;
 
     return (
         <div className="flex flex-col gap-4">
@@ -22,7 +24,7 @@ export default async function Productos() {
                       Añadir producto
                     </button>
                   }>
-                    <ProductoInsertar categorias={categorias} />
+                    <ProductoInsertar user={user} products={productos} />
                 </Modal>
             )}
 
@@ -37,7 +39,7 @@ export default async function Productos() {
                                             <PencilIcon className='size-4' />
                                         </div>
                                     }>
-                                        <ProductoModificar producto={producto} categorias={categorias} />
+                                       <ProductoModificar producto={producto} categories={categorias} />
                                     </Modal>
 
                                     <Modal openElement={
@@ -56,7 +58,7 @@ export default async function Productos() {
                                 {producto.name}
                             </Link>
                             
-                            <imagen 
+                            <img
                                 src={producto.image} 
                                 alt={producto.name} 
                                 className="w-full h-48 object-cover rounded-lg"

@@ -64,8 +64,8 @@ async function PaginaLogin({ searchParams }) {
         <Globe />
       </label>
 
-      <RegisterForm className="hidden peer-checked/register:block w-full bg-[snow] mt-10 border-2 border-slate-400 rounded-md mx-auto p-8 " />
-      <LoginForm className="hidden peer-checked/login:block w-full bg-[snow] mt-10 border-2 border-slate-400 rounded-md mx-auto p-8 " />
+      <RegisterForm className="hidden peer-checked/register:block w-full  mx-auto p-8 " />
+      <LoginForm className="hidden peer-checked/login:block w-full mx-auto p-8 " />
       <OauthForm className="hidden peer-checked/oauth:block w-full bg-[snow] mt-10 border-2 border-slate-400 rounded-md mx-auto p-8 " />
       {error && <p className='text-red-400'>{errors.get(error)}</p>}
     </div>

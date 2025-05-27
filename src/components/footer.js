@@ -28,20 +28,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Logos de pago */}
-      <div className="mt-8 flex justify-center gap-4 flex-wrap">
-        {[
-          'amex', 'apple-pay', 'google-pay', 'klarna', 'mastercard',
-          'paypal', 'shop-pay', 'unionpay', 'visa'
-        ].map((name) => (
-          <img
-            key={name}
-            src={`/payments/${name}.svg`}
-            alt={name}
-            className="h-6"
-          />
-        ))}
-      </div>
+      
 
       {/* Copyright */}
       <div className="mt-6 text-center text-xs text-gray-400">

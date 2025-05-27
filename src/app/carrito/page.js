@@ -1,10 +1,11 @@
 
 import { auth } from "@/auth";
-import { insertarOrder, restarAlCarrito, sumarAlCarrito } from "@/lib/actions";
+import { eliminarDelCarrito, insertarOrder, restarAlCarrito, sumarAlCarrito } from "@/lib/actions";
 import { obtenerCarrito, obtenerDirecciones } from "@/lib/data";
 import { redirect } from "next/navigation";
 import provincias from "@/lib/provincias";
 import paisesUE from "@/lib/paisesUE";
+import Footer from "@/components/footer";
 
 async function page() {
     const session = await auth()
@@ -20,259 +21,282 @@ async function page() {
         return total + item.product[0].basePrice * item.cantidad;
     }, 0);
 
- if (precioTotal === 0) {
-        return (
-            "no hay nada en el carro"
-        )
-    }
+   if (precioTotal === 0) {
+  return (
+    <div className="flex flex-col items-center justify-center py-10">
+      <img 
+        src="/carrovacio.png" // Asegúrate de que esta imagen esté en la carpeta public/
+        alt="Carro vacío"
+        className="w-100 h-100 mb-4 opacity-70"
+      />
+      <p className="text-lg text-gray-600">Su carrito esta vacio</p>
+    </div>
+  );
+}
 
     return (
-        <div className="bg-gray-100 min-h-screen py-8">
-            <div className="container mx-auto px-4">
-                <h1 className="text-2xl font-semibold mb-4">Carrito</h1>
-                <div className="flex flex-col md:flex-row gap-4">
-                    <div className="md:w-3/4">
-                        <div className="bg-white rounded-lg shadow-md p-6 mb-4">
-                            <table className="w-full">
-                                <thead>
-                                    <tr>
-                                        <th className="text-left font-semibold">Producto</th>
-                                        <th className="text-left font-semibold">Precio</th>
-                                        <th className="text-left font-semibold">Cantidad</th>
-                                        <th className="text-left font-semibold">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {carrito.orderItems.map((item) => (
-                                        <tr key={item.id}>
-                                            <td className="py-4">
-                                                <div className="flex items-center">
-                                                    <img className="h-30 w-20 mr-4" src={item.product[0].image} alt="Product image" />
-                                                    <span className="font-semibold">{item.product[0].name}</span>
-                                                </div>
-                                            </td>
-                                            <td className="py-4">{item.product[0].basePrice.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</td>
-                                            <td className="py-4
-                                            ">
-                                                <div className="flex items-center gap-1">
-                                                    <form action={restarAlCarrito}>
-                                                        <input type="hidden" name="orderItemId" value={item.id} />
-                                                        <button
-                                                            type="submit"
-                                                            className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
-                                                            aria-label="Restar uno"
-                                                        >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
-                                                            </svg>
-                                                        </button>
-                                                    </form>
-
-                                                    <p className="text-gray-700 w-5 text-center">{item.cantidad}</p>
-
-                                                    <form action={sumarAlCarrito}>
-                                                        <input type="hidden" name="orderItemId" value={item.id} />
-                                                        <button
-                                                            type="submit"
-                                                            className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
-                                                            aria-label="Sumar uno"
-                                                        >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
-                                                            </svg>
-                                                        </button>
-                                                    </form>
-                                                </div>
-
-                                            </td>
-                                            <td className="py-4">{(item.product[0].basePrice * item.cantidad).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</td>
+        <>
+            <div className="bg-gray-100 min-h-screen py-8">
+                <div className="container mx-auto px-4">
+                    <h1 className="text-2xl font-semibold mb-4">Carrito</h1>
+                    <div className="flex flex-col md:flex-row gap-4">
+                        <div className="md:w-3/4">
+                            <div className="bg-white rounded-lg shadow-md p-6 mb-4">
+                                <table className="w-full">
+                                    <thead>
+                                        <tr>
+                                            <th className="text-left font-semibold">Producto</th>
+                                            <th className="text-left font-semibold">Precio</th>
+                                            <th className="text-left font-semibold">Cantidad</th>
+                                            <th className="text-left font-semibold">Total</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        {carrito.orderItems.map((item) => (
+                                            <tr key={item.id}>
+                                                <td className="py-4">
+                                                    <div className="flex items-center">
+                                                        <img className="h-30 w-20 mr-4" src={item.product[0].image} alt="Product image" />
+                                                        <span className="font-semibold">{item.product[0].name}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="py-4">{item.product[0].basePrice.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</td>
+                                                <td className="py-4
+                                            ">
+                                                    <div className="flex items-center gap-1">
+                                                        <form action={restarAlCarrito}>
+                                                            <input type="hidden" name="orderItemId" value={item.id} />
+                                                            <button
+                                                                type="submit"
+                                                                className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+                                                                aria-label="Restar uno"
+                                                            >
+                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                                    <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
+                                                                </svg>
+                                                            </button>
+                                                        </form>
 
-                        {/* Sección de Contacto y Dirección */}
+                                                        <p className="text-gray-700 w-5 text-center">{item.cantidad}</p>
+
+                                                        <form action={sumarAlCarrito}>
+                                                            <input type="hidden" name="orderItemId" value={item.id} />
+                                                            <button
+                                                                type="submit"
+                                                                className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+                                                                aria-label="Sumar uno"
+                                                            >
+                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                                    <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                                                </svg>
+                                                            </button>
+                                                        </form>
+                                                        {/* Botón eliminar */}
+                                                        <form action={eliminarDelCarrito}>
+                                                            <input type="hidden" name="orderItemId" value={item.id} />
+                                                            <button
+                                                                type="submit"
+                                                                className="p-1 text-red-500 hover:text-red-700 rounded-full hover:bg-red-100 ml-4"
+                                                                aria-label="Eliminar producto"
+                                                            >
+                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                                    <path fillRule="evenodd" d="M6 7a1 1 0 012 0v7a1 1 0 11-2 0V7zm4 0a1 1 0 012 0v7a1 1 0 11-2 0V7zM4 5h12v2H4V5zm3-2h2v1H7V3zM5 6h10l-1 9a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6z" clipRule="evenodd" />
+                                                                </svg>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+
+                                                </td>
+                                                <td className="py-4">{(item.product[0].basePrice * item.cantidad).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Sección de Contacto y Dirección */}
+
+                        </div>
+                        <form action={insertarOrder} className="max-w-6xl mx-auto px-4 py-8">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {/* Información de contacto y envío */}
+                                <div className="md:col-span-2">
+                                    <div className="bg-white rounded-lg shadow-md p-6">
+                                        <h2 className="text-2xl font-bold mb-6">Contacto</h2>
+
+                                        <div className="mb-6">
+                                            <h3 className="font-medium mb-2 text-gray-700">Correo electrónico</h3>
+                                            <div className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    id="newsletter"
+                                                    className="mr-2 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500 rounded"
+                                                />
+                                                <label htmlFor="newsletter" className="text-gray-700">
+                                                    Envíame novedades y ofertas por correo electrónico
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <hr className="my-6" />
+
+                                        <h2 className="text-2xl font-bold mb-6">Dirección de envío</h2>
+                                        <div className="space-y-4">
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                                                    <input
+                                                        name="nombre"
+                                                        type="text"
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Nombre"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
+                                                    <input
+                                                        name="apellido"
+                                                        type="text"
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Apellidos"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                                                <input
+                                                    name="direccion1"
+                                                    type="text"
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="Dirección"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Casa, apartamento, etc. (opcional)</label>
+                                                <input
+                                                    name="direccion2"
+                                                    type="text"
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="Piso, puerta, etc."
+                                                />
+                                            </div>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">País/Región</label>
+                                                    <select
+                                                        name="pais"
+                                                        defaultValue="España"
+                                                        required
+                                                        className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    >
+                                                        {paisesUE.map((pais) => (
+                                                            <option key={pais} value={pais}>{pais}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Provincia</label>
+                                                    <select
+                                                        name="provincia"
+                                                        defaultValue="La Coruña"
+                                                        required
+                                                        className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    >
+                                                        {provincias.map((prov) => (
+                                                            <option key={prov} value={prov}>{prov}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Código Postal</label>
+                                                    <input
+                                                        name="codigoPostal"
+                                                        type="text"
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Código postal"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Ciudad</label>
+                                                    <input
+                                                        name="ciudad"
+                                                        type="text"
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Ciudad"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                                                    <input
+                                                        name="telefono"
+                                                        type="tel"
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Teléfono"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                                    <input
+                                                        name="email"
+                                                        type="email"
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="ejemplo@ejemplo.com"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Resumen del pedido */}
+                                <div className="sticky top-4">
+                                    <div className="bg-white rounded-lg shadow-md p-6">
+                                        <h2 className="text-lg font-semibold mb-4">Resumen</h2>
+                                        <div className="flex justify-between mb-2">
+                                            <span>Subtotal</span>
+                                            <span>{precioTotal.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
+                                        </div>
+                                        <div className="flex justify-between mb-2">
+                                            <span>Impuestos</span>
+                                            <span>{(precioTotal * 0.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
+                                        </div>
+                                        <div className="flex justify-between mb-2">
+                                            <span>Gastos de envío</span>
+                                            <span>Gratis</span>
+                                        </div>
+                                        <hr className="my-4" />
+                                        <div className="flex justify-between font-semibold text-lg mb-4">
+                                            <span>Total</span>
+                                            <span>{(precioTotal * 1.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
+                                        </div>
+
+                                        <input type="hidden" name="userId" value={session.user.id} />
+                                        <button
+                                            type="submit"
+                                            className="bg-blue-600 text-white py-3 px-4 rounded-lg w-full hover:bg-blue-700 transition font-semibold"
+                                        >
+                                            Finalizar Pedido
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
 
                     </div>
-                    <form action={insertarOrder} className="max-w-6xl mx-auto px-4 py-8">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {/* Información de contacto y envío */}
-                            <div className="md:col-span-2">
-                                <div className="bg-white rounded-lg shadow-md p-6">
-                                    <h2 className="text-2xl font-bold mb-6">Contacto</h2>
-
-                                    <div className="mb-6">
-                                        <h3 className="font-medium mb-2 text-gray-700">Correo electrónico</h3>
-                                        <div className="flex items-center">
-                                            <input
-                                                type="checkbox"
-                                                id="newsletter"
-                                                className="mr-2 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500 rounded"
-                                            />
-                                            <label htmlFor="newsletter" className="text-gray-700">
-                                                Envíame novedades y ofertas por correo electrónico
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <hr className="my-6" />
-
-                                    <h2 className="text-2xl font-bold mb-6">Dirección de envío</h2>
-                                    <div className="space-y-4">
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                                                <input
-                                                    name="nombre"
-                                                    type="text"
-                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                    placeholder="Nombre"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
-                                                <input
-                                                    name="apellido"
-                                                    type="text"
-                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                    placeholder="Apellidos"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
-                                            <input
-                                                name="direccion1"
-                                                type="text"
-                                                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                placeholder="Dirección"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Casa, apartamento, etc. (opcional)</label>
-                                            <input
-                                                name="direccion2"
-                                                type="text"
-                                                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                placeholder="Piso, puerta, etc."
-                                            />
-                                        </div>
-
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">País/Región</label>
-                                                <select
-                                                    name="pais"
-                                                    defaultValue="España"
-                                                    required
-                                                    className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                >
-                                                    {paisesUE.map((pais) => (
-                                                        <option key={pais} value={pais}>{pais}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Provincia</label>
-                                                <select
-                                                    name="provincia"
-                                                    defaultValue="La Coruña"
-                                                    required
-                                                    className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                >
-                                                    {provincias.map((prov) => (
-                                                        <option key={prov} value={prov}>{prov}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Código Postal</label>
-                                                <input
-                                                    name="codigoPostal"
-                                                    type="text"
-                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                    placeholder="Código postal"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Ciudad</label>
-                                                <input
-                                                    name="ciudad"
-                                                    type="text"
-                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                    placeholder="Ciudad"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-                                                <input
-                                                    name="telefono"
-                                                    type="tel"
-                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                    placeholder="Teléfono"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                                <input
-                                                    name="email"
-                                                    type="email"
-                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
-                                                    placeholder="ejemplo@ejemplo.com"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Resumen del pedido */}
-                            <div className="sticky top-4">
-                                <div className="bg-white rounded-lg shadow-md p-6">
-                                    <h2 className="text-lg font-semibold mb-4">Resumen</h2>
-                                    <div className="flex justify-between mb-2">
-                                        <span>Subtotal</span>
-                                        <span>{precioTotal.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
-                                    </div>
-                                    <div className="flex justify-between mb-2">
-                                        <span>Impuestos</span>
-                                        <span>{(precioTotal * 0.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
-                                    </div>
-                                    <div className="flex justify-between mb-2">
-                                        <span>Gastos de envío</span>
-                                        <span>Gratis</span>
-                                    </div>
-                                    <hr className="my-4" />
-                                    <div className="flex justify-between font-semibold text-lg mb-4">
-                                        <span>Total</span>
-                                        <span>{(precioTotal * 1.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
-                                    </div>
-
-                                    <input type="hidden" name="userId" value={session.user.id} />
-                                    <button
-                                        type="submit"
-                                        className="bg-blue-600 text-white py-3 px-4 rounded-lg w-full hover:bg-blue-700 transition font-semibold"
-                                    >
-                                        Finalizar Pedido
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
 
                 </div>
 
-            </div>
-
-        </div >
+            </div >
+            <Footer />
+        </>
     );
 }
 

@@ -14,6 +14,8 @@ function ModalCarrito({ carrito, session }) {
 
   const totalItems = carrito?.orderItems?.reduce((total, item) => total + item.cantidad, 0) || 0;
 
+
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -73,6 +75,16 @@ function ModalCarrito({ carrito, session }) {
                           </svg>
                         </button>
                       </div>
+                      {precioTotal === 0 && (
+                        <div className="flex flex-col items-center justify-center py-10">
+                          <img
+                            src="/carrovacio.png" // Asegúrate de que esta imagen esté en la carpeta public/
+                            alt="Carro vacío"
+                            className="w-100 h-100 mb-4 opacity-70"
+                          />
+                          <p className="text-lg text-gray-600">Su carrito está vacío</p>
+                        </div>
+                      )}
 
                       <ul role="list" className="-my-6 divide-y divide-gray-200 mt-8">
                         {carrito.orderItems.map((item) => (

@@ -7,10 +7,10 @@ function RegisterForm({ className }) {
   const [state, action, pending] = useActionState(register, {});
 
   return (
-    <div className={`flex items-center justify-center bg-black ${className}`}>
+    <div className={ `mt-10 ${className}` } >
       <form
         action={action}
-        className="relative bg-white p-8 md:p-16 rounded-lg shadow-2xl w-80 z-10 transform transition duration-500 ease-in-out"
+       
       >
         <h1 className="text-3xl font-bold mb-8 text-gray-800 text-center">Crear cuenta</h1>
 
