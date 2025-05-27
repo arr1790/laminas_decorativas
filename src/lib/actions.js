@@ -27,6 +27,11 @@ export async function register(prevState, formData) {
     return { error: 'El email ya está registrado' }
   }
 
+  const regexp_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}$/;
+
+  if( !regexp_password.test(password) ) {
+    return { error: 'La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un carácter especial.' }
+  }
   // Encriptamos password 
   const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -68,12 +73,14 @@ export async function login(prevState, formData) {
 
   if (user && matchPassword) {
 
-    await signIn('credentials', {
-
+  
+      await signIn('credentials', {
       email,
       password,
       redirectTo: globalThis.callbackUrl
     })
+  
+    
 
     // if (result?.error) {
     //   return { error: 'Error en autenticación: ' + result.error }
@@ -283,28 +290,61 @@ export async function eliminarProducto(prevState, formData) {
 // ------------------------ ORDERS ------------------------
 
 export async function insertarOrder(formData) {
-  const userId = formData.get('userId');
+  const userId = formData.get("userId");
 
   const carrito = await obtenerCarrito(userId);
 
   if (!carrito) {
-    throw new Error('Carrito no encontrado para el usuario ' + userId);
+    throw new Error("Carrito no encontrado para el usuario " + userId);
   }
+
+  // ✅ 1. Obtener campos del formulario
+  const nombre = formData.get("nombre")?.toString() || "";
+  const apellido = formData.get("apellido")?.toString() || "";
+  const direccion1 = formData.get("direccion1")?.toString() || "";
+  const direccion2 = formData.get("direccion2")?.toString() || "";
+  const ciudad = formData.get("ciudad")?.toString() || "";
+  const pais = formData.get("pais")?.toString() || "";
+  const provincia = formData.get("provincia")?.toString() || "";
+  const codigoPostal = formData.get("codigoPostal")?.toString() || "";
+  const telefono = formData.get("telefono")?.toString() || "";
+  const email = formData.get("email")?.toString() || "";
+
+  // ✅ 2. Crear dirección en base de datos
+  const direccion = await prisma.address.create({
+    data: {
+      userId,
+      nombre,
+      apellido,
+      direccion1,
+      direccion2,
+      ciudad,
+      pais,
+      provincia,
+      codigoPostal,
+      telefono,
+      email
+    },
+  });
 
   const total = carrito.orderItems.reduce(
     (sum, item) => sum + Number(item.product[0].basePrice) * item.cantidad,
     0
   );
 
+  // ✅ 3. Crear pedido conectando dirección correctamente
   const nuevoPedido = await prisma.order.create({
     data: {
-      status: 'pendiente',
+      status: "pendiente",
       total: total,
+      address: {
+        connect: { id: direccion.id }, // 👈 CORRECTO
+      },
       user: {
         connect: { id: userId },
       },
       orderItems: {
-        create: carrito.orderItems.map(item => ({
+        create: carrito.orderItems.map((item) => ({
           cantidad: item.cantidad,
           product: {
             connect: { id: item.productId },
@@ -315,13 +355,13 @@ export async function insertarOrder(formData) {
     },
   });
 
-  // Aquí usas carrito, asegúrate que está definido
+  // ✅ 4. Limpiar carrito (si aplica)
   await prisma.orderItem.updateMany({
     where: { cartId: carrito.id },
     data: { cartId: null },
   });
 
-  redirect('/perfil');
+  redirect("/perfil");
 }
 
 
@@ -330,6 +370,7 @@ export async function getAllOrdersByUser(userId) {
     where: { userId },
     include: {
       user: true,
+      address: true,
       orderItems: {
         include: {
           product: true,

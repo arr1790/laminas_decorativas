@@ -1,22 +1,39 @@
 'use client';
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from 'next/link';
+import { Search, ZoomIn, ZoomOut } from "lucide-react";
 import CamposPersonalizados from "../campospersonalizados";
 import { insertarCarrito } from "@/lib/actions";
 import { useTransition } from 'react';
-
+import { toast } from "sonner";
 
 export default function ProductoItem({ user, producto, relacionados = [] }) {
   const [nombre, setNombre] = useState("");
   const [textoPersonalizado, setTextoPersonalizado] = useState("");
   const [imagenActual, setImagenActual] = useState(0);
-  console.log("Categoria slug:", producto.category?.slug);
-
+  const [zoomActive, setZoomActive] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 }); // Posición inicial centrada
+  const imgRef = useRef(null);
   const [isPending, startTransition] = useTransition();
 
-  async function handleSubmit(event) {
-    event.preventDefault(); // Evita el submit nativo
+  const handleImageClick = (e) => {
+    if (!zoomActive) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomPosition({ x, y });
+  };
 
+  const toggleZoom = (e) => {
+    e.stopPropagation();
+    setZoomActive(!zoomActive);
+    // Resetear a la posición central al desactivar
+    if (!zoomActive) setZoomPosition({ x: 50, y: 50 });
+  };
+
+  async function handleSubmit(event) {
+    event.preventDefault();
     const formData = new FormData(event.target);
 
     startTransition(() => {
@@ -24,6 +41,7 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
         setNombre("");
         setTextoPersonalizado("");
       });
+     toast.success('Añadido al carrito ' + producto.name)
     });
   }
 
@@ -42,22 +60,58 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
         {/* Galería de imágenes */}
         <div className="flex flex-col h-full">
-          <div className="flex-grow flex items-center justify-center overflow-hidden rounded-lg">
-            <img
-              src={imagenes[imagenActual]}
-              alt={producto.name}
-              className="w-full h-full max-h-[700px] object-contain object-center rounded-md shadow"
-            />
+          <div className="flex-grow flex items-center justify-center overflow-hidden rounded-lg relative">
+            <div 
+              className="relative w-full h-full"
+              onClick={handleImageClick}
+            >
+              <img
+                ref={imgRef}
+                src={imagenes[imagenActual]}
+                alt={producto.name}
+                className={`w-full h-full max-h-[700px] object-contain object-center rounded-md shadow transition-all duration-300 ${
+                  zoomActive ? 'cursor-crosshair' : 'cursor-default'
+                }`}
+                style={{
+                  transform: zoomActive ? 'scale(1.8)' : 'scale(1)',
+                  transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`
+                }}
+              />
+              
+              <button 
+                onClick={toggleZoom}
+                className={`absolute bottom-4 right-4 p-2 rounded-full transition-all ${
+                  zoomActive ? 'bg-indigo-600 text-white' : 'bg-white/80 text-gray-800 hover:bg-white'
+                } shadow-md`}
+                aria-label={zoomActive ? "Desactivar zoom" : "Activar zoom"}
+              >
+                {zoomActive ? (
+                  <ZoomOut className="w-5 h-5" strokeWidth={2.5} />
+                ) : (
+                  <ZoomIn className="w-5 h-5" strokeWidth={2.5} />
+                )}
+              </button>
+            </div>
           </div>
+
           {imagenes.length > 1 && (
-            <div className="flex mt-4 space-x-2">
+            <div className="flex mt-4 space-x-2 overflow-x-auto py-2">
               {imagenes.map((img, index) => (
                 <button
                   key={index}
-                  onClick={() => setImagenActual(index)}
-                  className={`w-16 h-16 rounded-md overflow-hidden border-2 ${imagenActual === index ? 'border-indigo-600' : 'border-transparent'}`}
+                  onClick={() => {
+                    setImagenActual(index);
+                    setZoomActive(false);
+                  }}
+                  className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 ${
+                    imagenActual === index ? 'border-indigo-600' : 'border-gray-200'
+                  }`}
                 >
-                  <img src={img} alt={`Vista ${index + 1}`} className="w-full h-full object-cover" />
+                  <img 
+                    src={img} 
+                    alt={`Vista ${index + 1}`} 
+                    className="w-full h-full object-cover" 
+                  />
                 </button>
               ))}
             </div>
@@ -73,8 +127,6 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">{producto.name}</h1>
-
-
 
           <div className="flex items-center mb-6">
             <span className="text-2xl font-bold text-gray-900 mr-4">
@@ -113,7 +165,7 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
 
           <div className="mb-8">
             <p className="text-gray-600">
-              Lámina personalizada  &quot;{producto.name}&quot;. Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
+              Lámina personalizada "{producto.name}". Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
             </p>
           </div>
         </div>
@@ -125,7 +177,7 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {relacionados.map((rel) => (
             <Link key={rel.id} href={`/productos/${rel.id}`} className="block group">
-              <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+              <div className="relative bg-gray-100 rounded-lg overflow-hidden aspect-square">
                 <img
                   src={rel.image || "/placeholder.png"}
                   alt={rel.name}

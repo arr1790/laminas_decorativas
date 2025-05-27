@@ -16,6 +16,7 @@ console.log("Categoria:", cat);
             <input
               type="text"
               name="text1"
+              required
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -62,6 +63,7 @@ console.log("Categoria:", cat);
              name="text1"
               type="text"
               value={nombre}
+                required
               onChange={(e) => setNombre(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Escribe los nombres"

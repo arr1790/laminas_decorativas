@@ -1,7 +1,7 @@
 
 import { auth } from "@/auth";
 import { insertarOrder, restarAlCarrito, sumarAlCarrito } from "@/lib/actions";
-import { obtenerCarrito } from "@/lib/data";
+import { obtenerCarrito, obtenerDirecciones } from "@/lib/data";
 import { redirect } from "next/navigation";
 import provincias from "@/lib/provincias";
 import paisesUE from "@/lib/paisesUE";
@@ -12,11 +12,19 @@ async function page() {
     if (!session) {
         redirect('/auth/login')
     }
+
+
     const carrito = session ? await obtenerCarrito(session.user.id) : []
 
     const precioTotal = carrito.orderItems.reduce((total, item) => {
         return total + item.product[0].basePrice * item.cantidad;
     }, 0);
+
+ if (precioTotal === 0) {
+        return (
+            "no hay nada en el carro"
+        )
+    }
 
     return (
         <div className="bg-gray-100 min-h-screen py-8">
@@ -85,153 +93,186 @@ async function page() {
                         </div>
 
                         {/* Sección de Contacto y Dirección */}
-                        <div className="bg-white rounded-lg shadow-md p-6 mb-4">
-                            <h2 className="text-xl font-semibold mb-4">Contacto</h2>
 
-                            <div className="mb-6">
-                                <h3 className="font-medium mb-2">Correo electrónico</h3>
-                                <div className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        id="newsletter"
-                                        className="mr-2 h-4 w-4 text-blue-600 rounded"
-                                    />
-                                    <label htmlFor="newsletter">Envíame novedades y ofertas por correo electrónico</label>
+                    </div>
+                    <form action={insertarOrder} className="max-w-6xl mx-auto px-4 py-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {/* Información de contacto y envío */}
+                            <div className="md:col-span-2">
+                                <div className="bg-white rounded-lg shadow-md p-6">
+                                    <h2 className="text-2xl font-bold mb-6">Contacto</h2>
+
+                                    <div className="mb-6">
+                                        <h3 className="font-medium mb-2 text-gray-700">Correo electrónico</h3>
+                                        <div className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id="newsletter"
+                                                className="mr-2 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500 rounded"
+                                            />
+                                            <label htmlFor="newsletter" className="text-gray-700">
+                                                Envíame novedades y ofertas por correo electrónico
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <hr className="my-6" />
+
+                                    <h2 className="text-2xl font-bold mb-6">Dirección de envío</h2>
+                                    <div className="space-y-4">
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                                                <input
+                                                    name="nombre"
+                                                    type="text"
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="Nombre"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
+                                                <input
+                                                    name="apellido"
+                                                    type="text"
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="Apellidos"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                                            <input
+                                                name="direccion1"
+                                                type="text"
+                                                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                placeholder="Dirección"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Casa, apartamento, etc. (opcional)</label>
+                                            <input
+                                                name="direccion2"
+                                                type="text"
+                                                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                placeholder="Piso, puerta, etc."
+                                            />
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">País/Región</label>
+                                                <select
+                                                    name="pais"
+                                                    defaultValue="España"
+                                                    required
+                                                    className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                >
+                                                    {paisesUE.map((pais) => (
+                                                        <option key={pais} value={pais}>{pais}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Provincia</label>
+                                                <select
+                                                    name="provincia"
+                                                    defaultValue="La Coruña"
+                                                    required
+                                                    className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                >
+                                                    {provincias.map((prov) => (
+                                                        <option key={prov} value={prov}>{prov}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Código Postal</label>
+                                                <input
+                                                    name="codigoPostal"
+                                                    type="text"
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="Código postal"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Ciudad</label>
+                                                <input
+                                                    name="ciudad"
+                                                    type="text"
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="Ciudad"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                                                <input
+                                                    name="telefono"
+                                                    type="tel"
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="Teléfono"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                                <input
+                                                    name="email"
+                                                    type="email"
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="ejemplo@ejemplo.com"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <hr className="my-4" />
+                            {/* Resumen del pedido */}
+                            <div className="sticky top-4">
+                                <div className="bg-white rounded-lg shadow-md p-6">
+                                    <h2 className="text-lg font-semibold mb-4">Resumen</h2>
+                                    <div className="flex justify-between mb-2">
+                                        <span>Subtotal</span>
+                                        <span>{precioTotal.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
+                                    </div>
+                                    <div className="flex justify-between mb-2">
+                                        <span>Impuestos</span>
+                                        <span>{(precioTotal * 0.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
+                                    </div>
+                                    <div className="flex justify-between mb-2">
+                                        <span>Gastos de envío</span>
+                                        <span>Gratis</span>
+                                    </div>
+                                    <hr className="my-4" />
+                                    <div className="flex justify-between font-semibold text-lg mb-4">
+                                        <span>Total</span>
+                                        <span>{(precioTotal * 1.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
+                                    </div>
 
-                            <h2 className="text-xl font-semibold mb-4">Dirección de envío</h2>
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">Nombre</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-2 border rounded"
-                                            placeholder="Nombre"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">Apellidos</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-2 border rounded"
-                                            placeholder="Apellidos"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Dirección</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-2 border rounded"
-                                        placeholder="Dirección"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Casa, apartamento, etc. (opcional)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-2 border rounded"
-                                        placeholder="Piso, puerta, etc."
-                                    />
-                                </div>
-
-                                {/* Grupo de País, Provincia y Código Postal */}
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">País/Región</label>
-                                        <select
-                                            name="pais"
-                                            defaultValue="España"
-                                            required
-                                            className="w-full bg-white text-gray-800 border border-gray-300 rounded-md p-2 appearance-none focus:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-                                        >
-                                            {paisesUE.map((pais) => (
-                                                <option key={pais} value={pais}>{pais}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">Provincia</label>
-                                        <select
-                                            name="provincia"
-                                            defaultValue="La Coruña"
-                                            required
-                                            className="w-full bg-white text-gray-800 border border-gray-300 rounded-md p-2 appearance-none focus:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-                                        >
-                                            {provincias.map((prov) => (
-                                                <option key={prov} value={prov}>{prov}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">Código postal</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-2 border rounded"
-                                            placeholder="Código postal"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">Ciudad</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-2 border rounded"
-                                            placeholder="Ciudad"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">Teléfono</label>
-                                        <input
-                                            type="tel"
-                                            className="w-full p-2 border rounded"
-                                            placeholder="Teléfono"
-                                        />
-                                    </div>
+                                    <input type="hidden" name="userId" value={session.user.id} />
+                                    <button
+                                        type="submit"
+                                        className="bg-blue-600 text-white py-3 px-4 rounded-lg w-full hover:bg-blue-700 transition font-semibold"
+                                    >
+                                        Finalizar Pedido
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
 
-                    <div className="md:w-1/4">
-                        <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-                            <h2 className="text-lg font-semibold mb-4">Resumen</h2>
-                            <div className="flex justify-between mb-2">
-                                <span>Subtotal</span>
-                                <span>{precioTotal.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
-                            </div>
-                            <div className="flex justify-between mb-2">
-                                <span>Impuestos</span>
-                                <span>{(precioTotal * 0.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
-                            </div>
-                            <div className="flex justify-between mb-2">
-                                <span>Gastos de envío</span>
-                                <span>Gratis</span>
-                            </div>
-                            <hr className="my-2" />
-                            <div className="flex justify-between mb-2">
-                                <span className="font-semibold">Total</span>
-                                <span className="font-semibold">{(precioTotal * 1.21).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€</span>
-                            </div>
-                            <form action={insertarOrder}>
-                                <input type="hidden" name="userId" value={session.user.id} />
-                                <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-blue-600 transition">
-                                    Finalizar Pedido
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+
                 </div>
+
             </div>
-        </div>
+
+        </div >
     );
 }
 

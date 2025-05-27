@@ -68,7 +68,7 @@ export async function obtenerCuentas(userId) {
 
 export async function obtenerCarrito(userId) {
   try {
-    let carrito = await prisma.cart.findFirst({
+    let carrito = await prisma.cart?.findFirst({
       where: { userId },
       include: {
         orderItems: {
@@ -238,7 +238,6 @@ export async function obtenerDiseñoPersonalizadoPorId(id) {
 export async function obtenerDirecciones(userId) {
     const direcciones = await prisma.address.findMany({
         where: { userId },
-        orderBy: { porDefecto: 'desc' }
     });
     return direcciones;
 }
