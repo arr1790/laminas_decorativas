@@ -38,8 +38,8 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
 
     startTransition(() => {
       insertarCarrito(formData).then(() => {
-        setNombre("");
-        setTextoPersonalizado("");
+        setNombre(" ");
+        setTextoPersonalizado(" ");
       });
      toast.success('Añadido al carrito ' + producto.name)
     });
