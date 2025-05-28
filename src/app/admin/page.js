@@ -2,8 +2,9 @@ import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { Suspense } from "react"
 import Mensajes from "@/components/mensajes/mensajes"
-import { Shield, Users, Mail, Key, MessageSquare, Mailbox, Folder, Package ,Tag } from "lucide-react"
+import { Shield, Users, Mail, Key, Mailbox, Folder, Package ,Tag } from "lucide-react"
 import { BackButton } from "@/components/BackButton"
+import Link from "next/link"
 
 async function PaginaAdmin() {
   const sesion = await auth()
@@ -56,22 +57,22 @@ async function PaginaAdmin() {
           </div>
           <div className="bg-white rounded-xl shadow-md overflow-hidden mb-12">
             <div className="p-6 grid sm:grid-cols-2 gap-4">
-              <a href="/categorias" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
+              <Link href="/categorias" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
                 <Folder className="w-6 h-6 text-blue-600" />
                 <span className="text-gray-800 font-medium">Gestionar Categorías</span>
-              </a>
-              <a href="/productos" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
+              </Link>
+              <Link href="/productos" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
                 <Tag className="w-6 h-6 text-blue-600" />
                 <span className="text-gray-800 font-medium">Gestionar productos</span>
-              </a>
-              <a href="/pedidos" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
+              </Link>
+              <Link href="/pedidos" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
                 <Package className="w-6 h-6 text-blue-600" />
                 <span className="text-gray-800 font-medium">Gestionar Pedidos</span>
-              </a>
-               <a href="/users" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
+              </Link>
+               <Link href="/users" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
                 <Users className="w-6 h-6 text-blue-600" />
                 <span className="text-gray-800 font-medium">Gestionar Usuarios</span>
-              </a>
+              </Link>
             </div>
           </div>
 
