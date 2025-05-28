@@ -37,6 +37,7 @@ export default async function Pedidos() {
   return (
     <div className="flex flex-col items-center gap-6 px-4 py-8">
       <div className="w-full max-w-6xl">
+
         {user.role === "ADMIN" && (
           <div className="flex justify-end mb-6">
             <Modal
@@ -59,7 +60,8 @@ export default async function Pedidos() {
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          // Desktop Table
+          <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
@@ -168,6 +170,95 @@ export default async function Pedidos() {
             </table>
           </div>
         )}
+
+        {/* Mobile Cards */}
+        <div className="md:hidden flex flex-col gap-6 w-full">
+          {pedidos
+            .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate))
+            .map((pedido) => (
+              <div
+                key={pedido.id}
+                className="bg-white border border-gray-200 rounded-xl shadow p-5"
+                title={`Ver detalles del pedido #${pedido.id}`}
+              >
+                <div className="flex justify-between items-center mb-3">
+                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                    #{pedido.id}
+                  </span>
+                  <span className="font-semibold text-gray-900 text-lg">
+                    {pedido.total
+                      ? pedido.total.toFixed(2)
+                      : pedido.orderItems.reduce(
+                          (acc, item) => acc + (item.product?.basePrice || 0) * item.cantidad,
+                          0
+                        ).toFixed(2)}{" "}
+                    €
+                  </span>
+                </div>
+
+                {user.role === "ADMIN" && (
+                  <div className="flex items-center gap-2 mb-3 text-sm text-gray-700">
+                    <UserIcon className="w-4 h-4 text-gray-400" />
+                    {getUserName(pedido.userId)}
+                  </div>
+                )}
+
+                <div className="flex items-center gap-2 mb-3 text-sm text-gray-600">
+                  <ClockIcon className="w-4 h-4 text-gray-400" />
+                  {formatDate(pedido.orderDate)}
+                </div>
+
+                <ul className="max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-50 space-y-3">
+                  {pedido.orderItems.map((item) => (
+                    <li key={item.id} className="flex items-center gap-3">
+                      <img
+                        src={item.product.image || "/images/default-product.avif"}
+                        alt={item.product.name || "Producto"}
+                        className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-gray-200"
+                      />
+                      <div>
+                        <p className="font-medium text-gray-900">{item.product.name || "Producto"}</p>
+                        <p className="text-xs text-gray-500">
+                          {item.cantidad} × {item.product.basePrice?.toFixed(2)} €
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+
+                {user.role === "ADMIN" && (
+                  <div className="flex gap-4 mt-5 justify-end">
+                    <Modal
+                      openElement={
+                        <button
+                          className="p-2 rounded-lg hover:bg-green-50 text-green-600 transition-colors hover:shadow-sm"
+                          aria-label={`Editar pedido #${pedido.id}`}
+                        >
+                          <PencilIcon className="w-5 h-5" />
+                        </button>
+                      }
+                    >
+                      <PedidoModificar pedido={pedido} productos={productos} user={user} />
+                    </Modal>
+
+                    <Modal
+                      openElement={
+                        <button
+                          className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors hover:shadow-sm"
+                          aria-label={`Eliminar pedido #${pedido.id}`}
+                        >
+                          <TrashIcon className="w-5 h-5" />
+                        </button>
+                      }
+                    >
+                      <PedidoEliminar pedido={pedido} />
+                    </Modal>
+                  </div>
+                )}
+              </div>
+            ))}
+        </div>
+
       </div>
     </div>
   );
