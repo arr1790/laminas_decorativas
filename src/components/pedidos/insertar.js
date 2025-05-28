@@ -77,11 +77,11 @@ function PedidoInsertar({ user, products }) {
       <label>
         Estado del pedido:
         <select name="status" defaultValue="PENDIENTE">
-          <option value="PENDIENTE">Pendiente</option>
-          <option value="EN_PROCESO">En proceso</option>
-          <option value="ENVIADO">Enviado</option>
-          <option value="ENTREGADO">Entregado</option>
-          <option value="CANCELADO">Cancelado</option>
+          <option defaultValue="PENDIENTE">Pendiente</option>
+          <option defaultValue="EN_PROCESO">En proceso</option>
+          <option defaultValue="ENVIADO">Enviado</option>
+          <option defaultValue="ENTREGADO">Entregado</option>
+          <option defaultValue="CANCELADO">Cancelado</option>
         </select>
       </label>
     </form>

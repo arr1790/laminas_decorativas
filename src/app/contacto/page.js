@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { MailIcon, MessageCircleIcon, PhoneIcon } from 'lucide-react';
+import Footer from '@/components/footer';
 
 
 
@@ -128,20 +129,7 @@ export default function PaginaContacto() {
 
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-100 py-6 border-t border-gray-200">
-        <div className="mx-auto max-w-6xl px-2">
-          <div className="flex flex-wrap justify-center gap-4 text-xs">
-            <Link href="/cookies" className="hover:text-pink-200">POLÍTICA DE COOKIES</Link>
-            <Link href="/privacidad" className="hover:text-pink-200">POLÍTICA DE PRIVACIDAD</Link>
-            <Link href="/terminos" className="hover:text-pink-200">TÉRMINOS Y CONDICIONES</Link>
-          </div>
-
-          <div className="mt-4 text-center text-gray-500 text-xs">
-            © {new Date().getFullYear()} Ana Ruano. Todos los derechos reservados.
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

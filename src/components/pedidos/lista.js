@@ -106,14 +106,14 @@ export default async function Pedidos() {
                           {pedido.orderItems.map((item) => (
                             <li key={item.id} className="flex items-start gap-3">
                               <img
-                                src={item.product[0].image || "/images/default-product.avif"}
-                                alt={item.product[0].name || "Producto"}
+                                src={item.product.image || "/images/default-product.avif"}
+                                alt={item.product.name || "Producto"}
                                 className="w-10 h-10 rounded-md object-cover flex-shrink-0 border border-gray-200"
                               />
                               <div className="flex-1 min-w-0">
-                                <p className="font-medium text-gray-900 truncate">{item.product[0].name || "Producto"}</p>
+                                <p className="font-medium text-gray-900 truncate">{item.product.name || "Producto"}</p>
                                 <p className="text-xs text-gray-500">
-                                  {item.cantidad} × {item.product[0].basePrice?.toFixed(2)} €
+                                  {item.cantidad} × {item.product.basePrice?.toFixed(2)} €
                                 </p>
                               </div>
                             </li>
@@ -125,7 +125,7 @@ export default async function Pedidos() {
                           {pedido.total
                             ? pedido.total.toFixed(2)
                             : pedido.orderItems.reduce(
-                                (acc, item) => acc + (item.product[0]?.basePrice || 0) * item.cantidad,
+                                (acc, item) => acc + (item.product?.basePrice || 0) * item.cantidad,
                                 0
                               ).toFixed(2)}{" "}
                           €

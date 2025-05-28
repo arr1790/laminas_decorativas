@@ -33,7 +33,7 @@ export default function PerfilUsuario({ sesion, pedidos, userImage }) {
                 </div>
                 <button
                   onClick={() => setPedidoActivo(pedido)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
                 >
                   Ver detalles
                 </button>
@@ -89,7 +89,7 @@ export default function PerfilUsuario({ sesion, pedidos, userImage }) {
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-6">
           <div className="bg-white rounded-lg shadow-xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <h2 className="text-3xl font-extrabold mb-6 text-center">
-              Factura - Laminara Montilla Córdoba 14550 CFI 1454581164894651
+              Factura - Laminara
             </h2>
 
             <div className="flex justify-between mb-8 flex-wrap gap-6">
@@ -120,14 +120,14 @@ export default function PerfilUsuario({ sesion, pedidos, userImage }) {
                 <div key={item.id} className="flex gap-6 items-center border-b border-gray-200 pb-4">
                   <img
                     className="w-28 h-28 object-cover rounded-lg"
-                    src={item.product[0].image}
-                    alt={item.product[0].name}
+                    src={item.product.image}
+                    alt={item.product.name}
                   />
                   <div className="flex-grow">
-                    <p className="text-lg font-semibold">{item.product[0].name}</p>
+                    <p className="text-lg font-semibold">{item.product.name}</p>
                     <p><strong>Cantidad:</strong> {item.cantidad}</p>
-                    <p><strong>Precio:</strong> {item.product[0].basePrice.toFixed(2)} €</p>
-                    <p><strong>Dimensiones:</strong> {item.product[0].dimensions}</p>
+                    <p><strong>Precio:</strong> {item.product.basePrice.toFixed(2)} €</p>
+                    <p><strong>Dimensiones:</strong> {item.product.dimensions}</p>
                   </div>
                 </div>
               ))}
@@ -137,7 +137,7 @@ export default function PerfilUsuario({ sesion, pedidos, userImage }) {
                 <span>Subtotal</span>
                 <span>
                   {pedidoActivo.orderItems
-                    .reduce((total, item) => total + item.cantidad * (item.product[0].basePrice ?? 0), 0)
+                    .reduce((total, item) => total + item.cantidad * (item.product.basePrice ?? 0), 0)
                     .toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€
                 </span>
               </div>
@@ -147,7 +147,7 @@ export default function PerfilUsuario({ sesion, pedidos, userImage }) {
                 <span>
                   {(
                     pedidoActivo.orderItems.reduce(
-                      (total, item) => total + item.cantidad * (item.product[0].basePrice ?? 0),
+                      (total, item) => total + item.cantidad * (item.product.basePrice ?? 0),
                       0
                     ) * 0.21
                   ).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€
@@ -166,7 +166,7 @@ export default function PerfilUsuario({ sesion, pedidos, userImage }) {
                 <span>
                   {(
                     pedidoActivo.orderItems.reduce(
-                      (total, item) => total + item.cantidad * (item.product[0].basePrice ?? 0),
+                      (total, item) => total + item.cantidad * (item.product.basePrice ?? 0),
                       0
                     ) * 1.21
                   ).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€

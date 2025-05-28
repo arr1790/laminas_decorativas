@@ -29,6 +29,7 @@ console.log("Categoria:", cat);
               name="text2"
               type="text"
               value={textoPersonalizado}
+              required
               onChange={(e) => setTextoPersonalizado(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="DD/MM/AAAA"
@@ -45,6 +46,7 @@ console.log("Categoria:", cat);
             <textarea
             name="text2"
               value={textoPersonalizado}
+              required
               onChange={(e) => setTextoPersonalizado(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               rows={4}
@@ -63,7 +65,7 @@ console.log("Categoria:", cat);
              name="text1"
               type="text"
               value={nombre}
-                required
+              required
               onChange={(e) => setNombre(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Escribe los nombres"
@@ -73,8 +75,10 @@ console.log("Categoria:", cat);
             <label className="block text-sm font-medium text-gray-900 mb-2">TEXTO (OPCIONAL)</label>
             <input
             name="text2"
+            required
               type="text"
               value={textoPersonalizado}
+              
               onChange={(e) => setTextoPersonalizado(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Añade un texto especial"

@@ -9,12 +9,10 @@ function ModalCarrito({ carrito, session }) {
   const modalRef = useRef(null);
 
   const precioTotal = carrito?.orderItems?.reduce((total, item) => {
-    return total + item.product[0].basePrice * item.cantidad;
+    return total + item.product.basePrice * item.cantidad;
   }, 0) || 0;
 
   const totalItems = carrito?.orderItems?.reduce((total, item) => total + item.cantidad, 0) || 0;
-
-
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -90,19 +88,19 @@ function ModalCarrito({ carrito, session }) {
                         {carrito.orderItems.map((item) => (
                           <li key={item.id} className="flex py-6">
                             <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                              <img src={item.product[0].image} alt={item.product[0].name} className="size-full object-cover" />
+                              <img src={item.product.image} alt={item.product.name} className="size-full object-cover" />
                             </div>
 
                             <div className="ml-4 flex flex-1 flex-col">
                               <div>
                                 <div className="flex justify-between text-base font-medium text-gray-900">
                                   <h3>
-                                    <a href="#">{item.product[0].name}</a>
+                                    <a href="#">{item.product.name}</a>
                                   </h3>
-                                  <p className="ml-4">{item.product[0].basePrice}€</p>
+                                  <p className="ml-4">{item.product.basePrice}€</p>
                                 </div>
-                                <p className="mt-1 text-sm text-gray-500">{item.product[0].dimensions}</p>
-                                <p className="mt-1 text-sm text-gray-500">{item.product[0].withFrame ? "Con marco" : "Sin marco"}</p>
+                                <p className="mt-1 text-sm text-gray-500">{item.product.dimensions}</p>
+                                <p className="mt-1 text-sm text-gray-500">{item.product.withFrame ? "Con marco" : "Sin marco"}</p>
                                 <p className="mt-1 text-sm text-gray-500">{item.texto1}</p>
                                 <p className="mt-1 text-sm text-gray-500">{item.texto2}</p>
                               </div>
@@ -160,14 +158,14 @@ function ModalCarrito({ carrito, session }) {
                         <p>{precioTotal}€</p>
                       </div>
                       <div className="mt-6">
-                        <Link onClick={() => setAbierto(false)} href="/carrito" className="flex items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-white hover:bg-indigo-700">
+                        <Link onClick={() => setAbierto(false)} href="/carrito" className="flex items-center justify-center rounded-md bg-black px-6 py-3 text-white hover:text-white">
                           Finalizar
                         </Link>
                       </div>
                       <div className="mt-6 flex justify-center text-sm text-gray-500">
                         <p>
                           o{' '}
-                          <button onClick={() => setAbierto(false)} className="font-medium text-indigo-600 hover:text-indigo-500">
+                          <button onClick={() => setAbierto(false)} className="font-medium text-black hover:text-gray-700">
                             Continuar comprando →
                           </button>
                         </p>

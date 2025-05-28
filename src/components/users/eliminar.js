@@ -14,14 +14,15 @@ function UserEliminar({ user }) {
 
 
     useEffect(() => {
+        console.log("Estado acción eliminar:", state);
         if (state?.success) {
-            toast.success(state.success)
-            document.getElementById(formId).closest('dialog')?.close() // Si el padre es un dialog, lo cerramos
-            refresh()  // refrescamos página despues de mostrar toast
+            toast.success(state.success);
+            document.getElementById(formId).closest('dialog')?.close();
+            refresh();
         }
-        if (state?.error) toast.error(state.error)
+        if (state?.error) toast.error(state.error);
+    }, [formId, state]);
 
-    }, [formId, state])
 
 
 
@@ -57,7 +58,7 @@ function UserEliminar({ user }) {
 
             <h2 className="font-bold mt-4">Pedidos realizados</h2>
             <div className="flex flex-col gap-1">
-            {(user.pedidos || []).map(pedido => (
+                {(user.pedidos || []).map(pedido => (
                     <p key={pedido.id} className="flex gap-4">
                         <span>Nº {pedido.id}</span>
                         <span>

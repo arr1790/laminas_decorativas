@@ -9,6 +9,10 @@ import slugify from 'slugify';
 import { redirect } from 'next/navigation';
 import { use } from 'react';
 
+import { obtenerDireccionesPorUserId } from "@/lib/data" 
+import { auth } from '@/auth';
+
+
 
 
 // REGISTER
@@ -187,40 +191,55 @@ export async function insertarUsuario(formData) {
   }
 }
 
-export async function modificarUsuario(prevState,formData) {
-  const id = Number(formData.get('id'))
-  const name = formData.get('name')
-  const role = formData.get('role')
-  const active = Boolean(formData.get('active'))
+
+export async function modificarUsuario(prevState, formData) {
+  const id = formData.get('id'); // string, correcto
+  const name = formData.get('name');
+  const role = formData.get('role');
+  const active = formData.get('active') === 'on';
+
+  if (!id || typeof id !== 'string') {
+    return { error: 'ID inválido' };
+  }
 
   try {
     await prisma.user.update({
       where: { id },
-      data: { name,  role, active }
-    })
+      data: { name, role, active },
+    });
 
-    revalidatePath('/dashboard')
-    return { success: "Modificación correcta" }
+    revalidatePath('/dashboard');
+    return { success: 'Modificación correcta' };
   } catch (error) {
-    return { error: "Error al modificar el usuario" }
+    console.error('MODIFICAR USUARIO ERROR:', error);
+    return { error: 'Error al modificar el usuario: ' + error.message };
   }
 }
+export async function eliminarUsuario(prevState, formData) {
+  const id = formData.get('id');
 
-export async function eliminarUsuario(formData) {
-  const id = Number(formData.get('id'))
+  if (!id || typeof id !== 'string') {
+    return { error: 'ID inválido para eliminar' };
+  }
 
   try {
-    await prisma.user.delete({
-      where: { id }
-    })
+    // Borra los carts relacionados (y otras tablas si hace falta)
+    await prisma.cart.deleteMany({
+      where: { userId: id },
+    });
 
-    revalidatePath('/dashboard')
-    return { success: "Eliminación correcta" }
+    // Elimina el usuario
+    await prisma.user.delete({
+      where: { id },
+    });
+
+    revalidatePath('/');
+    return { success: 'Eliminación correcta' };
   } catch (error) {
-    return { error: "Error al eliminar el usuario" }
+    console.error('Error eliminando usuario:', error);
+    return { error: 'Error al eliminar el usuario: ' + error.message };
   }
 }
-
 // ------------------------ PRODUCTS ------------------------
 export async function insertarProducto(prevState, formData) {
   const name = formData.get('name')
@@ -307,49 +326,61 @@ export async function insertarOrder(formData) {
   const telefono = formData.get("telefono")?.toString() || "";
   const email = formData.get("email")?.toString() || "";
 
-  
-  const direccion = await prisma.address.create({
-    data: {
-      userId,
-      nombre,
-      apellido,
-      direccion1,
-      direccion2,
-      ciudad,
-      pais,
-      provincia,
-      codigoPostal,
-      telefono,
-      email
-    },
-  });
+const direccion = await prisma.address.upsert({
+  where: { userId },
+  update: {
+    nombre,
+    apellido,
+    direccion1,
+    direccion2,
+    ciudad,
+    pais,
+    provincia,
+    codigoPostal,
+    telefono,
+    email,
+  },
+  create: {
+    userId,
+    nombre,
+    apellido,
+    direccion1,
+    direccion2,
+    ciudad,
+    pais,
+    provincia,
+    codigoPostal,
+    telefono,
+    email,
+  },
+});
 
   const total = carrito.orderItems.reduce(
-    (sum, item) => sum + Number(item.product[0].basePrice) * item.cantidad,
+    (sum, item) => sum + Number(item.product.basePrice) * item.cantidad,
     0
   );
 
-  const nuevoPedido = await prisma.order.create({
-    data: {
-      status: "pendiente",
-      total: total,
-      address: {
-        connect: { id: direccion.id }, // 👈 CORRECTO
-      },
-      user: {
-        connect: { id: userId },
-      },
-      orderItems: {
-        create: carrito.orderItems.map((item) => ({
-          cantidad: item.cantidad,
-          product: {
-            connect: { id: item.productId },
-          },
-          productId: item.productId,
-        })),
-      },
+const nuevoPedido = await prisma.order.create({
+  data: {
+    status: "pendiente",
+    total: total,
+    address: {
+      connect: { id: direccion.id },
     },
-  });
+    user: {
+      connect: { id: userId },
+    },
+    orderItems: {
+      create: carrito.orderItems.map((item) => ({
+        cantidad: item.cantidad,
+        product: {
+          connect: { id: item.productId },
+        },
+      })),
+    },
+  },
+});
+
 
 
   await prisma.orderItem.updateMany({
@@ -445,7 +476,7 @@ export async function sumarAlCarrito(formData) {
 export async function restarAlCarrito(formData) {
   const orderItemId = Number(formData.get('orderItemId'))
 
-  // Obtener el item actual para saber su cantidad
+
   const item = await prisma.orderItem.findUnique({
     where: { id: orderItemId },
     select: { cantidad: true }
@@ -454,12 +485,11 @@ export async function restarAlCarrito(formData) {
   if (!item) return
 
   if (item.cantidad <= 1) {
-    // Si la cantidad es 1 o menos, eliminar el item
+
     await prisma.orderItem.delete({
       where: { id: orderItemId }
     })
   } else {
-    // Si hay más de 1, simplemente restar 1
     await prisma.orderItem.update({
       where: { id: orderItemId },
       data: { cantidad: { decrement: 1 } }
@@ -536,7 +566,7 @@ export async function eliminarCategoria(prevState, formData) {
 
 
 // ------------------------ CONTACT FORM ------------------------ 
-// const nodemailer = require('nodemailer');
+
 
 export async function submitContactForm(prevState, formData) {
   const name = formData.get('name')?.trim() || '';
@@ -575,14 +605,20 @@ export async function deleteMessage(formData) {
   revalidatePath('/mensajes')
 }
 
+// ------------------------ MODIFICAR IMAGEN DEL USUARIO ------------------------ 
+
 export async function actualizarImagenUsuario(userId, imageUrl) {
   await prisma.user.update({
     where: { id: userId },
     data: { image: imageUrl }
   });
 }
+
+
+// ------------------------ ADRESS ------------------------ 
+
 export async function guardarDireccion(data) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const user = session?.user;
 
   if (!user || !user.id) {
@@ -601,7 +637,8 @@ export async function guardarDireccion(data) {
         pais: data.pais,
         provincia: data.provincia,
         codigoPostal: data.codigoPostal,
-        telefono: data.telefono,
+        telefono: data.telefono || '',
+        email: user.email || '',
       },
     });
 
@@ -611,6 +648,75 @@ export async function guardarDireccion(data) {
     return { ok: false, error: 'No se pudo guardar la dirección' };
   }
 }
+
+
+
+
+export async function guardarOModificarDireccion(formData) {
+  const id = formData.get('id');
+  const nombre = formData.get('nombre');
+  const apellido = formData.get('apellido');
+  const direccion1 = formData.get('direccion1');
+  const direccion2 = formData.get('direccion2');
+  const ciudad = formData.get('ciudad');
+  const pais = formData.get('pais');
+  const provincia = formData.get('provincia');
+  const codigoPostal = formData.get('codigoPostal');
+  const telefono = formData.get('telefono');
+
+   const session = await auth(); 
+  const user = session?.user;
+
+  if (!user || !user.id) {
+    throw new Error('No has iniciado sesión');
+  }
+
+  if (id) {
+    
+    const idNum = Number(id);
+    const existing = await prisma.address.findUnique({ where: { id: idNum } });
+    if (!existing) {
+      return { ok: false, error: 'Dirección no encontrada' };
+    }
+
+    await prisma.address.update({
+      where: { id: idNum },
+      data: {
+        nombre,
+        apellido,
+        direccion1,
+        direccion2,
+        ciudad,
+        pais,
+        provincia,
+        codigoPostal,
+        telefono,
+      },
+    });
+  } else {
+
+    await prisma.address.create({
+      data: {
+        userId: user.id,
+        email: user.email || '',
+        nombre,
+        apellido,
+        direccion1,
+        direccion2,
+        ciudad,
+        pais,
+        provincia,
+        codigoPostal,
+        telefono,
+      },
+    });
+  }
+
+  revalidatePath('/perfil/direccion');
+  return { ok: true };
+}
+
+// ------------------------ SEARCH ------------------------ 
 
 export async function busqueda(query) {
  const productos = await prisma.product.findMany({

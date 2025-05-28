@@ -13,7 +13,7 @@ export default function Footer() {
             <li><Link href="/sobre-mi" className="hover:underline">Sobre Mi</Link></li>
             <li><Link href="/aviso-legal" className="hover:underline">Aviso legal</Link></li>
             <li><Link href="/envios" className="hover:underline">Envíos y devoluciones</Link></li>
-            <li><Link href="/faq" className="hover:underline">FAQ</Link></li>
+    
           </ul>
         </div>
 

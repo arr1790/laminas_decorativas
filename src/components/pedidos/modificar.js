@@ -56,11 +56,11 @@ function PedidoModificar({ pedido }) {
               name="status"
               className="w-full md:w-60 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition"
             >
-              <option selected={status === "Pendiente"}  value="Pendiente">Pendiente</option>
-              <option selected={status === "En_proceso"} value="En_proceso">En proceso</option>
-              <option selected={status === "Enviado"} value="Enviado">Enviado</option>
-              <option selected={status === "Entregado"} value="Entregado">Entregado</option>
-              <option selected={status === "Cancelado"} value="Cancelado">Cancelado</option>
+              <option selected={status === "Pendiente"}  defaultValue="Pendiente">Pendiente</option>
+              <option selected={status === "En_proceso"} defaultValue="En_proceso">En proceso</option>
+              <option selected={status === "Enviado"} defaultValue="Enviado">Enviado</option>
+              <option selected={status === "Entregado"} defaultValue="Entregado">Entregado</option>
+              <option selected={status === "Cancelado"} defaultValue="Cancelado">Cancelado</option>
             </select>
           </label>
 
@@ -146,10 +146,10 @@ function PedidoModificar({ pedido }) {
           </div>
           <ul className="divide-y divide-gray-200">
             {pedido.orderItems.map((item) => {
-              const nombre = item.product[0].name || "Producto";
-              const precioUnitario = item.product[0].basePrice || 0;
+              const nombre = item.product.name || "Producto";
+              const precioUnitario = item.product.basePrice || 0;
               const subtotal = precioUnitario * item.cantidad;
-              const image = item.product[0].image || "/images/default-product.avif";
+              const image = item.product.image || "/images/default-product.avif";
 
               return (
                 <li

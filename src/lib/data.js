@@ -3,15 +3,22 @@
 import prisma from "@/lib/prisma"
 
 // ----------------------------  USERS ---------------------------
-
 export async function getUsers() {
-    const users = await prisma.user.findMany({
+  const users = await prisma.user.findMany({
+    include: {
+      orders: {
         include: {
-            orders: true,
-            addresses: true
-        }
-    });
-    return users
+          orderItems: {
+            include: {
+              product: true,  
+            },
+          },
+        },
+      },
+      addresses: true,
+    },
+  });
+  return users;
 }
 
 
@@ -112,24 +119,24 @@ export async function obtenerCarrito(userId) {
 
 
 export async function agregarAlCarrito(userId, productId, text1, text2, quantity = 1) {
+  const carrito = await obtenerCarrito(userId)
 
-    const carrito = await obtenerCarrito(userId)
+  console.log('Carrito:', carrito)
+  const nuevoProducto = await prisma.orderItem.create({
+    data: {
+      product: { connect: { id: productId } },
+      texto1: text1,
+      texto2: text2,
+      cantidad: quantity,
+     
+      cart: { connect: { id: carrito.id } }, 
+    }
+  })
 
-    console.log('Carrito:', carrito)
-    const nuevoProducto = await prisma.orderItem.create({
-        data: {
-            product :{connect: { id: productId }},
-            productId: productId,
-            texto1: text1,
-            texto2: text2,
-            cantidad:quantity,
-            cartId: carrito.id
-        }
-    })
-
-
-
+  return nuevoProducto
 }
+
+
 // ---------------------   PEDIDOS -----------------------
 
 export async function obtenerPedidos(userId) {
