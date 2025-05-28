@@ -38,27 +38,7 @@ export default function UserModificar({ session, user }) {
                 }
             </button>
 
-            <div className='grid place-items-center grid-cols-[repeat(auto-fill,minmax(40px,1fr))]'>
-                {/* Avatares 00 .. 79 */}
-                {[...Array(80)].map((_, index) => (
-                    <CheckRadio key={index}
-                        name='image'
-                        defaultValue={`/images/avatar-${String(index).padStart(2, '0')}.png`}
-                        className="size-14 has-checked:col-span-4 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
-                    >
-                        <Image src={`/images/avatar-${String(index).padStart(2, '0')}.png`} alt="Imagen de usuario" />
-                    </CheckRadio>
-                ))}
-                {/* por defecto */}
-                <CheckRadio key={80}
-                    name='image'
-                    defaultValue={user.image || '/images/avatar-80.png'}
-                    defaultChecked={true}
-                    className="size-14 has-checked:col-span-4 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
-                >
-                    <image src={user.image || '/images/avatar-80.png'} alt="Imagen de usuario" />
-                </CheckRadio>
-            </div>
+            
 
             {session.user.role === 'ADMIN'
                 ?
@@ -92,29 +72,7 @@ export default function UserModificar({ session, user }) {
                         />
                     </div>
 
-                    <div className="flex flex-col md:flex-row items-center md:space-x-4">
-                        <label htmlFor='password' className="font-bold w-full md:w-1/4">Contraseña</label>
-                        <input type='text' id='password' name='password'
-                            placeholder='no cambiar'
-                            className="w-full md:w-3/4 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-400 bg-gray-100"
-                        />
-                    </div>
-
-                    <div className="flex flex-col md:flex-row items-center md:space-x-4">
-                        <label htmlFor='address' className="font-bold w-full md:w-1/4">Domicilio</label>
-                        <input type='text' id='address' name='address'
-                            defaultValue={user.address}
-                            className="w-full md:w-3/4 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-400 bg-gray-100"
-                        />
-                    </div>
-
-                    <div className="flex flex-col md:flex-row items-center md:space-x-4">
-                        <label htmlFor='phone' className="font-bold w-full md:w-1/4">Teléfono</label>
-                        <input type='text' id='phone' name='phone'
-                            defaultValue={user.phone}
-                            className="w-full md:w-3/4 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-400 bg-gray-100"
-                        />
-                    </div>
+                    
 
                     {session.user.role === 'ADMIN' &&
                         <div className="flex flex-col md:flex-row items-center md:space-x-4">

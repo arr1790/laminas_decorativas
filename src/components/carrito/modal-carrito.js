@@ -78,7 +78,7 @@ function ModalCarrito({ carrito, session }) {
                       {precioTotal === 0 && (
                         <div className="flex flex-col items-center justify-center py-10">
                           <img
-                            src="/carrovacio.png" // Asegúrate de que esta imagen esté en la carpeta public/
+                            src="/carrovacio.png" 
                             alt="Carro vacío"
                             className="w-100 h-100 mb-4 opacity-70"
                           />

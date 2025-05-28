@@ -187,18 +187,16 @@ export async function insertarUsuario(formData) {
   }
 }
 
-export async function modificarUsuario(formData) {
+export async function modificarUsuario(prevState,formData) {
   const id = Number(formData.get('id'))
   const name = formData.get('name')
-  const email = formData.get('email')
-  const password = formData.get('password')
   const role = formData.get('role')
   const active = Boolean(formData.get('active'))
 
   try {
     await prisma.user.update({
       where: { id },
-      data: { name, email, password, role, active }
+      data: { name,  role, active }
     })
 
     revalidatePath('/dashboard')
@@ -298,7 +296,6 @@ export async function insertarOrder(formData) {
     throw new Error("Carrito no encontrado para el usuario " + userId);
   }
 
-  // ✅ 1. Obtener campos del formulario
   const nombre = formData.get("nombre")?.toString() || "";
   const apellido = formData.get("apellido")?.toString() || "";
   const direccion1 = formData.get("direccion1")?.toString() || "";
@@ -310,7 +307,7 @@ export async function insertarOrder(formData) {
   const telefono = formData.get("telefono")?.toString() || "";
   const email = formData.get("email")?.toString() || "";
 
-  // ✅ 2. Crear dirección en base de datos
+  
   const direccion = await prisma.address.create({
     data: {
       userId,
@@ -332,7 +329,6 @@ export async function insertarOrder(formData) {
     0
   );
 
-  // ✅ 3. Crear pedido conectando dirección correctamente
   const nuevoPedido = await prisma.order.create({
     data: {
       status: "pendiente",
@@ -355,7 +351,7 @@ export async function insertarOrder(formData) {
     },
   });
 
-  // ✅ 4. Limpiar carrito (si aplica)
+
   await prisma.orderItem.updateMany({
     where: { cartId: carrito.id },
     data: { cartId: null },
@@ -408,7 +404,7 @@ export async function deleteOrder(formData) {
   
 }
 
-export async function modificarOrder(formData) {
+export async function modificarOrder(prevState,formData) {
   const id = Number(formData.get('id'))
   const status = formData.get('status')
 
@@ -417,7 +413,7 @@ export async function modificarOrder(formData) {
     data: { status }
   })
 
-  revalidatePath('/todospedidos')
+  revalidatePath('/pedidos')
   return { success: "Pedido modificado correctamente" }
 }
 

@@ -1,7 +1,7 @@
 // components/Header.js
 import Link from 'next/link'
 import { auth } from "@/auth"
-import { ChevronDown, User, ShoppingCart, Mail , Package } from "lucide-react"
+import { ChevronDown, User, ShoppingCart, Mail, Package } from "lucide-react"
 import DropdownCategorias from './DropdownCategorias'
 import MobileMenu from './dropdownMobileButon'
 import { obtenerCategorias } from '@/lib/data'
@@ -31,32 +31,28 @@ async function Header() {
                     <div className="absolute top-4 right-4 md:hidden">
                         <MobileMenu categories={categories} />
                     </div>
-                    
+
                     {/* Menú principal */}
                     <nav className="hidden md:block">
                         <div className="flex justify-center py-2 px-2">
                             <DropdownCategorias />
                         </div>
                     </nav>
-                      <Search />
+                    <Search />
 
                     {/* Iconos */}
                     <div className="flex items-center gap-4">
-                        <ModalCarrito carrito={carrito} session={session}/>
-
-                  
-                            
-                      
+                        <ModalCarrito carrito={carrito} session={session} />
 
                         <Link href="/contacto" className="hover:text-pink-200">
                             <Mail className="w-5 h-5" />
                         </Link>
-                        
-                         {session?.user.role === 'ADMIN' && (
+
+                        {/* {session?.user.role === 'ADMIN' && (
                     <Link href="/todospedidos" className="hover:text-pink-200">
                         <Package className="w-5 h-5" />
                     </Link>
-                )}
+                )} */}
 
                         {session?.user.role === 'ADMIN' && (
                             <Link href="/admin" className="hover:text-pink-200">

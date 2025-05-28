@@ -2,16 +2,16 @@ import { TrashIcon, PencilIcon, PlusIcon } from "lucide-react";
 import { auth } from "@/auth"
 import { getUsers } from "@/lib/data";
 import Modal from '@/components/modal';
-import UserVer from '@/components/users/ver'
-import UserModificar from '@/components/users/modificarr';
+import UserVer from '@/components/users/ver';
+import UserModificar from '@/components/users/modificar';
 import UserEliminar from '@/components/users/eliminar';
 import UserInsertar from "@/components/users/insertar";
 import ActiveButton from "@/components/active-button";
 import { activeUser } from "@/lib/actions";
 
 async function Users() {
-    const session = await auth()
-    const users = await getUsers()
+    const session = await auth();
+    const users = await getUsers();
 
 
     return (
@@ -20,7 +20,7 @@ async function Users() {
                 <div className='justify-self-end mb-2 mr-1 size-8 grid place-content-center rounded-full border border-green-500 text-green-700 bg-green-200 hover:bg-green-500 hover:text-white hover:cursor-pointer'>
                     <PlusIcon className='size-4' />
                 </div>}>
-                <UserInsertar session={session} />
+                <UserInsertar session={session} users={users} />
             </Modal>
 
             {users
@@ -36,7 +36,7 @@ async function Users() {
                                 </form>
                             }
                             <Modal openElement={<p className="cursor-pointer">{user.name}</p>}>
-                                <UserVer user={user} />
+                                <UserVer user={user} pedidos={user.orders} />
                             </Modal>
                         </div>
 

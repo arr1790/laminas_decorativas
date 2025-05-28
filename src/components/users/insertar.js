@@ -7,22 +7,17 @@ import CheckBox from '@/components/check-box';
 import CheckRadio from '@/components/check-radio';
 import Image from 'next/image';
 
-
-
 export default function UserInsertar({ session }) {
     const formId = useId()
     const [state, action, pending] = useActionState(insertarUsuario, {})
 
-
     useEffect(() => {
         if (state?.success) {
             toast.success(state.success)
-            document.getElementById(formId).closest('dialog')?.close() // Si el padre es un dialog, lo cerramos
+            document.getElementById(formId).closest('dialog')?.close()
         }
         if (state?.error) toast.error(state.error)
-
     }, [formId, state])
-
 
     return (
         <form id={formId} action={action} className="w-full flex flex-col gap-4">
@@ -37,41 +32,16 @@ export default function UserInsertar({ session }) {
             </button>
 
 
-            <div className='grid place-items-center grid-cols-[repeat(auto-fill,minmax(40px,1fr))]'>
-                {/* Avatares 00 .. 79 */}
-                {[...Array(80)].map((_, index) => (
-                    <CheckRadio key={index}
-                        name='image'
-                        defaultValue={`/images/avatar-${String(index).padStart(2, '0')}.png`}
-                        className="size-14 has-checked:col-span-5 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
-                    >
-                        <image src={`/images/avatar-${String(index).padStart(2, '0')}.png`} alt="Imagen de usuario" />
-                    </CheckRadio>
-                ))}
-                {/* Avatar 80, por defecto */}
-                <CheckRadio key={80}
-                    name='image'
-                    defaultValue={`/images/avatar-80.png`}
-                    defaultChecked={true}
-                    className="size-14 has-checked:col-span-5 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
-                >
-                    <Image src={`/images/avatar-80.png`} alt="Imagen de usuario" />
-                </CheckRadio>
-            </div>
-
-
-
-
-            <div className='flex flex-col md:flex-row md:gap-10'>
+          
+            {/* Resto del formulario */}
+            <div className='flex flex-col md:flex-row md:gap-10 mt-6'>
                 <div className='w-full md:w-2/3 flex flex-col gap-2'>
-
                     <CheckBox
                         name={'active'}
                         defaultChecked={true}
                         className={"text-xs w-fit after:content-['_Cuenta_no_activa'] has-checked:after:content-['_Cuenta_activa'] has-checked:bg-green-200 has-checked:text-green-800  px-2 py-1 text-gray-500 rounded-full"}
                     >
                     </CheckBox>
-
 
                     <div className="flex flex-col md:flex-row items-center md:space-x-4">
                         <label htmlFor='name' className="font-bold w-full md:w-1/4">Nombre</label>
@@ -120,8 +90,6 @@ export default function UserInsertar({ session }) {
                             </select>
                         </div>
                     }
-
-
                 </div>
             </div>
         </form >

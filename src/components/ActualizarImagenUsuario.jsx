@@ -9,7 +9,7 @@ export default function ActualizarImagenUsuario({ userId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await actualizarImagenUsuario(userId, imageUrl);
-    window.location.reload(); // o router.refresh() si usas useRouter
+    window.location.reload();
   };
 
   return (

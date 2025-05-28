@@ -14,7 +14,7 @@ export default async function NavbarCategorias() {
               key={cat.id}
               href={`/categorias/${cat.slug}`}
               className="text-sm font-medium transition  outline-none ring-0
-             relative link-underline"
+             relative border-b-2 border-transparent hover:border-b-2 hover:border-black"
             >
               {cat.name.toUpperCase()}
             </Link>

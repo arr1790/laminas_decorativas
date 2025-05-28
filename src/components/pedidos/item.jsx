@@ -1,46 +1,60 @@
-import { obtenerPedido } from "@/lib/data";
+import { obtenerPedidoPorId } from "@/lib/data";
 import { notFound } from "next/navigation";
 
 export default async function Pedido({ id }) {
-    const pedido = await obtenerPedido(id)
-    if (!pedido) notFound()
+  const pedido = await obtenerPedidoPorId(id);
+ 
+  if (!pedido) notFound();
 
-    return (
-        <>
-            <div className="flex gap-4 text-2xl font-bold">
-                <span>Nº {pedido.id}</span>
-                {/* {new Date(pedido.fecha_hora).toLocaleString()} */}
-                {
-                    new Intl.DateTimeFormat("es-ES", {
-                        dateStyle: "full",
-                        timeStyle: "long",
-                        timeZone: "Europe/Madrid",
-                    }).format(pedido.fecha_hora)
-                }
+  return (
+    <>
+      <div className="flex gap-4 text-2xl font-bold mb-4">
+        <span>Nº {pedido.id}</span>
+        <span>
+          {new Intl.DateTimeFormat("es-ES", {
+            dateStyle: "full",
+            timeStyle: "long",
+            timeZone: "Europe/Madrid",
+          }).format(new Date(pedido.orderDate))}
+        </span>
+      </div>
 
-            </div>
-            <div>Nombre del cliente: {pedido.cliente?.name}</div>
-            <div>Dirección del cliente: {pedido.cliente?.address}</div>
-            <div>Teléfono del cliente: {pedido.cliente?.phone}</div>
+      <div className="mb-2">
+        <p>
+          <strong>Nombre del cliente:</strong> {pedido.user?.name}
+        </p>
+        {pedido.address && (
+          <>
+            <p>
+              <strong>Dirección:</strong> {pedido.address.direccion1},{" "}
+              {pedido.address.ciudad}, {pedido.address.pais}
+            </p>
+            <p>
+              <strong>Teléfono:</strong> {pedido.address.telefono}
+            </p>
+            <p>
+              <strong>Email:</strong> {pedido.address.email}
+            </p>
+          </>
+        )}
+      </div>
 
-            {/* <div>
-                <p className="font-bold text-xl">Repartidor</p>
-                {pedido.repartidor?.nombre}
-            </div> */}
+      <div className="pt-5 max-w-md">
+        <h2 className="font-bold text-lg mb-2">Productos</h2>
+        {pedido.orderItems.map((item) => (
+          <p key={item.id} className="flex justify-between">
+            <span>{item.product.name} x {item.cantidad}</span>
+            <span>
+              € {(item.product.basePrice * item.cantidad).toFixed(2)}
+            </span>
+          </p>
+        ))}
 
-            <div className="pt-5 max-w-md">
-                <h2 className="font-bold text-lg">Pizzas</h2>
-                {pedido.pizzas.map(pizza =>
-                    <p key={pizza.id} className="flex justify-between shrink-0">
-                        <span>{pizza.nombre}</span> <span>{pizza.precio}</span>
-                    </p>
-                )}
-                <h3 className="flex justify-between shrink-0 font-bold">
-                    <span>TOTAL (€)</span>
-                    <span>{pedido.pizzas.reduce((acc, p) => acc + p.precio, 0).toFixed(2)}</span>
-                </h3>
-            </div>
-        </>
-    );
+        <h3 className="flex justify-between font-bold border-t pt-2 mt-4">
+          <span>TOTAL (€)</span>
+          <span>{pedido.total.toFixed(2)}</span>
+        </h3>
+      </div>
+    </>
+  );
 }
-

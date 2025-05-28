@@ -133,25 +133,36 @@ export async function agregarAlCarrito(userId, productId, text1, text2, quantity
 // ---------------------   PEDIDOS -----------------------
 
 export async function obtenerPedidos(userId) {
-    const pedidos = await prisma.order.findMany({
-        where: { userId },
+  const pedidos = await prisma.order.findMany({
+    where: userId ? { userId } : {},  // Si userId no está definido, traer todos
+    include: {
+      orderItems: {
         include: {
-            product: true,
-            design: true
-        }
-    });
-    return pedidos;
+          product: true,
+        },
+      },
+      address: true,  // si tienes dirección en el modelo
+      user: true      // si quieres incluir info del usuario
+    },
+  });
+  return pedidos;
 }
 
+
 export async function obtenerPedidoPorId(id) {
-    const pedido = await prisma.order.findUnique({
-        where: { id },
+  const pedido = await prisma.order.findUnique({
+    where: { id },
+    include: {
+      address: true,
+      user: true,  // Si quieres el usuario también
+      orderItems: {
         include: {
-            product: true,
-            design: true
-        }
-    });
-    return pedido;
+          product: true,
+        },
+      },
+    },
+  });
+  return pedido;
 }
 
 // ---------------------   PRODUCTOS -----------------------
@@ -211,27 +222,7 @@ export async function obtenerCategoria(id) {
        include: { products: true }
     })
   }
-// ---------------------   DISEÑOS PERSONALIZADOS -----------------------
 
-export async function obtenerDiseñosPersonalizados(userId) {
-    const diseñosPersonalizados = await prisma.customDesign.findMany({
-        where: { userId },
-        include: {
-            product: true
-        }
-    });
-    return diseñosPersonalizados;
-}
-
-export async function obtenerDiseñoPersonalizadoPorId(id) {
-    const diseñoPersonalizado = await prisma.customDesign.findUnique({
-        where: { id },
-        include: {
-            product: true
-        }
-    });
-    return diseñoPersonalizado;
-}
 
 // ---------------------   DIRECCIONES -----------------------
 
@@ -240,6 +231,13 @@ export async function obtenerDirecciones(userId) {
         where: { userId },
     });
     return direcciones;
+}
+
+export async function obtenerDireccionesPorUserId(userId) {
+    const direcciones = await prisma.address.findMany({
+        where: { userId },
+    });
+    return direcciones[0];
 }
 
 export async function obtenerDireccionPorId(id) {

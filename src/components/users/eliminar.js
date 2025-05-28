@@ -1,7 +1,7 @@
 'use client'
 import { eliminarUsuario } from "@/lib/actions";
 import { RefreshCwIcon, TrashIcon, UserRoundIcon } from "lucide-react";
-import { useRouter } from "next/navigation";   // IMPORTANTE: No importar desde next/router
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useId } from "react";
 import { toast } from "sonner";
 
@@ -57,19 +57,18 @@ function UserEliminar({ user }) {
 
             <h2 className="font-bold mt-4">Pedidos realizados</h2>
             <div className="flex flex-col gap-1">
-                {user.pedidos
-                    .map(pedido =>
-                        <p key={pedido.id} className="flex gap-4">
-                            <span>Nº {pedido.id}</span>
-                            <span>
-                                {pedido.fecha_hora.toLocaleString(Intl.DateTimeFormat("es-ES", {
-                                    dateStyle: "full",
-                                    timeStyle: "long",
-                                    timeZone: "Europe/Madrid",
-                                }))}
-                            </span>
-                        </p>
-                    )}
+            {(user.pedidos || []).map(pedido => (
+                    <p key={pedido.id} className="flex gap-4">
+                        <span>Nº {pedido.id}</span>
+                        <span>
+                            {new Date(pedido.fecha_hora).toLocaleString("es-ES", {
+                                dateStyle: "full",
+                                timeStyle: "long",
+                                timeZone: "Europe/Madrid",
+                            })}
+                        </span>
+                    </p>
+                ))}
             </div>
 
         </div>

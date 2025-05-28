@@ -43,7 +43,7 @@ function Modal({ openElement, children }) {
           {/* Decorative elements */}
           <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-400 to-purple-500"></div>
           
-          <div className="flex justify-end sticky top-0 bg-white/80 backdrop-blur-sm py-2 -mt-2 z-10">
+          <div className="flex justify-end sticky top-0  py-2 -mt-2 z-10">
             <button
               onClick={closeModal}
               className="text-gray-500 hover:bg-gray-100 transition-all p-1 rounded-full"

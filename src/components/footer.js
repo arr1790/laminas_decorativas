@@ -12,9 +12,7 @@ export default function Footer() {
           <ul className="space-y-2">
             <li><Link href="/sobre-mi" className="hover:underline">Sobre Mi</Link></li>
             <li><Link href="/aviso-legal" className="hover:underline">Aviso legal</Link></li>
-            <li><Link href="/privacidad" className="hover:underline">Política de privacidad</Link></li>
-            <li><Link href="/cookies" className="hover:underline">Cookies</Link></li>
-            <li><Link href="/envios-devoluciones" className="hover:underline">Envíos y devoluciones</Link></li>
+            <li><Link href="/envios" className="hover:underline">Envíos y devoluciones</Link></li>
             <li><Link href="/faq" className="hover:underline">FAQ</Link></li>
           </ul>
         </div>

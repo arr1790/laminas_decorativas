@@ -2,38 +2,13 @@
 
 import Link from "next/link";
 import Image from 'next/image';
+import Footer from "@/components/footer";
 
 
 const enviosYDevoluciones = () => {
     return (
         <div>
-            {/* Header con logo */}
-            <header className="bg-white pt-0 pb-0">
-                <div className="flex justify-center">
-                    <Link href="/">
-                        <Image
-                            src="/CapturadeAna.png"
-                            alt="Logo de la tienda"
-                            width={300}
-                            height={75}
-                            className="w-[280px] md:w-[300px] h-auto"
-                            priority
-                        />
-                    </Link>
-                </div>
-            </header>
-
-            {/* Barra de navegación superior */}
-            <nav className="bg-white border-y border-gray-200">
-                <div className="flex flex-wrap justify-center gap-4 py-3 px-2">
-                    <Link href="/boda" className="hover:text-pink-200 text-sm font-medium">BODA</Link>
-                    <Link href="/comunion" className="hover:text-pink-200 text-sm font-medium">COMUNIÓN</Link>
-                    <Link href="/bautizo y fiesta bebe" className="hover:text-pink-200 text-sm font-medium">BAUTIZO Y FIESTA BEBÉ</Link>
-                    <Link href="/cumpleanos" className="hover:text-pink-200 text-sm font-medium">CUMPLEAÑOS</Link>
-                    <Link href="/personalizadas" className="hover:text-pink-200 text-sm font-medium">PERSONALIZADAS</Link>
-                    <Link href="/decorativas" className="hover:text-pink-200 text-sm font-medium">DECORATIVAS</Link>
-                </div>
-            </nav>
+        
             {/* Main content */}
             <main className="container mx-auto px-4 py-8 max-w-4xl">
                 <h1 className="text-3xl font-bold mb-6 text-pink-500  py-2 rounded-md">Envíos y Devoluciones</h1>
@@ -100,19 +75,8 @@ const enviosYDevoluciones = () => {
             </main>
 
             {/* Footer */}
-            <footer className="bg-gray-100 py-6 border-t border-gray-200">
-                <div className="mx-auto max-w-6xl px-2">
-                    <div className="flex flex-wrap justify-center gap-4 text-xs">
-                        <Link href="/cookies" className="hover:text-pink-200">POLÍTICA DE COOKIES</Link>
-                        <Link href="/privacidad" className="hover:text-pink-200">POLÍTICA DE PRIVACIDAD</Link>
-                        <Link href="/terminos" className="hover:text-pink-200">TÉRMINOS Y CONDICIONES</Link>
-                    </div>
-
-                    <div className="mt-4 text-center text-gray-500 text-xs">
-                        © {new Date().getFullYear()} Ana Ruano. Todos los derechos reservados.
-                    </div>
-                </div>
-            </footer>
+         
+           <Footer />
         </div>
     );
 };
