@@ -1,5 +1,5 @@
 import { TrashIcon, PencilIcon, PlusIcon } from "lucide-react";
-import { auth } from "@/auth"
+import { auth } from "@/auth";
 import { getUsers } from "@/lib/data";
 import Modal from '@/components/modal';
 import UserVer from '@/components/users/ver';
@@ -10,59 +10,82 @@ import ActiveButton from "@/components/active-button";
 import { activeUser } from "@/lib/actions";
 
 async function Users() {
-    const session = await auth();
-    const users = await getUsers();
+  const session = await auth();
+  const users = await getUsers();
 
+  return (
+    <div className="max-w-5xl mx-auto px-6 py-10">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Gestión de usuarios</h1>
+        <Modal
+          openElement={
+            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition">
+              <PlusIcon className="w-5 h-5" />
+              Añadir usuario
+            </button>
+          }
+        >
+          <UserInsertar session={session} users={users} />
+        </Modal>
+      </div>
 
-    return (
-        <div>
-            <Modal openElement={
-                <div className='justify-self-end mb-2 mr-1 size-8 grid place-content-center rounded-full border border-green-500 text-green-700 bg-green-200 hover:bg-green-500 hover:text-white hover:cursor-pointer'>
-                    <PlusIcon className='size-4' />
-                </div>}>
-                <UserInsertar session={session} users={users} />
-            </Modal>
+      {/* Lista de usuarios */}
+      <div className="space-y-4">
+        {users
+          .filter(user => user.id !== session.user.id)
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map(user => (
+            <div
+              key={user.id}
+              className="flex justify-between items-center bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-100 p-5"
+            >
+              {/* Info usuario */}
+              <div className="flex items-center gap-5">
+                {session.user?.role === 'ADMIN' && (
+                  <form action={activeUser.bind(null, user)}>
+                    <ActiveButton user={user} />
+                  </form>
+                )}
 
-            {users
-                .filter(user => user.id !== session.user.id)
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map(user => (
-                    <div key={user.id} className="p-1 flex justify-between items-center odd:bg-slate-100">
+                <Modal openElement={
+                  <p className="text-lg font-semibold text-gray-800 hover:underline cursor-pointer">
+                    {user.name}
+                  </p>
+                }>
+                  <UserVer user={user} pedidos={user.orders} />
+                </Modal>
+              </div>
 
-                        <div className="flex gap-2 items-center">
-                            {session.user?.role === 'ADMIN' &&
-                                <form action={activeUser.bind(null, user)}>
-                                    <ActiveButton user={user} />
-                                </form>
-                            }
-                            <Modal openElement={<p className="cursor-pointer">{user.name}</p>}>
-                                <UserVer user={user} pedidos={user.orders} />
-                            </Modal>
-                        </div>
+              {/* Acciones */}
+              {session?.user?.role === 'ADMIN' && (
+                <div className="flex gap-2">
+                  <Modal
+                    openElement={
+                      <button className="p-2 bg-yellow-100 text-yellow-700 hover:bg-yellow-200 rounded-md transition border border-yellow-200">
+                        <PencilIcon className="w-4 h-4" />
+                      </button>
+                    }
+                  >
+                    <UserModificar session={session} user={user} pedidos={user.pedidos} />
+                  </Modal>
 
-                        {session?.user?.role === 'ADMIN' &&
-                            <div className='flex justify-center items-center gap-1'>
-
-                                <Modal openElement={
-                                    <div className='size-8 grid place-content-center rounded-full border border-amber-500 text-amber-700 bg-amber-200 hover:bg-amber-500 hover:text-white hover:cursor-pointer'>
-                                        <PencilIcon className='size-4' />
-                                    </div>}>
-                                   <UserModificar session={session} user={user} pedidos={user.pedidos} />
-
-                                </Modal>
-                                <Modal openElement={
-                                    <div className='size-8 grid place-content-center rounded-full border border-red-500 text-red-700 bg-red-200 hover:bg-red-500 hover:text-white hover:cursor-pointer'>
-                                        <TrashIcon className='size-4' />
-                                    </div>}>
-                                    <UserEliminar user={user} pedidos={user.pedidos} />
-                                </Modal>
-                            </div>
-                        }
-                    </div>
-                ))}
-        </div>
-
-    )
+                  <Modal
+                    openElement={
+                      <button className="p-2 bg-red-100 text-red-700 hover:bg-red-200 rounded-md transition border border-red-200">
+                        <TrashIcon className="w-4 h-4" />
+                      </button>
+                    }
+                  >
+                    <UserEliminar user={user} pedidos={user.pedidos} />
+                  </Modal>
+                </div>
+              )}
+            </div>
+          ))}
+      </div>
+    </div>
+  );
 }
 
-export default Users
+export default Users;

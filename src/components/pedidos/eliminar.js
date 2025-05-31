@@ -10,14 +10,14 @@ function PedidoEliminar({ pedido }) {
   const [state, action, pending] = useActionState(deleteOrder, {});
 
   useEffect(() => {
-    if (state.success) {
+    if (state && state.success) {
       toast.success(state.success);
       document.getElementById(formId)?.closest("dialog")?.close();
     }
   }, [state]);
 
   const precioTotal = pedido.orderItems.reduce((acc, item) => {
-    const precio = item.product?.[0]?.basePrice || 0;
+    const precio = item.product?.basePrice || 0;
     return acc + precio * item.cantidad;
   }, 0);
 
@@ -106,11 +106,11 @@ function PedidoEliminar({ pedido }) {
           </div>
           <ul className="divide-y divide-gray-200">
             {pedido.orderItems.map((item) => {
-              const nombre = item.product?.[0]?.name || "Producto";
-              const precioUnitario = item.product?.[0]?.basePrice || 0;
+              const nombre = item.product?.name || "Producto";
+              const precioUnitario = item.product?.basePrice || 0;
               const subtotal = precioUnitario * item.cantidad;
-              const image = item.product?.[0]?.image || "/images/default-product.avif";
-              
+              const image = item.product?.image || "/images/default-product.avif";
+
               return (
                 <li key={item.id} className="p-4 hover:bg-gray-50 transition-colors">
                   <div className="flex gap-4">

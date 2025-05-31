@@ -15,7 +15,7 @@ function ProductoEliminar({ producto }) {
         if (state.success) {
             toast.success('Producto eliminado con éxito');
             document.getElementById(formId)?.closest("dialog")?.close();
-            // Refresh the page or update the product list
+           
             window.location.reload();
         } else if (state.error) {
             toast.error(state.error || 'Error al eliminar el producto');

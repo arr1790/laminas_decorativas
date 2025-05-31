@@ -1,87 +1,151 @@
 'use client'
-
-import { insertarOrder } from "@/lib/actions";
+import { useEffect } from "react";
+import { useId } from "react";
+import { useActionState } from "react";
+import { insertarProducto } from "@/lib/actions";
 import { PlusIcon, RefreshCwIcon } from "lucide-react";
-import { useActionState, useEffect, useId } from "react";
 import { toast } from "sonner";
-import CheckBox from "../check-box";
+import { Loader2 } from "lucide-react";
 
-
-function ProductoInsertar({ user, products }) {
-    const formId = useId()
-    const [state, action, pending] = useActionState(insertarOrder, {})
+function ProductoInsertar({ categories }) {
+    const formId = useId();
+    const [state, action, pending] = useActionState(insertarProducto, {});
 
     useEffect(() => {
         if (state.success) {
-            toast.success(state.success)
-            document.getElementById(formId)?.closest('dialog')?.close()
+            toast.success(state.success);
+            document.getElementById(formId)?.reset();
+            document.getElementById(formId)?.closest("dialog")?.close();
         }
-    }, [state, formId])
+        if (state.error) {
+            toast.error(state.error);
+        }
+    }, [state, formId]);
 
     return (
-        <form id={formId} action={action} className="flex flex-col gap-4">
+        <form
+            action={action}
+            id={formId}
+            className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-auto space-y-4"
+        >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4 text-center">Insertar Producto</h2>
+
+            <div className="grid grid-cols-1 gap-4">
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Nombre del Producto *</label>
+                    <input
+                        name="name"
+                        placeholder="Nombre del producto"
+                        required
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Descripción *</label>
+                    <textarea
+                        name="description"
+                        placeholder="Descripción del producto"
+                        required
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 min-h-[100px]"
+                    />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-gray-700 font-medium mb-2">Precio Base *</label>
+                        <div className="relative">
+                            <span className="absolute left-3 top-3">€</span>
+                            <input
+                                name="basePrice"
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                placeholder="0.00"
+                                required
+                                className="w-full p-3 pl-8 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-gray-700 font-medium mb-2">Dimensiones *</label>
+                        <input
+                            name="dimensions"
+                            placeholder="30x40cm"
+                            required
+                            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                        />
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <input
+                            name="withFrame"
+                            type="checkbox"
+                            id="withFrame"
+                            className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <label htmlFor="withFrame" className="text-gray-700">Incluye marco</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Imagen Principal *</label>
+                    <input
+                        name="image"
+                        type="url"
+                        placeholder="https://ejemplo.com/imagen.jpg"
+                        required
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Imagen Hover (Opcional)</label>
+                    <input
+                        name="hoverImage"
+                        type="url"
+                        placeholder="https://ejemplo.com/hover-image.jpg"
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-gray-700 font-medium mb-2">Categoría *</label>
+                    <select
+                        name="categoryId"
+                        required
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                    >
+                        {categories.map(category => (
+                            <option key={category.slug} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
             <button
                 type="submit"
                 disabled={pending}
-                className='my-4 px-4 py-2 w-fit rounded-full self-end outline-none border border-green-500 text-green-700 bg-green-200 hover:bg-green-500 hover:text-white hover:cursor-pointer disabled:bg-zinc-400 disabled:text-zinc-100 disabled:cursor-default'
+                className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-400 flex items-center justify-center gap-2"
             >
-                {pending
-                    ? <div><RefreshCwIcon className='inline animate-spin' /> Guardando...</div>
-                    : <div><PlusIcon className='inline' /> Guardar </div>
-                }
+                {pending ? (
+                    <>
+                        <Loader2 className="animate-spin h-5 w-5" />
+                        <span>Guardando producto...</span>
+                    </>
+                ) : (
+                    "Insertar Producto"
+                )}
             </button>
 
-            <label> Fecha y hora:
-                <input
-                    name="fecha_hora"
-                    type="datetime-local"
-                    defaultValue={new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('.')[0]}
-                />
-            </label>
-
-            {user?.id && (
-                <input type='hidden' name="userId" defaultValue={user.id} />
+            {state.error && (
+                <p className="text-red-500 text-sm mt-2">{state.error}</p>
             )}
-            <p className="font-bold">Productos</p>
-            <div className="grid gap-4 place-items-center grid-cols-[repeat(auto-fill,minmax(140px,1fr))]">
-                {products.map(product => (
-                    <CheckBox
-                        key={product.id}
-                        name={`product${product.id}`}
-                        className="place-items-center has-checked:bg-lime-100 has-checked:border has-checked:border-green-500 p-4 rounded-md"
-                    >
-                        <img
-                            src={product.image || '/images/default-product.avif'}
-                            alt={product.name}
-                            className="w-full h-auto"
-                        />
-                        <span>{product.name}</span>
-                        <span>${product.basePrice}</span>
-                    </CheckBox>
-                ))}
-            </div>
-
-            <label>
-                Dirección de envío:
-                <select name="addressId" required>
-                    {user.addresses?.map(address => (
-                        <option key={address.id} value={address.id}>
-                            {address.direccion1}, {address.ciudad}
-                        </option>
-                    ))}
-                </select>
-            </label>
-
-            <label>
-                Estado del pedido:
-                <select name="status" defaultValue="PENDIENTE">
-                    <option value="PENDIENTE">Pendiente</option>
-                    <option value="EN_PROCESO">En proceso</option>
-                    <option value="ENVIADO">Enviado</option>
-                    <option value="ENTREGADO">Entregado</option>
-                    <option value="CANCELADO">Cancelado</option>
-                </select>
-            </label>
         </form>
     );
 }

@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const images = [
     { src: "/lamina1.png", alt: "Portada 1" },
-    { src: "/1p.png", alt: "Portada 2" },
+    { src: "/port5.webp", alt: "Portada 2" },
 ];
 
 export default function HeroSlider() {

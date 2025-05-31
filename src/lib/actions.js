@@ -9,7 +9,7 @@ import slugify from 'slugify';
 import { redirect } from 'next/navigation';
 import { use } from 'react';
 
-import { obtenerDireccionesPorUserId } from "@/lib/data" 
+import { obtenerDireccionesPorUserId } from "@/lib/data"
 import { auth } from '@/auth';
 
 
@@ -21,19 +21,16 @@ export async function register(prevState, formData) {
   const email = formData.get('email')
   const password = formData.get('password')
 
- 
-  const role = "user"; 
 
-  
+  const role = "user";
   const user = await getUserByEmail(email);
 
   if (user) {
     return { error: 'El email ya está registrado' }
   }
-
   const regexp_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}$/;
 
-  if( !regexp_password.test(password) ) {
+  if (!regexp_password.test(password)) {
     return { error: 'La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un carácter especial.' }
   }
   // Encriptamos password 
@@ -77,20 +74,16 @@ export async function login(prevState, formData) {
 
   if (user && matchPassword) {
 
-  
-      await signIn('credentials', {
+
+    await signIn('credentials', {
       email,
       password,
       redirectTo: globalThis.callbackUrl
     })
-  
-    
 
-    // if (result?.error) {
-    //   return { error: 'Error en autenticación: ' + result.error }
-    // }
 
-    // return { success: 'Inicio de sesión correcto' }
+
+
 
   } else {
     return { error: 'Credenciales incorrectas.' }
@@ -132,7 +125,7 @@ export async function loginDiscord() {
 }
 
 
-// LOGIN resend (Magic Link to email)
+
 export async function loginResend(formData) {
   try {
     await signIn("resend", formData)
@@ -326,60 +319,60 @@ export async function insertarOrder(formData) {
   const telefono = formData.get("telefono")?.toString() || "";
   const email = formData.get("email")?.toString() || "";
 
-const direccion = await prisma.address.upsert({
-  where: { userId },
-  update: {
-    nombre,
-    apellido,
-    direccion1,
-    direccion2,
-    ciudad,
-    pais,
-    provincia,
-    codigoPostal,
-    telefono,
-    email,
-  },
-  create: {
-    userId,
-    nombre,
-    apellido,
-    direccion1,
-    direccion2,
-    ciudad,
-    pais,
-    provincia,
-    codigoPostal,
-    telefono,
-    email,
-  },
-});
+  const direccion = await prisma.address.upsert({
+    where: { userId },
+    update: {
+      nombre,
+      apellido,
+      direccion1,
+      direccion2,
+      ciudad,
+      pais,
+      provincia,
+      codigoPostal,
+      telefono,
+      email,
+    },
+    create: {
+      userId,
+      nombre,
+      apellido,
+      direccion1,
+      direccion2,
+      ciudad,
+      pais,
+      provincia,
+      codigoPostal,
+      telefono,
+      email,
+    },
+  });
 
   const total = carrito.orderItems.reduce(
     (sum, item) => sum + Number(item.product.basePrice) * item.cantidad,
     0
   );
 
-const nuevoPedido = await prisma.order.create({
-  data: {
-    status: "pendiente",
-    total: total,
-    address: {
-      connect: { id: direccion.id },
+  const nuevoPedido = await prisma.order.create({
+    data: {
+      status: "pendiente",
+      total: total,
+      address: {
+        connect: { id: direccion.id },
+      },
+      user: {
+        connect: { id: userId },
+      },
+      orderItems: {
+        create: carrito.orderItems.map((item) => ({
+          cantidad: item.cantidad,
+          product: {
+            connect: { id: item.productId },
+          },
+        })),
+      },
     },
-    user: {
-      connect: { id: userId },
-    },
-    orderItems: {
-      create: carrito.orderItems.map((item) => ({
-        cantidad: item.cantidad,
-        product: {
-          connect: { id: item.productId },
-        },
-      })),
-    },
-  },
-});
+  });
 
 
 
@@ -423,7 +416,7 @@ export async function getAllOrders() {
 }
 
 
-export async function deleteOrder(formData) {
+export async function deleteOrder(prevState, formData) {
   const id = Number(formData.get('id'))
   const order = await prisma.order.delete({
     where: { id }
@@ -432,10 +425,10 @@ export async function deleteOrder(formData) {
   revalidatePath('/perfil')
   return { success: "Pedido eliminado correctamente" }
 
-  
+
 }
 
-export async function modificarOrder(prevState,formData) {
+export async function modificarOrder(prevState, formData) {
   const id = Number(formData.get('id'))
   const status = formData.get('status')
 
@@ -664,7 +657,7 @@ export async function guardarOModificarDireccion(formData) {
   const codigoPostal = formData.get('codigoPostal');
   const telefono = formData.get('telefono');
 
-   const session = await auth(); 
+  const session = await auth();
   const user = session?.user;
 
   if (!user || !user.id) {
@@ -672,7 +665,7 @@ export async function guardarOModificarDireccion(formData) {
   }
 
   if (id) {
-    
+
     const idNum = Number(id);
     const existing = await prisma.address.findUnique({ where: { id: idNum } });
     if (!existing) {
@@ -719,8 +712,8 @@ export async function guardarOModificarDireccion(formData) {
 // ------------------------ SEARCH ------------------------ 
 
 export async function busqueda(query) {
- const productos = await prisma.product.findMany({
- 
+  const productos = await prisma.product.findMany({
+
 
     where: {
       OR: [
@@ -729,8 +722,8 @@ export async function busqueda(query) {
       ],
     },
   })
-  
-  return productos 
+
+  return productos
 }
 
 

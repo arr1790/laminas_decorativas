@@ -31,7 +31,7 @@ function PedidoModificar({ pedido }) {
   }, [pedido.status]);
 
   const precioTotal = pedido.orderItems.reduce((acc, item) => {
-    const precio = item.product?.[0]?.basePrice || 0;
+    const precio = item.product?.basePrice || 0;
     return acc + precio * item.cantidad;
   }, 0);
 
@@ -55,12 +55,14 @@ function PedidoModificar({ pedido }) {
             <select
               name="status"
               className="w-full md:w-60 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
             >
-              <option selected={status === "Pendiente"}  defaultValue="Pendiente">Pendiente</option>
-              <option selected={status === "En_proceso"} defaultValue="En_proceso">En proceso</option>
-              <option selected={status === "Enviado"} defaultValue="Enviado">Enviado</option>
-              <option selected={status === "Entregado"} defaultValue="Entregado">Entregado</option>
-              <option selected={status === "Cancelado"} defaultValue="Cancelado">Cancelado</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="En_proceso">En proceso</option>
+              <option value="Enviado">Enviado</option>
+              <option value="Entregado">Entregado</option>
+              <option value="Cancelado">Cancelado</option>
             </select>
           </label>
 

@@ -38,7 +38,7 @@ export default async function Pedidos() {
     <div className="flex flex-col items-center gap-6 px-4 py-8">
       <div className="w-full max-w-6xl">
 
-        {user.role === "ADMIN" && (
+        {/* {user.role === "ADMIN" && (
           <div className="flex justify-end mb-6">
             <Modal
               openElement={
@@ -51,7 +51,7 @@ export default async function Pedidos() {
               <PedidoInsertar user={user} products={productos} />
             </Modal>
           </div>
-        )}
+        )} */}
 
         {pedidos.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">

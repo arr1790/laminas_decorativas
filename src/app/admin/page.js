@@ -7,16 +7,19 @@ import { BackButton } from "@/components/BackButton"
 import Link from "next/link"
 
 async function PaginaAdmin() {
+  // Obtener la sesión del usuario actual (autenticación)
   const sesion = await auth()
 
+  // Si el usuario está autenticado y tiene rol ADMIN, mostrar el panel de administración
   if (sesion && sesion?.user?.role === 'ADMIN')
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
 
-           {/* Botón atrás */}
+          {/* Botón para regresar a la página anterior */}
           <BackButton />
 
+          {/* Encabezado del panel de administración */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
               <Shield className="w-8 h-8 text-blue-600" />
@@ -25,10 +28,11 @@ async function PaginaAdmin() {
             <p className="text-lg text-gray-600">Gestión de mensajes recibidos</p>
           </div>
 
-
+          {/* Información del usuario administrador */}
           <div className="bg-white rounded-xl shadow-md overflow-hidden mb-12">
             <div className="p-6 sm:p-8">
               <div className="flex flex-col sm:flex-row items-center gap-6">
+                {/* Mostrar imagen del usuario si existe */}
                 {sesion?.user.image && (
                   <img
                     src={sesion?.user.image}
@@ -55,6 +59,8 @@ async function PaginaAdmin() {
               </div>
             </div>
           </div>
+
+          {/* Enlaces para gestionar categorías, productos, pedidos y usuarios */}
           <div className="bg-white rounded-xl shadow-md overflow-hidden mb-12">
             <div className="p-6 grid sm:grid-cols-2 gap-4">
               <Link href="/categorias" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
@@ -69,20 +75,21 @@ async function PaginaAdmin() {
                 <Package className="w-6 h-6 text-blue-600" />
                 <span className="text-gray-800 font-medium">Gestionar Pedidos</span>
               </Link>
-               <Link href="/users" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
+              <Link href="/users" className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
                 <Users className="w-6 h-6 text-blue-600" />
                 <span className="text-gray-800 font-medium">Gestionar Usuarios</span>
               </Link>
             </div>
           </div>
 
-
+          {/* Sección para mostrar mensajes recibidos */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <Mailbox className="w-6 h-6 text-blue-500" />
               <h2 className="text-2xl font-bold text-gray-800">Mensajes Recibidos</h2>
             </div>
 
+            {/* Uso de Suspense para carga asíncrona de mensajes con indicador de carga */}
             <Suspense fallback={
               <div className="flex justify-center py-12">
                 <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
@@ -96,7 +103,9 @@ async function PaginaAdmin() {
         </div>
       </div>
     )
-  else redirect('/dashboard')
+  else
+    // Si el usuario no es admin o no está autenticado, redirigir al dashboard principal
+    redirect('/dashboard')
 }
 
 export default PaginaAdmin
