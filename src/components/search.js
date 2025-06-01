@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { SearchIcon } from 'lucide-react';
 
-const search = () => {
+const Search = () => {
   const [query, setQuery] = useState('');
   const router = useRouter();
   const inputRef = useRef(null);
@@ -40,4 +40,4 @@ const search = () => {
   );
 };
 
-export default search;
+export default Search;
