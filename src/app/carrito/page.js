@@ -22,14 +22,13 @@ async function page() {
 
     if (precioTotal === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-10">
-                <img
-                    src="/carrovacio.png"
-                    alt="Carro vacío"
-                    className="w-100 h-100 mb-4 opacity-70"
-                />
-                <p className="text-lg text-gray-600">Su carrito está vacío</p>
-            </div>
+            <img
+                className="w-24 h-auto  object-contain mx-auto"
+                src={item.product.image}
+                alt="Product image"
+            />
+
+
         );
     }
 
@@ -40,53 +39,57 @@ async function page() {
                     <h1 className="text-2xl font-semibold mb-4">Carrito</h1>
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="md:w-3/4">
-                            <div className="bg-white rounded-lg shadow-md p-6 mb-4">
-                                <table className="w-full">
+                            <div className="bg-white rounded-lg shadow-md p-4 md:p-6 mb-4 overflow-x-auto">
+                                <table className="w-full text-sm">
                                     <thead>
                                         <tr>
-                                            <th className="text-left font-semibold">Producto</th>
-                                            <th className="text-left font-semibold">Precio</th>
-                                            <th className="text-left font-semibold">Cantidad</th>
-                                            <th className="text-left font-semibold">Total</th>
+                                            <th className="text-left font-semibold pb-2">Producto</th>
+                                            <th className="text-left font-semibold pb-2">Precio</th>
+                                            <th className="text-left font-semibold pb-2">Cantidad</th>
+                                            <th className="text-left font-semibold pb-2">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {carrito.orderItems.map((item) => (
-                                            <tr key={item.id}>
+                                            <tr key={item.id} className="border-t">
                                                 <td className="py-4">
-                                                    <div className="flex items-center">
-                                                        <img className="h-30 w-20 mr-4" src={item.product.image} alt="Product image" />
-                                                        <span className="font-semibold">{item.product.name}</span>
+                                                    <div className="flex flex-col md:flex-row items-center gap-2">
+                                                        <img className="h-24 w-auto object-contain" src={item.product.image} alt="Product image" />
+
+                                                        <span className="font-semibold text-center md:text-left">{item.product.name}</span>
                                                     </div>
                                                 </td>
                                                 <td className="py-4">
                                                     {item.product.basePrice.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€
                                                 </td>
                                                 <td className="py-4">
-                                                    <div className="flex items-center gap-1">
-                                                        <form action={restarAlCarrito}>
-                                                            <input type="hidden" name="orderItemId" value={item.id} />
-                                                            <button type="submit" className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100" aria-label="Restar uno">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                                    <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
-                                                                </svg>
-                                                            </button>
-                                                        </form>
+                                                    <div className="flex flex-col items-center gap-2 md:flex-row md:items-center md:gap-1">
+                                                        <div className="flex items-center gap-1">
+                                                            <form action={restarAlCarrito}>
+                                                                <input type="hidden" name="orderItemId" value={item.id} />
+                                                                <button type="submit" className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100" aria-label="Restar uno">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                                        <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
+                                                                    </svg>
+                                                                </button>
+                                                            </form>
 
-                                                        <p className="text-gray-700 w-5 text-center">{item.cantidad}</p>
+                                                            <p className="text-gray-700 w-5 text-center">{item.cantidad}</p>
 
-                                                        <form action={sumarAlCarrito}>
-                                                            <input type="hidden" name="orderItemId" value={item.id} />
-                                                            <button type="submit" className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100" aria-label="Sumar uno">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                                    <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
-                                                                </svg>
-                                                            </button>
-                                                        </form>
+                                                            <form action={sumarAlCarrito}>
+                                                                <input type="hidden" name="orderItemId" value={item.id} />
+                                                                <button type="submit" className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100" aria-label="Sumar uno">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                                                    </svg>
+                                                                </button>
+                                                            </form>
+                                                        </div>
 
-                                                        <form action={eliminarDelCarrito}>
+                                                        {/* Botón eliminar se muestra debajo en móviles */}
+                                                        <form action={eliminarDelCarrito} className="md:ml-4">
                                                             <input type="hidden" name="orderItemId" value={item.id} />
-                                                            <button type="submit" className="p-1 text-red-500 hover:text-red-700 rounded-full hover:bg-red-100 ml-4" aria-label="Eliminar producto">
+                                                            <button type="submit" className="p-1 text-red-500 hover:text-red-700 rounded-full hover:bg-red-100" aria-label="Eliminar producto">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                                     <path fillRule="evenodd" d="M6 7a1 1 0 012 0v7a1 1 0 11-2 0V7zm4 0a1 1 0 012 0v7a1 1 0 11-2 0V7zM4 5h12v2H4V5zm3-2h2v1H7V3zM5 6h10l-1 9a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6z" clipRule="evenodd" />
                                                                 </svg>
@@ -103,6 +106,9 @@ async function page() {
                                 </table>
                             </div>
                         </div>
+
+
+
 
                         <form action={insertarOrder} className="max-w-6xl mx-auto px-4 py-8">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
