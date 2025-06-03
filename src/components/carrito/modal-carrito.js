@@ -76,7 +76,7 @@ function ModalCarrito({ carrito, session }) {
                       {precioTotal === 0 && (
                         <div className="flex flex-col items-center justify-center py-10">
                           <img
-                            src="/carrovacio.png" 
+                            src="/carrovacio.png"
                             alt="Carro vacío"
                             className="w-100 h-100 mb-4 opacity-70"
                           />
@@ -87,8 +87,8 @@ function ModalCarrito({ carrito, session }) {
                       <ul role="list" className="-my-6 divide-y divide-gray-200 mt-8">
                         {carrito.orderItems.map((item) => (
                           <li key={item.id} className="flex py-6">
-                            <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                              <img src={item.product.image} alt={item.product.name} className="size-full object-cover" />
+                            <div className="w-24 h-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
+                              <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
                             </div>
 
                             <div className="ml-4 flex flex-1 flex-col">
@@ -104,40 +104,47 @@ function ModalCarrito({ carrito, session }) {
                                 <p className="mt-1 text-sm text-gray-500">{item.texto1}</p>
                                 <p className="mt-1 text-sm text-gray-500">{item.texto2}</p>
                               </div>
-                              <div className="flex flex-1 items-center justify-between text-sm mt-4">
-                                <form action={restarAlCarrito}>
+
+                              <div className="flex flex-col gap-2 mt-4 md:flex-row md:items-center md:gap-1">
+                                <div className="flex items-center gap-1">
+                                  {/* Restar */}
+                                  <form action={restarAlCarrito}>
+                                    <input type="hidden" name="orderItemId" value={item.id} />
+                                    <button
+                                      type="submit"
+                                      className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+                                      aria-label="Restar uno"
+                                    >
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
+                                      </svg>
+                                    </button>
+                                  </form>
+
+                                  {/* Cantidad */}
+                                  <p className="text-gray-700 mx-2 w-6 text-center">{item.cantidad}</p>
+
+                                  {/* Sumar */}
+                                  <form action={sumarAlCarrito}>
+                                    <input type="hidden" name="orderItemId" value={item.id} />
+                                    <button
+                                      type="submit"
+                                      className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+                                      aria-label="Sumar uno"
+                                    >
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                      </svg>
+                                    </button>
+                                  </form>
+                                </div>
+
+                                {/* Eliminar: al lado en móvil, debajo en desktop */}
+                                <form action={eliminarDelCarrito} className="flex md:block md:ml-4">
                                   <input type="hidden" name="orderItemId" value={item.id} />
                                   <button
                                     type="submit"
-                                    className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
-                                    aria-label="Restar uno"
-                                  >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                      <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
-                                    </svg>
-                                  </button>
-                                </form>
-
-                                <p className="text-gray-700 mx-2 w-6 text-center">{item.cantidad}</p>
-
-                                <form action={sumarAlCarrito}>
-                                  <input type="hidden" name="orderItemId" value={item.id} />
-                                  <button
-                                    type="submit"
-                                    className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
-                                    aria-label="Sumar uno"
-                                  >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                      <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
-                                    </svg>
-                                  </button>
-                                </form>
-
-                                <form action={eliminarDelCarrito}>
-                                  <input type="hidden" name="orderItemId" value={item.id} />
-                                  <button
-                                    type="submit"
-                                    className="p-1 text-red-500 hover:text-red-700 rounded-full hover:bg-red-100 ml-4"
+                                    className="p-1 text-red-500 hover:text-red-700 rounded-full hover:bg-red-100"
                                     aria-label="Eliminar producto"
                                   >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
