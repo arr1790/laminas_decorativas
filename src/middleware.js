@@ -33,8 +33,9 @@ export const config = {
         "/pedidos(.*)",
         "/perfil(.*)",
         "/direcciones(.*)",
-        "/categorias(.*)",
+    
         "/productos(.*)",
+        
 
     ],
 } 

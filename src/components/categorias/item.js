@@ -73,8 +73,8 @@ function ProductCard({ producto }) {
     >
 
       <div className="w-full mb-4 overflow-hidden rounded-lg">
-        <div className="relative pb-[125%]"> {/* Ajustar según relación de aspecto */}
-          {/* Imagen principal */}
+        <div className="relative pb-[125%]">
+       
           <img
             src={producto.image || '/placeholder.png'}
             alt={producto.name}

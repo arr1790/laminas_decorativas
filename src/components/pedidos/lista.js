@@ -1,12 +1,13 @@
 import { obtenerPedidos, obtenerProductos, getUsers } from "@/lib/data";
 import PedidoInsertar from "./insertar";
 import PedidoModificar from "./modificar";
-import PedidoEliminar from "./eliminar";
+
 
 import { PencilIcon, PlusIcon, TrashIcon, ClockIcon, UserIcon } from "lucide-react";
 
 import { auth } from "@/auth";
 import Modal from "../modal";
+import PedidoEliminar from "./eliminar";
 
 export default async function Pedidos() {
   const session = await auth();
@@ -127,14 +128,29 @@ export default async function Pedidos() {
                           {pedido.total
                             ? pedido.total.toFixed(2)
                             : pedido.orderItems.reduce(
-                                (acc, item) => acc + (item.product?.basePrice || 0) * item.cantidad,
-                                0
-                              ).toFixed(2)}{" "}
+                              (acc, item) => acc + (item.product?.basePrice || 0) * item.cantidad,
+                              0
+                            ).toFixed(2)}{" "}
                           €
                         </span>
                       </td>
                       {user.role === "ADMIN" && (
-                        <td className="py-5 px-6 text-right whitespace-nowrap">
+                        <td className="py-5 px-6 text-right whitespace-nowrap relative z-50 overflow-visible">
+                           <Modal
+                              openElement={
+                                <button
+                                  className="p-2 rounded-lg z-50 hover:bg-red-50 text-red-600 transition-colors hover:shadow-sm"
+                                  aria-label={`Eliminar pedido #${pedido.id}`}
+                                >
+                                  <TrashIcon className="w-5 h-5" />
+                                </button>
+                              }
+                            >
+
+                           
+                              <PedidoEliminar pedido={pedido} />
+                            </Modal>
+
                           <div className="flex gap-2 justify-end">
                             <Modal
                               openElement={
@@ -149,18 +165,7 @@ export default async function Pedidos() {
                               <PedidoModificar pedido={pedido} productos={productos} user={user} />
                             </Modal>
 
-                            <Modal
-                              openElement={
-                                <button
-                                  className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors hover:shadow-sm"
-                                  aria-label={`Eliminar pedido #${pedido.id}`}
-                                >
-                                  <TrashIcon className="w-5 h-5" />
-                                </button>
-                              }
-                            >
-                              <PedidoEliminar pedido={pedido} />
-                            </Modal>
+                           
                           </div>
                         </td>
                       )}
@@ -189,9 +194,9 @@ export default async function Pedidos() {
                     {pedido.total
                       ? pedido.total.toFixed(2)
                       : pedido.orderItems.reduce(
-                          (acc, item) => acc + (item.product?.basePrice || 0) * item.cantidad,
-                          0
-                        ).toFixed(2)}{" "}
+                        (acc, item) => acc + (item.product?.basePrice || 0) * item.cantidad,
+                        0
+                      ).toFixed(2)}{" "}
                     €
                   </span>
                 </div>
@@ -247,7 +252,7 @@ export default async function Pedidos() {
                           className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors hover:shadow-sm"
                           aria-label={`Eliminar pedido #${pedido.id}`}
                         >
-                          <TrashIcon className="w-5 h-5" />
+                          Eliminar
                         </button>
                       }
                     >

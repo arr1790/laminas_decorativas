@@ -1,7 +1,7 @@
 // components/Header.js
 import Link from 'next/link'
 import { auth } from "@/auth"
-import { ChevronDown, User, ShoppingCart, Mail, Package } from "lucide-react"
+import { ChevronDown, User, ShoppingCart, Mail, Package ,UserCog } from "lucide-react"
 import DropdownCategorias from './DropdownCategorias'
 import MobileMenu from './dropdownMobileButon'
 import { obtenerCategorias } from '@/lib/data'
@@ -56,7 +56,7 @@ async function Header() {
 
                         {session?.user.role === 'ADMIN' && (
                             <Link href="/admin" className="hover:text-shadow-neutral-500">
-                                <ChevronDown className="w-5 h-5" />
+                                <UserCog  className="w-5 h-5" />
                             </Link>
                         )}
 
