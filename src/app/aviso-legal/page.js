@@ -16,7 +16,7 @@ export default function AvisoLegalPage() {
       <p className="mb-4">
         <strong>ANA RUANO RUIZ</strong><br />
         DNI: 112523584R<br />
-        Domicilio: C/ La Alhona, Montilla, 14550, Córdoba<br />
+        Domicilio: C/ La Almona, Montilla, 14550, Córdoba<br />
         Correo electrónico: info@laminara.es
       </p>
 

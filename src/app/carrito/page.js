@@ -8,6 +8,7 @@ import Footer from "@/components/footer";
 
 async function page() {
     const session = await auth();
+
     const direccion = await obtenerDireccionesPorUserId(session.user.id);
 
     if (!session) {
@@ -23,8 +24,8 @@ async function page() {
     if (precioTotal === 0) {
         return (
             <img
-                className="w-24 h-auto  object-contain mx-auto"
-                src={item.product.image}
+                className="w-120 h-auto object-contain mx-auto block"
+                src={"/carrovacio.png"}
                 alt="Product image"
             />
 

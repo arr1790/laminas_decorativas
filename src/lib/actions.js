@@ -719,8 +719,12 @@ export async function busqueda(query) {
       OR: [
         { name: { contains: query, mode: 'insensitive' } },
         { description: { contains: query, mode: 'insensitive' } },
+        { category:{is : {name: { contains: query, mode: 'insensitive' } } } },
       ],
     },
+    include: {
+      category: true
+    } 
   })
 
   return productos
