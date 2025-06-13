@@ -37,14 +37,17 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
     event.preventDefault();
     const formData = new FormData(event.target);
 
-    startTransition(() => {
-      insertarCarrito(formData).then(() => {
-        setNombre(" ");
-        setTextoPersonalizado(" ");
-      });
-      toast.success('Añadido al carrito ' + producto.name)
-    });
+  startTransition(() => {
+  insertarCarrito(formData).then(() => {
+    setNombre(" ");
+    setTextoPersonalizado(" ");
+    setTimeout(() => {
+      toast.success('Añadido al carrito ' + producto.name);
+    }, 100);
+  });
+});
   }
+
 
   const imagenes = producto.images || [producto.image || '/placeholder.png'];
 
@@ -118,12 +121,17 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
           </div>
 
           {/* Información del producto */}
-          <div className="flex flex-col">
-            <div className="mb-2">
+          <div className="mb-2">
+            {producto.withFrame ? (
               <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">
                 CON MARCO
               </span>
-            </div>
+            ) : (
+              <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                SIN MARCO
+              </span>
+            )}
+
 
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">{producto.name}</h1>
 
@@ -178,7 +186,7 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
 
             <div className="mb-16">
               <p className="text-gray-600 mb-16">
-                Lámina personalizada {producto.name}. Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para decorar la casa o para hacer un regalo especial y personalizado.
+                Lámina personalizada  {producto.name}. Añade vuestros nombres, fecha o frase favorita. Este diseño es perfecto para regalar , decorar o simplemente para disfrutar.
               </p>
             </div>
           </div>

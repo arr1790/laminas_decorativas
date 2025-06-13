@@ -1,7 +1,7 @@
 // components/Header.js
 import Link from 'next/link'
 import { auth } from "@/auth"
-import { ChevronDown, User, ShoppingCart, Mail, Package ,UserCog } from "lucide-react"
+import { User, Mail,UserCog } from "lucide-react"
 import DropdownCategorias from './DropdownCategorias'
 import MobileMenu from './dropdownMobileButon'
 import { obtenerCategorias } from '@/lib/data'
@@ -38,7 +38,7 @@ async function Header() {
                             <DropdownCategorias />
                         </div>
                     </nav>
-                    <Search />
+                    <Search />  
 
                     {/* Iconos */}
                     <div className="flex items-center gap-4">

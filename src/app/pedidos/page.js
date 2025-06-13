@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import  Pedidos  from "@/components/pedidos/lista"; 
 import { obtenerPedidos, obtenerProductos, getUsers } from "@/lib/data";
+import { BackButton } from "@/components/BackButton";
 
 export default async function PedidosPage() {
   const session = await auth();
@@ -17,12 +18,18 @@ export default async function PedidosPage() {
   const productos = await obtenerProductos();
   const clientes = await getUsers();
 
+  
+
+
   return (
-   <Pedidos
-  pedidos={pedidos}
-  productos={productos}
-  clientes={clientes}
-  user={session.user}
-/>
+    <div className="p-4">
+      <BackButton />
+      <Pedidos
+        pedidos={pedidos}
+        productos={productos}
+        clientes={clientes}
+        user={session.user}
+      />
+    </div>
   );
 }

@@ -18,12 +18,17 @@ function PedidoModificar({ pedido }) {
   const [state, action, pending] = useActionState(modificarOrder, {});
   const [status, setStatus] = useState(pedido.status);
 
-  useEffect(() => {
-    if (state.success) {
-      toast.success(state.success);
-      document.getElementById(formId)?.closest("dialog")?.close();
-    }
-  }, [state]);
+  
+    useEffect(() => {
+        if (state.success) {
+            toast.success(state.success);
+            document.getElementById(formId)?.closest("dialog")?.close();
+        }
+        if (state.error) {
+            toast.error(state.error);
+        }
+    }, [state, formId]);
+
 
   // Cuando cambie el pedido recibido, actualizamos el estado local
   useEffect(() => {
@@ -115,7 +120,7 @@ function PedidoModificar({ pedido }) {
             <div>
               <p className="text-sm font-medium text-gray-500">Cliente</p>
               <p className="font-semibold text-gray-800">
-                {pedido.user?.name || "Desconocido"}
+               {pedido.user?.name ? pedido.user.name.split(' ').slice(0, 2).join(' ') : "Desconocido"}
               </p>
             </div>
           </div>

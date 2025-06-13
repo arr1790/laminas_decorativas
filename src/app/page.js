@@ -1,7 +1,7 @@
 import Link from "next/link";
 import HeroSlider from "@/components/HeroSlider";
 import Image from 'next/image';
-import Footer from "@/components/footer"; // ✅ nuevo import
+import Footer from "@/components/footer"; 
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
             NUESTRAS COLECCIONES
           </h2>
 
-          {/* Grid de 1 columna en móvil, 2 columnas en pantallas medianas */}
+  
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <CategoryCard title="LO MÁS VENDIDO" image="/vendidos.jpeg" href="/categorias/Decorativas" />
             <CategoryCard title="PIEZAS UNICAS" image="/piezass.png" href="/categorias/Personalizadas" />

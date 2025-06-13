@@ -15,6 +15,7 @@ export default async function UsersPage() {
     return redirect("/");
   }
 
+  
   const users = await getUsers();
 
   return (

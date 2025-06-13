@@ -15,15 +15,16 @@ export default function UserModificar({ session, user }) {
     const [state, action, pending] = useActionState(modificarUsuario, {})
 
 
+
     useEffect(() => {
-        if (state?.success) {
-            toast.success(state.success)
-            document.getElementById(formId).closest('dialog')?.close() // Si el padre es un dialog, lo cerramos
+        if (state.success) {
+            toast.success(state.success);
+            document.getElementById(formId)?.closest("dialog")?.close();
         }
-        if (state?.error) toast.error(state.error)
-
-    }, [formId, state])
-
+        if (state.error) {
+            toast.error(state.error);
+        }
+    }, [state, formId]);
 
     return (
         <form id={formId} action={action} className="w-full flex flex-col gap-4">

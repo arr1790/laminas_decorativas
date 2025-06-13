@@ -1,4 +1,4 @@
-import { guardarOModificarDireccion, modificarDireccion } from '@/lib/actions';
+import { guardarOModificarDireccion } from '@/lib/actions';
 import provincias from '@/lib/provincias';
 import paisesUE from '@/lib/paisesUE';
 import { auth } from '@/auth';
@@ -56,8 +56,6 @@ export default async function DireccionPage() {
           </div>
         </div>
 
-       
-
         <div>
           <label className="block text-xs uppercase text-gray-500 mb-1">Dirección 1</label>
           <input
@@ -106,7 +104,7 @@ export default async function DireccionPage() {
             <label className="block text-xs uppercase text-gray-500 mb-1">Provincia</label>
             <select
               name="provincia"
-              defaultValue={direccion?.provincia ?? 'La Coruña'}
+              defaultValue={direccion?.provincia ?? 'Cordoba'}
               required
               className="w-full bg-transparent border-b border-gray-300 p-2 focus:outline-none focus:border-black"
             >
@@ -132,6 +130,9 @@ export default async function DireccionPage() {
           <input
             name="telefono"
             defaultValue={direccion?.telefono ?? ''}
+            required
+            pattern="^\d{9}$"
+            title="El teléfono debe contener exactamente 9 números."
             className="w-full bg-transparent border-b border-gray-300 p-2 focus:outline-none focus:border-black"
           />
         </div>

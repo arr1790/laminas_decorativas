@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useId } from "react";
 import { useActionState } from "react";
 import { modificarCategoria } from "@/lib/actions";  // Asegúrate de que esta función esté importada correctamente
@@ -10,12 +10,19 @@ function CategoriaModificar({ categoria }) {
     const [state, action, pending] = useActionState(modificarCategoria, {}); 
 
     // Manejo de notificación y cierre del formulario
-    useEffect(() => {
-        if (state.success) {
-            toast.success(state.success);  
-            document.getElementById(formId)?.closest("dialog")?.close();  
-        }
-    }, [state, formId]);
+useEffect(() => {
+  const shown = toastShownRef.current;
+
+  if (state?.success && formId && !shown) {
+    toast.success(state.success);
+    toastShownRef.current = true; // evita mostrarlo otra vez
+
+    const dialog = document.getElementById(formId)?.closest("dialog");
+    dialog?.close();
+  }
+}, [state, formId]);
+
+const toastShownRef = useRef(false);
 
     return (
         <form

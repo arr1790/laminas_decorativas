@@ -110,7 +110,6 @@ async function page() {
 
 
 
-
                         <form action={insertarOrder} className="max-w-6xl mx-auto px-4 py-8">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 {/* Información de contacto y envío */}
@@ -121,28 +120,60 @@ async function page() {
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                                                    <input name="nombre" defaultValue={direccion?.nombre ?? ''} type="text" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300" placeholder="Nombre" />
+                                                    <input
+                                                        name="nombre"
+                                                        defaultValue={direccion?.nombre ?? ''}
+                                                        type="text"
+                                                        required
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Nombre"
+                                                    />
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
-                                                    <input name="apellido" defaultValue={direccion?.apellido ?? ''} type="text" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300" placeholder="Apellidos" />
+                                                    <input
+                                                        name="apellido"
+                                                        defaultValue={direccion?.apellido ?? ''}
+                                                        type="text"
+                                                        required
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Apellidos"
+                                                    />
                                                 </div>
                                             </div>
 
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
-                                                <input name="direccion1" defaultValue={direccion?.direccion1 ?? ''} type="text" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300" placeholder="Dirección" />
+                                                <input
+                                                    name="direccion1"
+                                                    defaultValue={direccion?.direccion1 ?? ''}
+                                                    type="text"
+                                                    required
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="Dirección"
+                                                />
                                             </div>
 
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Casa, apartamento, etc. (opcional)</label>
-                                                <input name="direccion2" defaultValue={direccion?.direccion2 ?? ''} type="text" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300" placeholder="Piso, puerta, etc." />
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Dirección 2 (opcional)</label>
+                                                <input
+                                                    name="direccion2"
+                                                    defaultValue={direccion?.direccion2 ?? ''}
+                                                    type="text"
+                                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    placeholder="Dirección 2 opcional"
+                                                />
                                             </div>
 
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">País/Región</label>
-                                                    <select name="pais" defaultValue={direccion?.pais ?? "España"} required className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300">
+                                                    <select
+                                                        name="pais"
+                                                        defaultValue={direccion?.pais ?? "España"}
+                                                        required
+                                                        className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    >
                                                         {paisesUE.map((pais) => (
                                                             <option key={pais} value={pais}>{pais}</option>
                                                         ))}
@@ -150,7 +181,12 @@ async function page() {
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">Provincia</label>
-                                                    <select name="provincia" defaultValue={direccion?.provincia ?? "La Coruña"} required className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300">
+                                                    <select
+                                                        name="provincia"
+                                                        defaultValue={direccion?.provincia ?? "La Coruña"}
+                                                        required
+                                                        className="w-full p-2 bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                    >
                                                         {provincias.map((prov) => (
                                                             <option key={prov} value={prov}>{prov}</option>
                                                         ))}
@@ -158,28 +194,57 @@ async function page() {
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">Código Postal</label>
-                                                    <input name="codigoPostal" defaultValue={direccion?.codigoPostal ?? ''} type="text" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300" placeholder="Código postal" />
+                                                    <input
+                                                        name="codigoPostal"
+                                                        defaultValue={direccion?.codigoPostal ?? ''}
+                                                        type="text"
+                                                        required
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Código postal"
+                                                    />
                                                 </div>
                                             </div>
 
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">Ciudad</label>
-                                                    <input name="ciudad" defaultValue={direccion?.ciudad ?? ''} type="text" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300" placeholder="Ciudad" />
+                                                    <input
+                                                        name="ciudad"
+                                                        defaultValue={direccion?.ciudad ?? ''}
+                                                        type="text"
+                                                        required
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Ciudad"
+                                                    />
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-                                                    <input name="telefono" defaultValue={direccion?.telefono ?? ''} type="tel" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300" placeholder="Teléfono" />
+                                                    <input
+                                                        name="telefono"
+                                                        defaultValue={direccion?.telefono ?? ''}
+                                                        type="tel"
+                                                        required
+                                                        pattern="^\d{9}$"
+                                                        title="El teléfono debe contener exactamente 9 números."
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="Teléfono (9 dígitos)"
+                                                    />
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                                    <input name="email" defaultValue={direccion?.email ?? session.user.email ?? ''} type="email" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300" placeholder="ejemplo@ejemplo.com" />
+                                                    <input
+                                                        name="email"
+                                                        defaultValue={direccion?.email ?? session.user.email ?? ''}
+                                                        type="email"
+                                                        required
+                                                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-300"
+                                                        placeholder="ejemplo@ejemplo.com"
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
 
                                 {/* Resumen del pedido */}
                                 <div className="sticky top-4">

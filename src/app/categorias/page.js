@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import { Home, ArrowLeft } from "lucide-react";
+import { BackButton } from "@/components/BackButton";
 
 export default async function CategoriasPage() {
   const session = await auth();
@@ -18,8 +19,9 @@ export default async function CategoriasPage() {
         >
           <Home className="w-5 h-5" />
           <span className="font-medium">Inicio</span>
+          
         </Link>
-        
+        <BackButton />
       
       </div>
 

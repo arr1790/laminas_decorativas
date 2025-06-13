@@ -9,6 +9,7 @@ import { Loader2 } from "lucide-react";
 function ProductoModificar({ producto, categories }) {
     const formId = useId();
     const [state, action, pending] = useActionState(modificarProducto, {});
+   
 
     useEffect(() => {
         if (state.success) {
@@ -57,7 +58,7 @@ function ProductoModificar({ producto, categories }) {
                     <div>
                         <label className="block text-gray-700 font-medium mb-2">Precio Base *</label>
                         <div className="relative">
-                            <span className="absolute left-3 top-3">$</span>
+                            <span className="absolute left-3 top-3">€</span>
                             <input
                                 name="basePrice"
                                 type="number"
@@ -85,11 +86,13 @@ function ProductoModificar({ producto, categories }) {
 
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
+                        <input type="hidden" name="withFrame" value="false" />
                         <input
                             name="withFrame"
                             type="checkbox"
                             id="withFrame"
-                            defaultChecked={producto.withFrame}
+                            value="true"
+                            defaultChecked={Boolean(producto.withFrame)}
                             className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
                         <label htmlFor="withFrame" className="text-gray-700">Incluye marco</label>
@@ -108,9 +111,9 @@ function ProductoModificar({ producto, categories }) {
                     />
                     {producto.image && (
                         <div className="mt-2">
-                            <img 
-                                src={producto.image} 
-                                alt="Preview" 
+                            <img
+                                src={producto.image}
+                                alt="Preview"
                                 className="h-32 w-32 object-cover rounded border"
                             />
                         </div>
@@ -128,9 +131,9 @@ function ProductoModificar({ producto, categories }) {
                     />
                     {producto.hoverImage && (
                         <div className="mt-2">
-                            <img 
-                                src={producto.hoverImage} 
-                                alt="Hover Preview" 
+                            <img
+                                src={producto.hoverImage}
+                                alt="Hover Preview"
                                 className="h-32 w-32 object-cover rounded border"
                             />
                         </div>
