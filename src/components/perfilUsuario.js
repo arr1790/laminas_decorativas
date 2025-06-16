@@ -105,8 +105,10 @@ export default function PerfilUsuario({ sesion, pedidos, userImage }) {
               {/* Dirección de envío */}
               <div className="flex-1 min-w-[280px] text-right">
                 <h3 className="text-xl font-semibold mb-4">Dirección de Envío</h3>
+                <p><strong>Nombre:</strong> {pedidoActivo?.address?.nombre}</p>
+                    <p><strong>Apellidos:</strong> {pedidoActivo?.address?.apellido}</p>
                 <p>{pedidoActivo.address?.direccion1}</p>
-                <p>{pedidoActivo.address?.direccion2}</p>
+                <p> Direccion opcional: {pedidoActivo.address?.direccion2}</p>
                 <p>{pedidoActivo.address?.ciudad}, {pedidoActivo.address?.codigoPostal}</p>
                 <p>{pedidoActivo.address?.pais}</p>
               </div>
@@ -173,14 +175,21 @@ export default function PerfilUsuario({ sesion, pedidos, userImage }) {
                 </span>
               </div>
             </div>
-            <div className="text-center mt-10">
+            <div className="text-center mt-10"><div className="text-center mt-10 flex justify-center gap-4">
+              <button
+                className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition"
+                onClick={() => window.print()}
+              >
+                Imprimir Factura
+              </button>
               <button
                 className="bg-gray-800 text-white px-8 py-3 rounded-lg hover:bg-gray-900 transition"
                 onClick={() => setPedidoActivo(null)}
               >
                 Cerrar
               </button>
-            </div>
+
+            </div></div>
           </div>
         </div>
       )}
