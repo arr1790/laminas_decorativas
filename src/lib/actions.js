@@ -7,9 +7,6 @@ import { agregarAlCarrito, getUserByEmail, obtenerCarrito } from '@/lib/data';
 import { revalidatePath } from 'next/cache'
 import slugify from 'slugify';
 import { redirect } from 'next/navigation';
-import { use } from 'react';
-
-import { obtenerDireccionesPorUserId } from "@/lib/data"
 import { auth } from '@/auth';
 
 

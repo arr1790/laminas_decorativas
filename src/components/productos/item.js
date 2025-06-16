@@ -7,8 +7,11 @@ import { insertarCarrito } from "@/lib/actions";
 import { useTransition } from 'react';
 import { toast } from "sonner";
 import Footer from "../footer";
+import { usePathname } from 'next/navigation';
 
 export default function ProductoItem({ user, producto, relacionados = [] }) {
+  const pathname = usePathname(); // Obtiene la ruta actual
+  const encodedCallbackUrl = encodeURIComponent(pathname);
   const [nombre, setNombre] = useState("");
   const [textoPersonalizado, setTextoPersonalizado] = useState("");
   const [imagenActual, setImagenActual] = useState(0);
@@ -37,15 +40,15 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
     event.preventDefault();
     const formData = new FormData(event.target);
 
-  startTransition(() => {
-  insertarCarrito(formData).then(() => {
-    setNombre(" ");
-    setTextoPersonalizado(" ");
-    setTimeout(() => {
-      toast.success('Añadido al carrito ' + producto.name);
-    }, 100);
-  });
-});
+    startTransition(() => {
+      insertarCarrito(formData).then(() => {
+        setNombre(" ");
+        setTextoPersonalizado(" ");
+        setTimeout(() => {
+          toast.success('Añadido al carrito ' + producto.name);
+        }, 100);
+      });
+    });
   }
 
 
@@ -161,26 +164,24 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
                 />
               )}
 
-              {
-                user ? (
-                  <button
-                    type="submit"
-                    className="w-full text-center bg-black hover:bg-gray-800 text-white py-4 px-6 rounded-md font-semibold transition duration-200 uppercase shadow-md mb-8"
-                    disabled={isPending}
+              {user ? (
+                <button
+                  type="submit"
+                  className="w-full text-center bg-black hover:bg-gray-800 text-white py-4 px-6 rounded-md font-semibold transition duration-200 uppercase shadow-md mb-8"
+                  disabled={isPending}
+                >
+                  {isPending ? "Añadiendo..." : "Añadir al carrito"}
+                </button>
+              ) : (
+                <div className="w-full mb-8">
+                  <Link
+                    href={`/auth/login?callbackUrl=${encodedCallbackUrl}`}
+                    className="block w-full text-center bg-gradient-to-r from-black to-gray-800 hover:from-gray-900 hover:to-gray-700 text-white py-4 px-6 rounded-md font-semibold transition duration-200 uppercase shadow-md"
                   >
-                    {isPending ? "Añadiendo..." : "Añadir al carrito"}
-                  </button>
-                ) : (
-                  <div className="w-full mb-8">
-                    <Link
-                      href="/auth/login"
-                      className="block w-full text-center bg-gradient-to-r from-black to-gray-800 hover:from-gray-900 hover:to-gray-700 text-white py-4 px-6 rounded-md font-semibold transition duration-200 uppercase shadow-md"
-                    >
-                      INICIA SESIÓN PARA COMPRAR
-                    </Link>
-                  </div>
-                )
-              }
+                    INICIA SESIÓN PARA COMPRAR
+                  </Link>
+                </div>
+              )}
 
             </form>
 
