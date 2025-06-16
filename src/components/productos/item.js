@@ -137,13 +137,14 @@ export default function ProductoItem({ user, producto, relacionados = [] }) {
 
 
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">{producto.name}</h1>
+          
 
             <div className="flex items-center mb-6">
               <span className="text-2xl font-bold text-gray-900 mr-4">
                 {producto.basePrice?.toFixed(2)}€
               </span>
             </div>
-
+                  <p className="text-gray-600 mb-6">{producto.description || "Sin descripción disponible para este producto."}</p>
             <p className="text-gray-600 mb-6">Los gastos de envío se calculan en la pantalla de pago.</p>
 
             <div className="mb-6">

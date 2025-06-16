@@ -262,9 +262,19 @@ export async function modificarProducto(prevState, formData) {
   const description = formData.get('description')
   const basePrice = parseFloat(formData.get('basePrice'))
   const dimensions = formData.get('dimensions')
-  const withFrame = formData.get('withFrame') === 'true'
+
+  // ✅ Corregido: manejar bien checkbox (oculta + checked)
+  const withFrame = formData.getAll('withFrame').includes('true')
+
   const image = formData.get('image')
+  const hoverImage = formData.get('hoverImage')
   const categoryId = Number(formData.get('categoryId'))
+
+  // 🧪 Debug opcional
+  console.log('FORM DATA', {
+    id, name, description, basePrice, dimensions,
+    withFrame, image, hoverImage, categoryId
+  })
 
   await prisma.product.update({
     where: { id },
@@ -275,14 +285,15 @@ export async function modificarProducto(prevState, formData) {
       dimensions,
       withFrame,
       image,
+      hoverImage, // ✅ Añadido
       categoryId
     }
   })
 
   revalidatePath('/productos')
-  return { success: "Producto modificado correcto" }
-}
 
+  return { success: 'Producto modificado correctamente' }
+}
 export async function eliminarProducto(prevState, formData) {
   const id = Number(formData.get('id'))
 
