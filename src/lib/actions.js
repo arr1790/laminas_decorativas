@@ -239,6 +239,7 @@ export async function insertarProducto(prevState, formData) {
   const withFrame = formData.get('withFrame') === 'true'
   const image = formData.get('image')
   const categoryId = Number(formData.get('categoryId'))
+  const hoverImage = formData.get('hoverImage') //
 
   await prisma.product.create({
     data: {
@@ -248,7 +249,8 @@ export async function insertarProducto(prevState, formData) {
       dimensions,
       withFrame,
       image,
-      categoryId
+      categoryId,
+      hoverImage
     }
   })
 
