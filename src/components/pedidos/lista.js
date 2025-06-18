@@ -113,12 +113,12 @@ export default async function Pedidos() {
                                 alt={item.product.name || "Producto"}
                                 className="w-10 h-10 rounded-md object-cover flex-shrink-0 border border-gray-200"
                               />
-                              <div className="flex-1 min-w-0">
+                              {/* <div className="flex-1 min-w-0">
                                 <p className="font-medium text-gray-900 truncate">{item.product.name || "Producto"}</p>
                                 <p className="text-xs text-gray-500">
                                   {item.cantidad} × {item.product.basePrice?.toFixed(2)} €
                                 </p>
-                              </div>
+                              </div> */}
                             </li>
                           ))}
                         </ul>
